@@ -1,0 +1,312 @@
+﻿<div class="mx-5 my-5 d-flex align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
+    <form class="layui-form d-flex align-items-center">
+        <div class="layui-input-wrap ms-4 me-3">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-online"></i>
+            </div>
+            <select name="line" id="lineSelect" class="layui-input">
+                <option value="" selected disabled>产线</option>
+            </select>
+        </div>
+        <div class="layui-input-wrap me-3">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-online"></i>
+            </div>
+            <select name="deviceType" id="deviceTypeSelect" class="layui-input">
+                <option value="" selected disabled>设备类型</option>
+            </select>
+        </div>
+        <div class="layui-input-wrap me-3">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-online"></i>
+            </div>
+            <select name="code" id="codeSelect" class="layui-input">
+                <option value="" selected disabled>设备编码</option>
+            </select>
+        </div>
+        <div class="layui-input-wrap me-3">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-online"></i>
+            </div>
+            <select name="logType" id="logTypeSelect" class="layui-input">
+                <option value="" selected disabled>日志类型</option>
+            </select>
+        </div>
+        <button class="layui-btn me-2" lay-submit lay-filter="table-search">查询</button>
+        <button class="layui-btn layui-btn-primary me-4" type="reset">清除</button>
+    </form>
+</div>
+
+<div class="mx-5">
+    <table class="layui-hide" id="deviceTable" lay-filter="deviceOperation"></table>
+</div>
+
+@* 表格操作栏 *@
+<script type="text/html" id="toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="showCheckRow">显示</button>
+        <button class="layui-btn" lay-event="copyCheckRowData">复制</button>
+        <button class="layui-btn" lay-event="resetTable">重置</button>
+        <button class="layui-btn" lay-event="manualPatrol">巡检</button>
+    </div>
+</script>
+
+@* 单元格操作列表 *@
+<script type="text/html" id="operationList">
+    <div class="layui-clear-space">
+        <a class="layui-btn layui-btn-xs" lay-event="check">检查</a>
+    </div>
+</script>
+
+<script>
+    fetch('/Config/GetConfiguration', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json' // 指定期望的响应格式为 JSON
+        }
+    })
+    .then(response => {
+        return response.json().then(data => {
+            if (!response.ok) {
+                throw new Error(data.message || `操作失败 (${response.status})`);
+            }
+            return data; // 200 状态码，正常返回数据
+        });
+    })
+    .then(data => {
+        var allData = data.data;
+
+        // 获取下拉选项集合
+        var lineSet = groupByField(allData, 'line', false);
+        var deviceTypeSet = groupByField(allData, 'deviceType');
+        var codeSet = groupByField(allData, 'code');
+        var logTypeSet = groupByField(allData, 'logType');
+        
+        var form = layui.form;
+        var table = layui.table;
+
+        layui.use(['form', 'table'], function() {
+            // 填充下拉选项
+            lineSet.forEach(value => {
+                var option = $('<option>').val(value).text(value);
+                layui.$('#lineSelect').append(option);
+            });
+            deviceTypeSet.forEach(value => {
+                var option = $('<option>').val(value).text(value);
+                layui.$('#deviceTypeSelect').append(option);
+            });
+            codeSet.forEach(value => {
+                var option = $('<option>').val(value).text(value);
+                layui.$('#codeSelect').append(option);
+            });
+            logTypeSet.forEach(value => {
+                var option = $('<option>').val(value).text(value);
+                layui.$('#logTypeSelect').append(option);
+            });
+
+            table.render({
+                elem: '#deviceTable',
+                height: 'full-400',
+                data: allData,
+                toolbar: '#toolbar',
+                defaultToolbar: ['filter', 'exports'],
+                page: true,
+                limits: [10, 20, 30, 50],
+                cols: [[
+                    { fixed:'left', type: 'checkbox', width: 59 },
+                    { type: 'numbers', title: '序号', width: 59 },
+                    { field:'line', width: 100, title: '产线', align: 'center' },
+                    { field:'num', width: 100, title: '线体顺序', align: 'center' },
+                    { field:'deviceType', width: 160, title: '设备类型', align: 'center' },
+                    { field:'code', width: 160, title: '设备编码', align: 'center' },
+                    { field:'ip', width: 160, title: 'IP', align: 'center' },
+                    { field:'logType', width: 240, title: '日志类型', align: 'center' },
+                    { field:'path', width: 240, title: '日志路径', align: 'center' },
+                    { field:'account', width: 160, title: '账号', align: 'center' },
+                    { field:'password', width: 160, title: '密码', align: 'center' },
+                    { fixed:'right', width: 100, title: '操作', templet: '#operationList', align: 'center' },
+                ]],
+                done: function() {
+                    // 表格渲染完成后，添加样式使表头居中
+                    $('.layui-table-header th').each(function(){
+                        $(this).css('text-align', 'center');
+                    });
+                }
+            });
+
+            form.render('select');
+
+            // 表格事件
+            table.on('toolbar(deviceOperation)', function(obj) {
+                var id = obj.config.id;
+                var checkStatus = table.checkStatus(id);
+                var data = checkStatus.data;
+
+                switch(obj.event) {
+                    case 'showCheckRow':
+                        if(data.length !== 0) {
+                            table.reload(id, {
+                                data: data
+                            });
+                        }
+                        else {
+                            layer.msg('未选中行', { icon: 2 });
+                        }
+                        break;
+                    case 'copyCheckRowData':
+                        if(data.length !== 0) {
+                            copyToClipboard(data);
+                        }
+                        else {
+                            layer.msg('未选中行', { icon: 2 });
+                        }
+                        break;
+                    case 'resetTable':
+                        table.reload(id, {
+                            data: allData
+                        });// 取消选中行
+                        table.setRowChecked(id, {
+                            index: 'all', // 所有行
+                            checked: false // 此处若设置 true，则表示全选
+                        });
+                        break;
+                    case 'manualPatrol':
+                        fetch('/Home/ManualPatrol', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(allData)
+                        })
+                        .then(response => {
+                            return response.json().then(data => {
+                                if (!response.ok) {
+                                    throw new Error(data.message || `操作失败 (${response.status})`);
+                                }
+                                return data; // 200 状态码，正常返回数据
+                            });
+                        })
+                        .then(data => {
+                            layer.msg(data.message, {
+                                time: 2000,
+                                icon: 1
+                            });
+                        })
+                        .catch(error => {
+                            layer.msg(error.message, {
+                                time: 2000,
+                                icon: 2
+                            });
+                        });
+                        break;
+                    default:
+                };
+            });
+
+            // 单元格工具事件
+            table.on('tool(deviceOperation)', function(obj) {
+                var rowData = [obj.data];
+
+                console.log(rowData);
+
+                fetch('/Home/ManualPatrol', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(rowData)
+                })
+                .then(response => {
+                    return response.json().then(data => {
+                        if (!response.ok) {
+                            throw new Error(data.message || `操作失败 (${response.status})`);
+                        }
+                        return data; // 200 状态码，正常返回数据
+                    });
+                })
+                .then(data => {
+                    layer.msg(data.message, {
+                        time: 2000,
+                        icon: 1
+                    });
+                })
+                .catch(error => {
+                    layer.msg(error.message, {
+                        time: 2000,
+                        icon: 2
+                    });
+                });
+            });
+
+             // 表单搜索
+            form.on('submit(table-search)', function(data) {
+                var field = data.field;
+
+                // 过滤数据
+                var filterData = allData.filter(item => {
+                    var lineMatch = !field.line || item.line === field.line;
+                    var deviceTypeMatch = !field.deviceType || item.deviceType === field.deviceType;
+                    var codeMatch = !field.code || item.code === field.code;
+                    var logTypeMatch = !field.logType || item.logType === field.logType;
+                    return lineMatch && deviceTypeMatch && codeMatch && logTypeMatch;
+                });
+
+                // 搜索重载
+                table.reload('deviceTable', {
+                    data: filterData,
+                    page: {
+                        curr: 1 // 重新从第 1 页开始
+                    }
+                });
+
+                layer.msg('搜索成功');
+                return false; // 阻止默认 form 跳转
+            });
+        });
+    })
+    .catch(error => {
+        alert(error.message);
+    });
+
+    // 根据字段分组，返回排序 key 值 
+    function groupByField(data, field, isSort = true) {
+        var groupedData = {};
+        data.forEach(item => {
+            var key = item[field];
+            if (!groupedData[key]) {
+                groupedData[key] = [];
+            }
+            groupedData[key].push(item);
+        });
+
+        var keys =  Object.keys(groupedData);
+        if(isSort) {
+            return keys.sort();
+        }
+        else {
+            return Object.keys(groupedData);
+        }
+    }
+
+    // 复制操作
+    function copyToClipboard(text) {
+        if(navigator.clipboard) {
+            copyText = (text) => {
+                navigator.clipboard.writeText(JSON.stringify(text));
+                layer.msg('复制成功', { icon: 1 });
+            }
+        } else {
+            copyText = (text) => {
+                var input = document.createElement('input');
+                input.value = JSON.stringify(text);
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                layer.msg('复制成功', { icon: 1 });
+            }
+        }
+
+        copyText(text);
+    }
+</script>

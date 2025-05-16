@@ -1,0 +1,163 @@
+﻿<style>
+    .file-input-area {
+        position: relative;
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: 1px dashed #1E9FFF; /* 2px 表示边框宽度，dashed 表示虚线样式，#1E9FFF 是边框颜色 */
+        background-color: transparent;
+        color: #1E9FFF;
+        cursor: pointer;
+    }
+    
+    .file-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+
+    #filePath {
+        display: inline-block;
+        color: #1E9FFF;
+    }
+</style>
+
+<div class="mx-5 my-5 d-flex flex-column align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
+    <div>设备信息导入</div>
+    <div class="file-input-area">
+        <input class="file-input" type="file" id="fileInput" />
+        <p id="filePath">未选择文件</p>
+    </div>
+    <p id="promptMessage"></p>
+</div>
+
+<div class="mx-5 my-5 d-flex flex-column align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
+    <div>自动巡检设置</div>
+    <div class="file-input-area">
+    </div>
+    <p id="promptMessage"></p>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var fileInput = document.getElementById('fileInput');
+        var filePathElement = document.getElementById('filePath');
+
+        fileInput.addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            if (file) {
+                filePathElement.textContent = file.name;
+                readFileContent(file);
+            } else {
+                filePathElement.textContent = '未选择文件';
+            }
+        });
+    });
+
+    // 读取文件内容
+    function readFileContent(file) {
+        // 检查文件类型是否为可读取的文本类型
+        var fileType = file.type;
+        if (!file.name.endsWith('.text') &&
+            !file.name.endsWith('.json') &&
+            !file.name.endsWith('.csv') &&
+            !file.name.endsWith('.xlsx')) {
+            filePathElement.innerHTML = '<span style="color: red;">只能读取文本类型文件!</span>';
+            return;
+        }
+
+        // 创建文件读取器
+        var reader = new FileReader();
+
+        // 读取成功时的回调
+        reader.onload = function(e) {
+            var content = e.target.result;
+
+            // 如果是json文件
+            if (file.name.endsWith('.json')) {
+                console.log('1');
+                try {
+                    var jsonData = JSON.parse(content);
+                } catch (error) {
+                    console.error('解析 Json 文件失败:', error.message);
+                }
+            }
+            // 如果是xlsx文件
+            else if(file.name.endsWith('.xlsx')) {
+                try {
+                    // 解析 Excel 文件
+                    var workbook = XLSX.read(content, { type: 'binary' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+
+                    // 将工作表转换为 JSON
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                    if (jsonData.length === 0) {
+                        fileContentElement.textContent = 'Excel 文件为空';
+                        return;
+                    }
+
+                    var extractedData = [];
+
+                    // 处理每一行
+                    for (var i = 1; i < jsonData.length; i++) {
+                        var row = jsonData[i];
+                        var newRow = {};
+
+                        // 添加 C、D、E、F、K 列数据
+                        newRow['line'] = String(row[1]) || '';
+                        newRow['num'] = row[2] || '';
+                        newRow['deviceType'] = String(row[3]) || '';
+                        newRow['code'] = String(row[4]) || '';
+                        newRow['ip'] = String(row[7]) || ''; 
+                        newRow['logType'] = String(row[8]) || '';
+                        newRow['path'] = String(row[9]) || '';
+                        newRow['account'] = String(row[10]) || '';
+                        newRow['password'] = String(row[11]) || '';
+
+                        extractedData.push(newRow);
+                    }
+
+                    fetch('/Config/UpdateConfiguration', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(extractedData)
+                    })
+                    .then(response => {
+                        return response.json().then(data => {
+                            // 检查状态码，非 200 则抛出错误
+                            if (!response.ok) {
+                                throw new Error(data.message || `操作失败 (${response.status})`);
+                            }
+                            return data; // 200 状态码，正常返回数据
+                        });
+                    })
+                    .then(data => {
+                        alert(data.message);
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
+                } catch (error) {
+                    alert('解析 Excel 文件失败:', error.message);
+                }
+            }
+        };
+
+        // 读取失败时的回调
+        reader.onerror = function() {
+            // fileContentElement.innerHTML = '<span style="color: red;">读取文件失败!</span>';
+        };
+
+        // 开始读取文件内容
+        reader.readAsArrayBuffer(file);
+
+        // 显示加载状态
+        // fileContentElement.textContent = '正在读取文件内容...';
+    }
+</script>

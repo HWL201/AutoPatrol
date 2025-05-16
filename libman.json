@@ -1,0 +1,32 @@
+{
+  "version": "3.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "layui@2.11.1",
+      "destination": "wwwroot/lib/layui/",
+      "files": [
+        "layui.js",
+        "css/layui.css"
+      ]
+    },
+    {
+      "library": "xlsx@0.18.5",
+      "destination": "wwwroot/lib/xlsx/",
+      "files": [
+        "xlsx.full.min.js"
+      ]
+    },
+    {
+      "library": "jquery@3.7.1",
+      "destination": "wwwroot/jquery/"
+    },
+    {
+      "library": "handlebars.js@4.7.8",
+      "destination": "wwwroot/lib/handlebars.js/",
+      "files": [
+        "handlebars.min.js"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AutoPatrol</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AutoPatrol.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/layui/css/layui.css" asp-append-version="true" />
+
+    <script src="~/lib/layui/layui.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/xlsx/xlsx.full.min.js" asp-append-version="true"></script>
+    <script src="~/lib/handlebars/handlebars.min.js" asp-append-version="true"></script>
+</head>
+<body>
+    <ul class="layui-nav layui-nav-tree layui-nav-side">
+        <li class="layui-nav-item">
+            <a href="javascript:;">主页</a>
+            <dl class="layui-nav-child">
+                <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></dd>
+                <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Result">Result</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a class="nav-link" asp-area="" asp-controller="Config" asp-action="Configuration">配置</a></li>
+    </ul>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script>
+        layui.use(function(){
+            var element = layui.element;
+            element.render('nav');
+        });
+    </script>
+</body>
+</html>

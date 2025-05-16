@@ -1,0 +1,642 @@
+﻿<style>
+    .layui-form-label {
+        width: 200px;
+    }
+</style>
+
+<div class="mx-5 my-5 d-flex align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
+    <form class="layui-form d-flex align-items-center">
+        <div class="layui-input-wrap ms-4 me-3">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-online"></i>
+            </div>
+            <select name="line" id="lineSelect" class="layui-input">
+                <option value="" selected disabled>产线</option>
+            </select>
+        </div>
+        <div class="layui-input-wrap me-3">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-online"></i>
+            </div>
+            <select name="deviceType" id="deviceTypeSelect" class="layui-input">
+                <option value="" selected disabled>设备类型</option>
+            </select>
+        </div>
+        <div class="layui-input-wrap me-3">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-online"></i>
+            </div>
+            <select name="code" id="codeSelect" class="layui-input">
+                <option value="" selected disabled>设备编码</option>
+            </select>
+        </div>
+        <div class="layui-input-wrap me-3">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-online"></i>
+            </div>
+            <select name="result" id="resultSelect" class="layui-input">
+                <option value="" selected disabled>巡检结论</option>
+            </select>
+        </div>
+        <button class="layui-btn me-2" lay-submit lay-filter="table-search">查询</button>
+        <button class="layui-btn layui-btn-primary me-4" type="reset">清除</button>
+    </form>
+</div>
+
+<div class="mx-5">
+    <table class="layui-hide" id="resultTable" lay-filter="resultOperation"></table>
+</div>
+
+@* 表格操作栏 *@
+<script type="text/html" id="toolbar">
+    <div class="d-flex flex-row">
+        <div class="layui-btn-container">
+            <button class="layui-btn" lay-event="showCheckRow">显示</button>
+            <button class="layui-btn" lay-event="copyCheckRowData">复制</button>
+            <button class="layui-btn" lay-event="resetTable">重置</button>
+        </div>
+        <div class="layui-input-wrap ms-5 me-3" style="width: 160px;">
+            <div class="layui-input-prefix">
+                <i class="layui-icon layui-icon-date"></i>
+            </div>
+            <input type="text" name="patrolDate" placeholder="巡检时间" lay-filter="changeDate" class="layui-input calendar-controls">
+        </div>
+        <div class="layui-input-wrap me-3" id="tableSelect"  style="width: 300px;">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-online"></i>
+            </div>
+            <select name="code" id="fileSelect" lay-filter="fileSelect" class="layui-input">
+            </select>
+        </div>
+    </div>
+</script>
+
+@* 单元格操作列表 *@
+<script type="text/html" id="operationList">
+    <div class="layui-clear-space">
+        <a class="layui-btn layui-btn-xs" lay-event="checkDetail">查看详情</a>
+    </div>
+</script>
+
+@* 巡检详情模板 *@
+<script type="text/x-handlebars-template" id="resultTempalte">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-form-item">
+                <label class="layui-form-label">产线</label>
+                <div class="layui-input-block">
+                    <span id="line">{{line}}</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">线体顺序</label>
+                <div class="layui-input-block">
+                    <span id="num">{{num}}</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">设备类型</label>
+                <div class="layui-input-block">
+                    <span id="deviceType">{{deviceType}}</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">设备编码</label>
+                <div class="layui-input-block">
+                    <span id="code">{{code}}</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">检查项</label>
+                <div class="layui-input-block">
+                    <span id="item">{{item}}</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">巡检结论</label>
+                <div class="layui-input-block">
+                    <span id="result">{{result}}</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">异常描述</label>
+                <div class="layui-input-block">
+                    <pre id="describe" style="white-space: pre-wrap; line-height: 1.6;">{{describe}}</pre>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">可能原因</label>
+                <div class="layui-input-block">
+                    <pre id="message" style="white-space: pre-wrap; line-height: 1.6;">{{message}}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+    var currentDate = getFormattedDate();
+    var fileNameList;
+    var currentFileName = `${currentDate}自动巡检.xlsx`;
+    var patrolWay = "自动巡检";
+
+    fetch(`/Home/GetPatrolResult?fileName=${currentFileName}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json' // 指定期望的响应格式为 JSON
+        }
+    })
+    .then(response => {
+        return response.json().then(data => {
+            if (!response.ok) {
+                throw new Error(data.message || `操作失败 (${response.status})`);
+            }
+            return data; // 200 状态码，正常返回数据
+        });
+    })
+    .then(data => {
+        var allData = data.data;
+
+        // 获取下拉选项集合
+        var lineSet = groupByField(allData, 'line', false);
+        var deviceTypeSet = groupByField(allData, 'deviceType');
+        var codeSet = groupByField(allData, 'code');
+        var resultSet = groupByField(allData, 'result');
+
+        var form = layui.form;
+        var table = layui.table;
+        var laydate = layui.laydate;
+
+        var ins = null;
+
+        layui.use(['form', 'table', 'laydate'], function() {
+            // 下拉选项
+            lineSet.forEach(value => {
+                var option = $('<option>').val(value).text(value);
+                layui.$('#lineSelect').append(option);
+            });
+            deviceTypeSet.forEach(value => {
+                var option = $('<option>').val(value).text(value);
+                layui.$('#deviceTypeSelect').append(option);
+            });
+            codeSet.forEach(value => {
+                var option = $('<option>').val(value).text(value);
+                layui.$('#codeSelect').append(option);
+            });
+            resultSet.forEach(value => {
+                var option = $('<option>').val(value).text(value);
+                layui.$('#resultSelect').append(option);
+            });
+
+            table.render({
+                elem: '#resultTable',
+                height: 'full-400',
+                data: allData,
+                toolbar: '#toolbar',
+                defaultToolbar: ['filter', 'exports'],
+                page: true,
+                limits: [10, 20, 30, 50],
+                cols: [[
+                    { fixed:'left', type: 'checkbox', width: 59 },
+                    { type: 'numbers', title: '序号', width: 59 },
+                    { field:'line', width: 100, title: '产线', align: 'center' },
+                    { field:'num', width: 100, title: '线体顺序', align: 'center' },
+                    { field:'deviceType', width: 160, title: '设备类型', align: 'center' },
+                    { field:'code', width: 160, title: '设备编码', align: 'center' },
+                    { field:'item', width: 100, title: '检查项', align: 'center' },
+                    { field:'result', width: 160, title: '巡检结论', align: 'center' },
+                    { field:'describe', width: 160, title: '异常描述', align: 'center' },
+                    { field:'message', width: 240, title: '可能原因', align: 'center' },
+                    { fixed:'right', width: 100, title: '操作', templet: '#operationList', align: 'center' },
+                ]],
+                done: function() {
+                    // 表格渲染完成后，添加样式使表头居中
+                    $('.layui-table-header th').each(function(){
+                        $(this).css('text-align', 'center');
+                    });
+
+                    console.log('表格重载后日期' + currentDate);
+                    
+                }
+            });
+
+            // 填充文件选择输入框的下拉选项
+            requestFileList(currentDate)
+            .then(fileNames => {
+                // 文件列表加载完成后执行后续操作
+                restoreFileSelectStatus(fileNames);
+
+                // 继续其他操作...
+                console.log('首文件:', fileNames[0]);
+            })
+            .catch(error => {
+                console.error('加载失败:', error);
+            });
+
+            laydate.render({
+                elem: '.calendar-controls',
+                value: new Date(),
+                format: 'yyyy-MM-dd',
+                done: function(value, date) {
+                    if(!value) {
+                        return;
+                    }
+
+                    console.log('进来');
+
+                    currentDate = value.split('-').join('');
+
+                    console.log('选择日期' + currentDate);
+
+                    // 文件选择下拉选项重新请求、存储、填充
+                    // requestFileList(currentDate, restoreFileSelectStatus);
+                    requestFileList(currentDate)
+                    .then(fileNames => {
+                        // 文件列表加载完成后执行后续操作
+                        restoreFileSelectStatus(fileNames);
+
+                        // 继续其他操作...
+                        console.log('首文件:', fileNames[0]);
+
+                        // console.log('渲染' + fileNameList[0]);
+
+                        // 表格数据重新加载
+                        requestTableData(
+                            fileNames[0],
+                            // 成功回调
+                            (data, message) => {
+                                table.reload('resultTable', {
+                                    data: data,
+                                    page: {
+                                        curr: 1 // 重新从第 1 页开始
+                                    }
+                                });
+                                // 重新填充与选中文件选择框
+                                restoreFileSelectStatus(fileNames);
+                                // 重新填充时间选择框
+                                restoreDateChangeStatus(currentDate);
+
+                                layer.msg(message, { icon: 1 });
+                            },
+                            // 失败回调
+                            (error) => {
+                                layer.msg(error, { icon: 2 });
+                            }
+                        );
+                        })
+                        .catch(error => {
+                            console.error('加载失败:', error);
+                        });
+
+                    
+                }
+            });
+
+            form.render('select');
+
+            // 表格事件
+            table.on('toolbar(resultOperation)', function(obj) {
+                var id = obj.config.id;
+                var checkStatus = table.checkStatus(id);
+                var data = checkStatus.data;
+
+                switch(obj.event) {
+                    case 'showCheckRow':
+                        if(data.length !== 0) {
+                            table.reload(id, {
+                                data: data
+                            });
+                        }
+                        else {
+                            layer.msg('未选中行', { icon: 2 });
+                        }
+                        break;
+                    case 'copyCheckRowData':
+                        if(data.length !== 0) {
+                            copyToClipboard(data);
+                        }
+                        else {
+                            layer.msg('未选中行', { icon: 2 });
+                        }
+                        break;
+                    case 'resetTable':
+                    console.log('所有数据');
+                    console.log(allData);
+                        table.reload(id, {
+                            data: allData
+                        });
+                        // 取消选中行
+                        table.setRowChecked(id, {
+                            index: 'all', // 所有行
+                            checked: false // 此处若设置 true，则表示全选
+                        });
+                        // 重新填充与选中文件选择框
+                        restoreFileSelectStatus(fileNameList);
+                        // 重新填充时间选择框
+                        restoreDateChangeStatus(currentDate);
+                        break;
+                    default:
+                };
+            });
+
+            // 单元格工具事件
+            table.on('tool(resultOperation)', function(obj) {
+                var rowData = obj.data;
+
+                if(obj.event === 'checkDetail') {
+                    layer.open({
+                        title: '巡检详情',
+                        type: 1,
+                        area: ['25%','45%'],
+                        content: Handlebars.compile(document.getElementById('resultTempalte').innerHTML)(rowData),
+                        success: function (layero, index) {
+                            layero.find('.layui-layer-title').css({
+                                'font-size': '18px',
+                                'font-weight': 'bold',
+                                'font-family': 'Arial, sans-serif',
+                            });
+                        }
+                    });
+                }
+            });
+
+            // 表单搜索
+            form.on('submit(table-search)', function(data) {
+                var field = data.field;
+
+                // 过滤数据
+                var filterData = allData.filter(item => {
+                    var lineMatch = !field.line || item.line === field.line;
+                    var deviceTypeMatch = !field.deviceType || item.deviceType === field.deviceType;
+                    var codeMatch = !field.code || item.code === field.code;
+                    var resultMatch = !field.result || item.result === field.result;
+                    return lineMatch && deviceTypeMatch && codeMatch && resultMatch;
+                });
+
+                // 搜索重载
+                table.reload('resultTable', {
+                    data: filterData,
+                    page: {
+                        curr: 1 // 重新从第 1 页开始
+                    }
+                });
+
+                // 重新填充与选中文件选择框
+                restoreFileSelectStatus(fileNameList);
+                // 重新填充时间选择框
+                restoreDateChangeStatus(currentDate);
+
+                layer.msg('搜索成功');
+                return false; // 阻止默认 form 跳转
+            });
+
+            // 表格数据源切换
+            form.on('select(fileSelect)', function(data) {
+                currentFileName = data.value;
+                console.log(fileNameList);
+                console.log(currentDate);
+                requestTableData(
+                    currentFileName,
+                    // 成功回调
+                    (data, message) => {
+                        table.reload('resultTable', {
+                            data: data,
+                            page: {
+                                curr: 1 // 重新从第 1 页开始
+                            }
+                        });
+                        // 重新填充与选中文件选择框
+                        restoreFileSelectStatus(fileNameList);
+                        // 重新填充时间选择框
+                        restoreDateChangeStatus(currentDate);
+
+                        layer.msg(message, { icon: 1 });
+                    },
+                    // 失败回调
+                    (error) => {
+                        layer.msg(error, { icon: 2 });
+                    }
+                );
+            });
+
+            // 内部方法 更新或恢复表格工具栏 文件选择输入框状态
+            function restoreFileSelectStatus(data) {
+                // 清空原有选项
+                layui.$('#fileSelect').empty();
+                data.forEach(value => {
+                    var option = $('<option>').val(value).text(value);
+                    layui.$('#fileSelect').append(option);
+                });
+                layui.$('#fileSelect').find(`option[value="${currentFileName}"]`).prop('selected', true);
+                form.render('select');
+            }
+
+            // 内部方法 更新或恢复表格工具栏 时间选择输入框状态
+            function restoreDateChangeStatus(data) {
+                var value = data.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3');    laydate.render({
+                elem: '.calendar-controls',
+                value: value,
+                format: 'yyyy-MM-dd',
+                done: function(value, date) {
+                    if(!value) {
+                        return;
+                    }
+
+                    console.log('进来');
+
+                    currentDate = value.split('-').join('');
+
+                    console.log('选择日期' + currentDate);
+
+                    // 文件选择下拉选项重新请求、存储、填充
+                    // requestFileList(currentDate, restoreFileSelectStatus);
+                    requestFileList(currentDate)
+                    .then(fileNames => {
+                        // 文件列表加载完成后执行后续操作
+                        restoreFileSelectStatus(fileNames);
+
+                        // 继续其他操作...
+                        console.log('首文件:', fileNames[0]);
+
+                        // console.log('渲染' + fileNameList[0]);
+
+                        // 表格数据重新加载
+                        requestTableData(
+                            fileNames[0],
+                            // 成功回调
+                            (data, message) => {
+                                table.reload('resultTable', {
+                                    data: data,
+                                    page: {
+                                        curr: 1 // 重新从第 1 页开始
+                                    }
+                                });
+                                // 重新填充与选中文件选择框
+                                restoreFileSelectStatus(fileNames);
+                                // 重新填充时间选择框
+                                restoreDateChangeStatus(currentDate);
+
+                                layer.msg(message, { icon: 1 });
+                            },
+                            // 失败回调
+                            (error) => {
+                                layer.msg(error, { icon: 2 });
+                            }
+                        );
+                        })
+                        .catch(error => {
+                            console.error('加载失败:', error);
+                        });
+
+
+                }
+            });
+
+            }
+        });
+    })
+    .catch(error => {
+        alert(error.message);
+    })
+
+    // 向后端请求表格数据
+    function requestTableData(fileName, successCallback, failureCallback) {
+        fetch(`/Home/GetPatrolResult?fileName=${fileName}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            return response.json().then(data => {
+                if (!response.ok) {
+                    throw new Error(data.message || `操作失败 (${response.status})`);
+                }
+                return data;
+            });
+        })
+        .then(data => {
+            allData = data.data;
+            currentFileName = fileName;
+            // 执行成功回调
+            successCallback(allData, data.message);
+        })
+        .catch(error => {
+            // 执行失败回调
+            failureCallback(error.message);
+        });
+    }
+
+    // 根据字段分组，返回排序 key 值
+    function groupByField(data, field, isSort = true) {
+        var groupedData = {};
+        data.forEach(item => {
+            var key = item[field];
+            if (!groupedData[key]) {
+                groupedData[key] = [];
+            }
+            groupedData[key].push(item);
+        });
+
+        var keys =  Object.keys(groupedData);
+        if(isSort) {
+            return keys.sort();
+        }
+        else {
+            return Object.keys(groupedData);
+        }
+    }
+
+    // 复制操作
+    function copyToClipboard(text) {
+        if(navigator.clipboard) {
+            copyText = (text) => {
+                navigator.clipboard.writeText(JSON.stringify(text));
+                layer.msg('复制成功', { icon: 1 });
+            }
+        } else {
+            copyText = (text) => {
+                var input = document.createElement('input');
+                input.value = JSON.stringify(text);
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                layer.msg('复制成功', { icon: 1 });
+            }
+        }
+
+        copyText(text);
+    }
+
+    // 获取当前日期字符串格式 yyyyHHmm
+    function getFormattedDate() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var date = String(now.getDate()).padStart(2, '0');
+        return `${year}${month}${date}`;
+    }
+
+    // 请求文件名列表
+    /*
+    function requestFileList(date, callback) {
+        fetch(`/Home/GetTargetFileName?date=${date}`)
+        .then(response => {
+            return response.json().then(data => {
+                if(!response.ok) {
+                    throw new Error(data.message || `操作失败 (${response.status})`);
+                }
+                return data;
+            });
+        })
+        .then(data => {
+            fileNameList = sortPatrolFiles(data.data);
+            console.log('请求到文件名集合' + fileNameList);
+            callback(fileNameList);
+        })
+    }*/
+
+    function requestFileList(date) {
+        return fetch(`/Home/GetTargetFileName?date=${date}`)
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || `操作失败 (${response.status})`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                fileNameList = sortPatrolFiles(data.data);
+                console.log('请求到文件名集合', fileNameList);
+                return fileNameList; // 返回 Promise 结果
+            })
+            .catch(error => {
+                console.error('请求文件列表失败:', error);
+                throw error; // 继续传递错误
+            });
+    }
+
+    // 文件名排序，自动巡检文件在前
+    function sortPatrolFiles(fileList) {
+        // 提取文件名中的时间戳（下划线后的数字部分）
+        function extractTimestamp(filename) {
+            var match = filename.match(/_(\d+)/);
+            return match ? parseInt(match[1], 10) : 0;
+        }
+
+        // 查找自动巡检文件（无下划线且以日期开头的文件）
+        var autoFile = fileList.find(file =>
+            !file.includes('_') && file.startsWith('20250516')
+        );
+
+        // 自定义排序：自动巡检文件优先，其余按时间戳排序
+        return [...fileList].sort((a, b) => {
+            if (a === autoFile) return -1;
+            if (b === autoFile) return 1;
+
+            return extractTimestamp(a) - extractTimestamp(b);
+        });
+    }
+</script>
