@@ -2,13 +2,17 @@
     .layui-form-label {
         width: 200px;
     }
+
+    .layui-table-body {
+        max-height: calc(100vh - 340px);
+    }
 </style>
 
 <div class="mx-5 my-5 d-flex align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
     <form class="layui-form d-flex align-items-center">
         <div class="layui-input-wrap ms-4 me-3">
             <div class="layui-input-prefix">
-                <i class="iconfont icon-online"></i>
+                <i class="iconfont icon-line"></i>
             </div>
             <select name="line" id="lineSelect" class="layui-input">
                 <option value="" selected disabled>产线</option>
@@ -16,7 +20,7 @@
         </div>
         <div class="layui-input-wrap me-3">
             <div class="layui-input-prefix">
-                <i class="iconfont icon-online"></i>
+                <i class="iconfont icon-device"></i>
             </div>
             <select name="deviceType" id="deviceTypeSelect" class="layui-input">
                 <option value="" selected disabled>设备类型</option>
@@ -24,7 +28,7 @@
         </div>
         <div class="layui-input-wrap me-3">
             <div class="layui-input-prefix">
-                <i class="iconfont icon-online"></i>
+                <i class="iconfont icon-code"></i>
             </div>
             <select name="code" id="codeSelect" class="layui-input">
                 <option value="" selected disabled>设备编码</option>
@@ -32,7 +36,7 @@
         </div>
         <div class="layui-input-wrap me-3">
             <div class="layui-input-prefix">
-                <i class="iconfont icon-online"></i>
+                <i class="iconfont icon-result"></i>
             </div>
             <select name="result" id="resultSelect" class="layui-input">
                 <option value="" selected disabled>巡检结论</option>
@@ -63,7 +67,7 @@
         </div>
         <div class="layui-input-wrap me-3" id="tableSelect"  style="width: 300px;">
             <div class="layui-input-prefix">
-                <i class="iconfont icon-online"></i>
+                <i class="iconfont icon-file"></i>
             </div>
             <select name="code" id="fileSelect" lay-filter="fileSelect" class="layui-input">
             </select>
@@ -139,6 +143,7 @@
     var fileNameList;
     var currentFileName = `${currentDate}自动巡检.xlsx`;
     var patrolWay = "自动巡检";
+    var allData;
 
     fetch(`/Home/GetPatrolResult?fileName=${currentFileName}`, {
         method: 'GET',
@@ -155,42 +160,20 @@
         });
     })
     .then(data => {
-        var allData = data.data;
+        allData = data.data;
 
-        // 获取下拉选项集合
-        var lineSet = groupByField(allData, 'line', false);
-        var deviceTypeSet = groupByField(allData, 'deviceType');
-        var codeSet = groupByField(allData, 'code');
-        var resultSet = groupByField(allData, 'result');
+        // 搜索栏下拉选项填充
+        fillSearchBarOption(allData);
 
         var form = layui.form;
         var table = layui.table;
         var laydate = layui.laydate;
 
-        var ins = null;
-
         layui.use(['form', 'table', 'laydate'], function() {
-            // 下拉选项
-            lineSet.forEach(value => {
-                var option = $('<option>').val(value).text(value);
-                layui.$('#lineSelect').append(option);
-            });
-            deviceTypeSet.forEach(value => {
-                var option = $('<option>').val(value).text(value);
-                layui.$('#deviceTypeSelect').append(option);
-            });
-            codeSet.forEach(value => {
-                var option = $('<option>').val(value).text(value);
-                layui.$('#codeSelect').append(option);
-            });
-            resultSet.forEach(value => {
-                var option = $('<option>').val(value).text(value);
-                layui.$('#resultSelect').append(option);
-            });
 
             table.render({
                 elem: '#resultTable',
-                height: 'full-400',
+                // height: 'full-400',
                 data: allData,
                 toolbar: '#toolbar',
                 defaultToolbar: ['filter', 'exports'],
@@ -216,7 +199,7 @@
                     });
 
                     console.log('表格重载后日期' + currentDate);
-                    
+
                 }
             });
 
@@ -271,6 +254,8 @@
                                         curr: 1 // 重新从第 1 页开始
                                     }
                                 });
+                                // 重新填充搜索栏下拉选项
+                                fillSearchBarOption(data);
                                 // 重新填充与选中文件选择框
                                 restoreFileSelectStatus(fileNames);
                                 // 重新填充时间选择框
@@ -283,12 +268,10 @@
                                 layer.msg(error, { icon: 2 });
                             }
                         );
-                        })
-                        .catch(error => {
-                            console.error('加载失败:', error);
-                        });
-
-                    
+                    })
+                    .catch(error => {
+                        console.error('加载失败:', error);
+                    });
                 }
             });
 
@@ -306,6 +289,10 @@
                             table.reload(id, {
                                 data: data
                             });
+                            // 重新填充与选中文件选择框
+                            restoreFileSelectStatus(fileNameList);
+                            // 重新填充时间选择框
+                            restoreDateChangeStatus(currentDate);
                         }
                         else {
                             layer.msg('未选中行', { icon: 2 });
@@ -320,6 +307,8 @@
                         }
                         break;
                     case 'resetTable':
+                    console.log('当前文件名');
+                    console.log(currentFileName);
                     console.log('所有数据');
                     console.log(allData);
                         table.reload(id, {
@@ -392,11 +381,9 @@
 
             // 表格数据源切换
             form.on('select(fileSelect)', function(data) {
-                currentFileName = data.value;
-                console.log(fileNameList);
-                console.log(currentDate);
+                fiileName = data.value;
                 requestTableData(
-                    currentFileName,
+                    fiileName,
                     // 成功回调
                     (data, message) => {
                         table.reload('resultTable', {
@@ -405,6 +392,7 @@
                                 curr: 1 // 重新从第 1 页开始
                             }
                         });
+                        
                         // 重新填充与选中文件选择框
                         restoreFileSelectStatus(fileNameList);
                         // 重新填充时间选择框
@@ -417,6 +405,10 @@
                         layer.msg(error, { icon: 2 });
                     }
                 );
+                console.log('当前文件名');
+                console.log(currentFileName);
+                console.log('所有数据');
+                console.log(allData);
             });
 
             // 内部方法 更新或恢复表格工具栏 文件选择输入框状态
@@ -499,6 +491,61 @@
         alert(error.message);
     })
 
+    // 填充下拉选项
+    function fillSearchBarOption(data) {
+        var lineSet = groupByField(data, 'line', false);
+        var deviceTypeSet = groupByField(data, 'deviceType');
+        var codeSet = groupByField(data, 'code');
+        var resultSet = groupByField(data, 'result');
+
+        var lineSelect = layui.$('#lineSelect');
+        var deviceTypeSelect = layui.$('#deviceTypeSelect');
+        var codeSelect = layui.$('#codeSelect');
+        var resultSelect = layui.$('#resultSelect');
+
+        function addOption(object, value, prompt = false) {
+            if(prompt) {
+                var option = $('<option>').text(value);
+                option.prop('selected', true);
+                option.prop('disabled', true);
+            } else {
+                var option = $('<option>').val(value).text(value);
+            }
+            object.append(option);
+        }
+
+        // 清空原有选项
+        layui.$('#lineSelect, #deviceTypeSelect, #codeSelect, #resultSelect').each(function() {
+            layui.$(this).find('option:gt(0)').remove(); // 保留第一个选项，删除其余选项
+             // 确保第一个选项被选中
+            layui.$(this).find('option:first').prop('selected', true);
+            // layui.$(this).empty(); 
+        });
+
+        // addOption(lineSelect, '产线', true);
+        lineSet.forEach(value => {
+            addOption(lineSelect, value);
+        });
+
+        // addOption(deviceTypeSelect, '设备类型', true);
+        deviceTypeSet.forEach(value => {
+            addOption(deviceTypeSelect, value);
+        });
+
+        // addOption(codeSelect, '设备编码', true);
+        codeSet.forEach(value => {
+            addOption(codeSelect, value);
+        });
+
+        // addOption(resultSelect, '巡检结论', true);
+        resultSet.forEach(value => {
+            addOption(resultSelect, value);
+        });
+
+        layui.form.render('select');
+
+    }
+
     // 向后端请求表格数据
     function requestTableData(fileName, successCallback, failureCallback) {
         fetch(`/Home/GetPatrolResult?fileName=${fileName}`, {
@@ -517,7 +564,14 @@
         })
         .then(data => {
             allData = data.data;
+            // 表格数据更新，搜索栏下拉选项也更新
+            fillSearchBarOption(allData);
+            console.log('所有数据');
+            console.log(allData);
             currentFileName = fileName;
+            console.log('当前文件名');
+            console.log(currentFileName);
+
             // 执行成功回调
             successCallback(allData, data.message);
         })
@@ -579,24 +633,6 @@
     }
 
     // 请求文件名列表
-    /*
-    function requestFileList(date, callback) {
-        fetch(`/Home/GetTargetFileName?date=${date}`)
-        .then(response => {
-            return response.json().then(data => {
-                if(!response.ok) {
-                    throw new Error(data.message || `操作失败 (${response.status})`);
-                }
-                return data;
-            });
-        })
-        .then(data => {
-            fileNameList = sortPatrolFiles(data.data);
-            console.log('请求到文件名集合' + fileNameList);
-            callback(fileNameList);
-        })
-    }*/
-
     function requestFileList(date) {
         return fetch(`/Home/GetTargetFileName?date=${date}`)
             .then(response => {

@@ -8,34 +8,69 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AutoPatrol.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/layui/css/layui.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/iconfont/iconfont.css" asp-append-version="true" />
 
     <script src="~/lib/layui/layui.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/xlsx/xlsx.full.min.js" asp-append-version="true"></script>
     <script src="~/lib/handlebars/handlebars.min.js" asp-append-version="true"></script>
+
+    <style>
+        .menu-area {
+            flex-shrink: 0; /* 防止被压缩 */
+        }
+
+        .content-area {
+            flex-grow: 1; /* 自动填充剩余空间 */
+            overflow-y: auto; /* 内容过多时显示滚动条 */
+            height: 100vh;
+        }
+    </style>
+
 </head>
 <body>
-    <ul class="layui-nav layui-nav-tree layui-nav-side">
-        <li class="layui-nav-item">
-            <a href="javascript:;">主页</a>
-            <dl class="layui-nav-child">
-                <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></dd>
-                <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Result">Result</a></dd>
-            </dl>
-        </li>
-        <li class="layui-nav-item"><a class="nav-link" asp-area="" asp-controller="Config" asp-action="Configuration">配置</a></li>
-    </ul>
+    <div class="d-flex flex-row">
+        @* 菜单导航栏 *@
+        <div id="menuBar" class="flex-shrink-0">
+            <ul class="layui-nav layui-nav-tree layui-nav-side">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">主页</a>
+                    <dl class="layui-nav-child">
+                        <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></dd>
+                        <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Result">Result</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a class="nav-link" asp-area="" asp-controller="Config" asp-action="Configuration">配置</a></li>
+            </ul>
+        </div>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        @* 页面主内容 *@
+        <div class="content-area m-0 p-0">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
+
 
     <script>
         layui.use(function(){
             var element = layui.element;
             element.render('nav');
+
+            // 获取导航栏宽度并设置内容区域边距
+            function updateLayout() {
+                var menuWidth = $('.layui-nav').outerWidth();
+                var menuHeight = $('.layui-nav').outerHeight();
+                $('#menuBar').css('width', menuWidth + 'px');
+                $('#menuBar').css('height', menuHeight + 'px');
+            }
+
+            // 初始化布局
+            updateLayout();
+
+            // 窗口大小变化时重新计算
+            $(window).resize(updateLayout);
         });
     </script>
 </body>

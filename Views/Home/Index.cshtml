@@ -1,8 +1,14 @@
-﻿<div class="mx-5 my-5 d-flex align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
+﻿<style>
+    .layui-table-body {
+        max-height: calc(100vh - 340px);
+    }
+</style>
+
+<div class="mx-5 my-5 d-flex align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
     <form class="layui-form d-flex align-items-center">
         <div class="layui-input-wrap ms-4 me-3">
             <div class="layui-input-prefix">
-                <i class="iconfont icon-online"></i>
+                <i class="iconfont icon-line"></i>
             </div>
             <select name="line" id="lineSelect" class="layui-input">
                 <option value="" selected disabled>产线</option>
@@ -10,7 +16,7 @@
         </div>
         <div class="layui-input-wrap me-3">
             <div class="layui-input-prefix">
-                <i class="iconfont icon-online"></i>
+                <i class="iconfont icon-device"></i>
             </div>
             <select name="deviceType" id="deviceTypeSelect" class="layui-input">
                 <option value="" selected disabled>设备类型</option>
@@ -18,7 +24,7 @@
         </div>
         <div class="layui-input-wrap me-3">
             <div class="layui-input-prefix">
-                <i class="iconfont icon-online"></i>
+                <i class="iconfont icon-code"></i>
             </div>
             <select name="code" id="codeSelect" class="layui-input">
                 <option value="" selected disabled>设备编码</option>
@@ -26,7 +32,7 @@
         </div>
         <div class="layui-input-wrap me-3">
             <div class="layui-input-prefix">
-                <i class="iconfont icon-online"></i>
+                <i class="iconfont icon-file-type"></i>
             </div>
             <select name="logType" id="logTypeSelect" class="layui-input">
                 <option value="" selected disabled>日志类型</option>
@@ -84,6 +90,7 @@
         
         var form = layui.form;
         var table = layui.table;
+        var element = layui.element;
 
         layui.use(['form', 'table'], function() {
             // 填充下拉选项
@@ -106,7 +113,7 @@
 
             table.render({
                 elem: '#deviceTable',
-                height: 'full-400',
+                // height: 'full-230',
                 data: allData,
                 toolbar: '#toolbar',
                 defaultToolbar: ['filter', 'exports'],
