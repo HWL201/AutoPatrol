@@ -1,6 +1,8 @@
 ﻿using AutoPatrol.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
+using System.Text.RegularExpressions;
 
 namespace AutoPatrol.Controllers
 {
@@ -44,12 +46,12 @@ namespace AutoPatrol.Controllers
         }
 
         /// <summary>
-        /// 更新设备配置
+        /// 更新设备模型配置
         /// </summary>
         /// <param name="deviceList"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> UpdateConfiguration([FromBody] List<DeviceViewModel> deviceList) {
+        public async Task<IActionResult> UpdateModelConfiguration([FromBody] List<DeviceViewModel> deviceList) {
             if (!ModelState.IsValid) {
                 return BadRequest(new { code = 400, message = "数据模型匹配失败" });
             }
@@ -66,6 +68,67 @@ namespace AutoPatrol.Controllers
             // 写入文件
             await System.IO.File.WriteAllTextAsync(filePath, json);
             return Ok(new { code = 200, message = "保存成功" });
+        }
+
+
+        /// <summary>
+        /// 获取更新定时任务配置
+        /// </summary>
+        /// <param name="timers"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetTimerConfiguration() {
+            try {
+                var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Config", "TimerConfig.json");
+
+                if (!System.IO.File.Exists(filePath)) {
+                    return NotFound(new { code = 404, message = "配置文件不存在" });
+                }
+
+                var json = await System.IO.File.ReadAllTextAsync(filePath);
+                var timerList = JsonConvert.DeserializeObject<List<TimerViewModel>>(json);
+
+                return Ok(new { code = 200, message = "加载成功", data = timerList });
+            }
+            catch (Exception ex) {
+                return StatusCode(500, new {
+                    code = 500,
+                    message = "获取配置失败",
+                    error = ex.Message
+                });
+            }
+        }
+
+        /// <summary>
+        /// 更新定时任务配置
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult UpdateTimerConfiguration([FromBody] List<TimerViewModel> timers) {
+            if (!ModelState.IsValid) {
+                return BadRequest(new { status = 400, message = "数据模型匹配失败" });
+            }
+
+            if (timers.Any(t => !Regex.IsMatch(t.Time, @"^\d{2}:\d{2}:\d{2}$"))) {
+                return BadRequest(new { status = 400, message = "时间格式必须为HH:MM:SS" });
+            }
+
+            if (timers.GroupBy(t => t.Time).Any(g => g.Count() > 1)) {
+                return BadRequest(new { status = 400, message = "存在重复的时间节点" });
+            }
+
+            try {
+                var json = JsonConvert.SerializeObject(timers, Formatting.Indented);
+
+                var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Config", "TimerConfig.json");
+                var directory = Path.GetDirectoryName(filePath);
+                Directory.CreateDirectory(directory);
+                System.IO.File.WriteAllText(filePath, json);
+
+                return Ok(new { status = 200, message = "保存成功" });
+            }
+            catch (Exception ex) {
+                return StatusCode(500, new { status = 500, message = $"未知错误：{ex.Message}" });
+            }
         }
     }
 }

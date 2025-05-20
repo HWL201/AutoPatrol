@@ -25,6 +25,7 @@ namespace AutoPatrol.Controllers
         }
 
         public IActionResult Index() {
+            // ViewBag.FilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Record");
             return View();
         }
 
@@ -42,59 +43,12 @@ namespace AutoPatrol.Controllers
             }
 
             try {
-                // 设置EPPlus许可证（非商业用途）
-                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                var stream = new MemoryStream();
-                using (var package = new ExcelPackage(stream)) {
-                    var worksheet = package.Workbook.Worksheets.Add("巡检结果");
-                    worksheet.Cells[1, 1].Value = "产线";
-                    worksheet.Cells[1, 2].Value = "线体顺序";
-                    worksheet.Cells[1, 3].Value = "设备类型";
-                    worksheet.Cells[1, 4].Value = "设备编码";
-                    worksheet.Cells[1, 5].Value = "设备IP";
-                    worksheet.Cells[1, 6].Value = "巡检项目";
-                    worksheet.Cells[1, 7].Value = "巡检结论";
-                    worksheet.Cells[1, 8].Value = "异常描述";
-                    worksheet.Cells[1, 9].Value = "提示信息";
-                    int rowIndex = 2;
-
-                    var pingResult = await DevicePatrol.PingIPList(deviceList.Select(a => a.Ip).ToList());
-
-                    foreach (var device in deviceList) {
-                        string? result;
-                        string? describe;
-                        bool isPingSuccess;
-                        List<string> message = new List<string>();
-                        if (pingResult.TryGetValue(device.Ip, out isPingSuccess) && isPingSuccess) {
-                            result = "成功";
-                            describe = "无异常";
-                            message.Add("");
-                        }
-                        else {
-                            result = "失败";
-                            describe = "IP无法PING通";
-                            message.Add(PromptMessage.DEVICE_SHUT_DOWN);
-                            message.Add(PromptMessage.ETHERNET_CABLE_PULLED_OUT);
-                            message.Add(PromptMessage.IP_CHANGE);
-                        }
-
-                        worksheet.Cells[rowIndex, 1].Value = device.Line;
-                        worksheet.Cells[rowIndex, 2].Value = device.Num;
-                        worksheet.Cells[rowIndex, 3].Value = device.DeviceType;
-                        worksheet.Cells[rowIndex, 4].Value = device.Code;
-                        worksheet.Cells[rowIndex, 5].Value = device.Ip;
-                        worksheet.Cells[rowIndex, 6].Value = "IP";
-                        worksheet.Cells[rowIndex, 7].Value = result;
-                        worksheet.Cells[rowIndex, 8].Value = describe;
-                        worksheet.Cells[rowIndex, 9].Value = string.Join("，", message);
-                        rowIndex++;
-                    }
-                    package.Save();
-                }
-
                 string fileName = $"{DateTime.Now.ToString("yyyyMMdd_HHmmss")}手动巡检.xlsx";
                 string filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Record", fileName);
-                FileOperation.WriteExcel(stream, filePath);
+
+                await DevicePatrol.Patrol(deviceList, filePath);
+
+                ViewBag.FilePath = filePath;
 
                 return Ok(new { code = 200, message = "批量巡检完成，文件已存入" });
             }
@@ -135,14 +89,15 @@ namespace AutoPatrol.Controllers
         public IActionResult GetTargetFileName([FromQuery] string date) {
             List<string> fileNameList = new List<string>();
             string directory = Path.Combine(_webHostEnvironment.ContentRootPath, "Record");
-            foreach (var fileName in FileOperation.GetFileNameList(directory)) {
-                if(fileName.StartsWith(date)) {
+            // foreach (var fileName in FileOperation.GetFileNameList(directory)) {
+            foreach (var fileName in FileOperation.GetFiles(directory, 1).Select(a => a.Name)) {
+                if (fileName.StartsWith(date)) {
                     fileNameList.Add(fileName);
-                    Console.WriteLine(fileName);
                 }
             }
             return Ok(new { code = 200, message = "加载成功", data = fileNameList });
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {

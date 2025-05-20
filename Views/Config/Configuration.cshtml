@@ -1,4 +1,20 @@
-﻿<style>
+﻿<!-- 通用样式 -->
+<style>
+    .content-container {
+        margin-top: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-radius: 10px;
+        padding-bottom: 25px;
+    }
+
+    .module-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
     .file-input-area {
         position: relative;
         border-radius: 10px;
@@ -8,7 +24,7 @@
         color: #1E9FFF;
         cursor: pointer;
     }
-    
+
     .file-input {
         position: absolute;
         top: 0;
@@ -22,28 +38,211 @@
         display: inline-block;
         color: #1E9FFF;
     }
+
+    .prompt-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+
+    .prompt-modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        width: 22%;
+        height: 330px;
+    }
 </style>
 
-<div class="mx-5 my-5 d-flex flex-column align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
-    <div>设备信息导入</div>
-    <div class="file-input-area">
+<!-- 巡检设置区域样式设置 -->
+<style>
+    .scroll-bar {
+        /* 固定高度 */
+        min-height: 200px;
+        max-height: 450px;
+        overflow-y: scroll;
+        border-radius: 0.375rem;
+        padding: 0 25px;
+        /* 预留滚动条宽度空间 */
+        padding-right: 10px;
+        display: flex; /* 开启弹性布局 */
+        flex-wrap: wrap; /* 子元素换行 */
+        gap: 25px; /* 子元素间距（水平+垂直） */
+    }
+
+    .rect {
+        width: 250px;
+        height: 200px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0; /* 添加浅灰色边框 */
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        background-color: #F8F8F8;
+        position: relative;
+    }
+
+    .delete {
+        position: absolute;
+        color: red;
+        top: 7px;
+        right: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease; /* 添加过渡效果 */
+        display: inline-block; /* 确保变换效果正常工作 */
+    }
+        .delete:hover {
+            transform: scale(1.2);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+</style>
+
+<!-- 模板设置 -->
+<div class="m-5 content-container">
+    <div class="module-header">
+        <h4 class="text-lg font-bold text-black" style="margin: 15px 0 0 15px; font-size: 18px">模板设置</h4>
+    </div>
+    <div class="file-input-area mx-5 my-3">
         <input class="file-input" type="file" id="fileInput" />
         <p id="filePath">未选择文件</p>
     </div>
-    <p id="promptMessage"></p>
 </div>
 
-<div class="mx-5 my-5 d-flex flex-column align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
-    <div>自动巡检设置</div>
-    <div class="file-input-area">
+<!-- 巡检设置 -->
+<div class="m-5 content-container">
+    <div class="module-header">
+        <h4 class="text-lg font-bold text-black" style="margin: 15px 0 0 15px; font-size: 18px">巡检设置</h4>
+        @* <i class="iconfont icon-add" style="font-size: 25px;margin:12px 15px 0 0; color: #3498db" id="addTimer"></i> *@
+        <div class="layui-btn-container me-2">
+            <button class="layui-btn layui-btn-sm layui-bg-red mb-0" type="button" id="clearTimers">清空定时任务</button>
+            <button class="layui-btn layui-btn-sm mb-0" type="button" id="addTimer">添加定时任务</button>
+            <button class="layui-btn layui-btn-sm mb-0" type="button" id="saveConfig">保存到配置文件</button>
+        </div>
     </div>
-    <p id="promptMessage"></p>
+    <div class="scroll-bar" id="timerList">
+    </div>
 </div>
+
+<!-- 添加定时任务 -->
+<div id="addModal" class="prompt-modal">
+    <div class="prompt-modal-content">
+        <div class="mx-5 mt-3 mb-3">
+            <i class="iconfont icon-calender" style="font-size: 20px;"></i>
+            <label style="font-size: 20px; font-weight: bold">添加定时任务</label>
+        </div>
+        <div class="mx-5 mt-3 mb-1">
+            <label>任务名称</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-result"></i>
+            </div>
+            <input name="name" type="text" class="layui-input" placeholder="输入任务名称" lay-verify="required">
+        </div>
+        <div class="mx-5 mt-2 mb-1">
+            <label>执行时间</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-time"></i>
+            </div>
+            <input name="time" type="text" class="layui-input" id="laydate-type-time" placeholder="选择执行时间">
+        </div>
+        <div class="d-flex flex-row justify-content-between mt-4 mx-5">
+            <button class="layui-btn mx-0" style="width: 113px" id="sureBtn" type="button">确定</button>
+            <button class="layui-btn mx-0 layui-btn-primary" style="width: 113px" id="cancelBtn" type="button">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 定时任务显示模板 -->
+<script type="text/x-handlebars-template" id="dispalyTimerTemplate">
+    <div class="rect">
+        <i class="iconfont icon-delete delete"></i>
+        <div class="mx-5 mt-3 mb-1">
+            <label style="font-weight: bold">任务名称</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-result"></i>
+            </div>
+            <input name="name" type="text" value="{{name}}" class="layui-input pe-3" placeholder="输入任务名称">
+        </div>
+        <div class="mx-5 mt-2 mb-1">
+            <label style="font-weight: bold">执行时间</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-time"></i>
+            </div>
+            <input name="time" type="text" value="{{time}}" class="layui-input pe-3 beacon" id="{{generalId}}" placeholder="选择执行时间">
+        </div>
+    </div>
+</script>
 
 <script>
+    Handlebars.registerHelper('generalId', function() {
+        return 'id' + Math.random().toString(36).slice(2, 11);
+    });
+
     $(document).ready(function() {
         var fileInput = document.getElementById('fileInput');
         var filePathElement = document.getElementById('filePath');
+
+        var laydate = layui.laydate;
+        var form = layui.form;
+
+        layui.use(['layer', 'form', 'laydate'], function() {
+
+            fetch('/Config/GetTimerConfiguration', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.message || `操作失败 (${response.status})`);
+                    }
+                    return data;
+                });
+            })
+            .then(data => {
+                data.data.forEach(item => {
+                    fillTimerItem(item);
+                })
+
+                laydate.render({
+                    elem: '.beacon',
+                    type: 'time'
+                });
+            })
+
+            $('#laydate-type-time').on('input', function(e) {
+                var val = $(this).val().replace(/[^0-9:]/g, ''); // 只保留数字和冒号
+                val = val.replace(/:/g, '').match(/(\d{0,2})(\d{0,2})(\d{0,2})/) || []; // 拆分为时、分、秒
+                val = [val[1], val[2], val[3]]
+                    .map((part, i) => i === 0 ? part.padStart(2, '0') : part.padStart(2, '0')) // 补全两位
+                    .filter((part) => part.length > 0) // 过滤空字符串
+                    .join(':'); // 拼接为 HH:mm:ss 格式
+
+                $(this).val(val); // 修正输入值
+            });
+
+            laydate.render({
+                elem: '#laydate-type-time',
+                type: 'time'
+            });
+        });
 
         fileInput.addEventListener('change', function (e) {
             var file = e.target.files[0];
@@ -54,7 +253,128 @@
                 filePathElement.textContent = '未选择文件';
             }
         });
+
+        $('#clearTimers').click(function() {
+            $('#timerList').empty();
+        });
+
+        $('#addTimer').click(function() {
+            $('#addModal').css('display', 'flex');
+            $('#addModal input[name="name"]').val('');
+            $('#addModal input[name="time"]').val('');
+        })
+
+        $('#cancelBtn').click(function() {
+            $('#addModal').css('display', 'none');
+        });
+
+        $('#sureBtn').click(function() {
+            var name = $('#addModal input[name="name"]').val();
+            var time = $('#addModal input[name="time"]').val();
+            var html = Handlebars.compile(document.getElementById('dispalyTimerTemplate').innerHTML)({name, time});
+            $('#timerList').append(html);
+            $('#addModal').css('display', 'none');
+
+            laydate.render({
+                elem: '.beacon',
+                type: 'time'
+            });
+        });
+
+        $('#saveConfig').click(function() {
+            var timers = [];
+            $('#timerList .rect').each(function() {
+                var $this = $(this);
+                var name = $this.find('input[name="name"]').val();
+                var time = $this.find('input[name="time"]').val();
+
+                // 立即验证每个时间格式
+                if (!/^\d{2}:\d{2}:\d{2}$/.test(time)) {
+                    alert(`无效的时间格式: ${time}，应为HH:MM:SS`);
+                    return false; // 终止each循环
+                }
+                timers.push({ 'name': name, 'time': time });
+            });
+
+            // 如果timers为空（可能因验证失败）则退出
+            // if (timers.length === 0) return;
+
+            try {
+                // 转换为秒数排序
+                var sortedTimers = timers.slice().sort((a, b) => {
+                    return convertToSeconds(a.time) - convertToSeconds(b.time);
+                });
+
+                // 检查重复时间
+                for (let i = 0; i < sortedTimers.length - 1; i++) {
+                    if (sortedTimers[i].time === sortedTimers[i + 1].time) {
+                        throw new Error(`发现重复时间: ${sortedTimers[i].time}`);
+                    }
+                }
+
+                fetch('/Config/UpdateTimerConfiguration', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(sortedTimers)
+                })
+                .then(response => {
+                    return response.json().then(data => {
+                        // 检查状态码，非 200 则抛出错误
+                        if (!response.ok) {
+                            throw new Error(data.message || `操作失败 (${response.status})`);
+                        }
+                        return data; // 200 状态码，正常返回数据
+                    });
+                })
+                .then(data => {
+                    layer.msg(data.message, {
+                        time: 2000,
+                        icon: 1
+                    });
+                })
+                .catch(error => {
+                    layer.msg(error.message, {
+                        time: 2000,
+                        icon: 1
+                    });
+                });
+
+            } catch (error) {
+                layer.msg(error.message, {
+                    time: 2000,
+                    icon: 1
+                });
+            }
+        });
+
+        // 使用事件委托绑定点击事件到 .delete 元素
+        $('#timerList').on('click', '.delete', function() {
+            // 获取父容器（.rect）
+            var parentRect = $(this).closest('.rect');
+
+            // 添加删除动画
+            parentRect.fadeOut(300, function() {
+                parentRect.remove();
+            });
+        });
     });
+
+    function fillTimerItem(data) {
+        var html = Handlebars.compile(document.getElementById('dispalyTimerTemplate').innerHTML)(data);
+        $('#timerList').append(html);
+    }
+
+    // 将HH:MM:SS转换为总秒数
+    function convertToSeconds(timeStr) {
+        if (!/^\d{2}:\d{2}:\d{2}$/.test(timeStr)) {
+            throw new Error(`无效的时间格式: ${timeStr}，应为HH:MM:SS`);
+        }
+
+        var [hours, minutes, seconds] = timeStr.split(':').map(Number);
+        return hours * 3600 + minutes * 60 + seconds;
+    }
 
     // 读取文件内容
     function readFileContent(file) {
@@ -77,7 +397,6 @@
 
             // 如果是json文件
             if (file.name.endsWith('.json')) {
-                console.log('1');
                 try {
                     var jsonData = JSON.parse(content);
                 } catch (error) {
@@ -105,23 +424,38 @@
                     // 处理每一行
                     for (var i = 1; i < jsonData.length; i++) {
                         var row = jsonData[i];
+
+                        // 判断整行是否都为 undefined
+                        var allUndefined = true;
+                        for (var j = 0; j < 15; j++) {
+                            if (row[j] !== undefined) {
+                                allUndefined = false;
+                                break;
+                            }
+                        }
+
+                        // 如果整行都为 undefined，则跳过当前行
+                        if (allUndefined) continue;
+
                         var newRow = {};
 
-                        // 添加 C、D、E、F、K 列数据
-                        newRow['line'] = String(row[1]) || '';
-                        newRow['num'] = row[2] || '';
-                        newRow['deviceType'] = String(row[3]) || '';
-                        newRow['code'] = String(row[4]) || '';
-                        newRow['ip'] = String(row[7]) || ''; 
-                        newRow['logType'] = String(row[8]) || '';
-                        newRow['path'] = String(row[9]) || '';
-                        newRow['account'] = String(row[10]) || '';
-                        newRow['password'] = String(row[11]) || '';
+                        newRow['line'] = row[1] !== undefined ? String(row[1]) : '';
+                        newRow['num'] = row[2] !== undefined ? row[2] : 1;
+                        newRow['deviceType'] = row[3] !== undefined ? String(row[3]) : '';
+                        newRow['code'] = row[4] !== undefined ? String(row[4]) : '';
+                        newRow['ip'] = row[7] !== undefined ? String(row[7]) : '';
+                        newRow['logType'] = row[8] !== undefined ? String(row[8]) : '';
+                        newRow['path'] = row[9] !== undefined ? String(row[9]) : '';
+                        newRow['floor'] = row[10] !== undefined ? row[10] : '1';
+                        newRow['postfix'] = row[11] !== undefined ? String(row[11]) : '';
+                        newRow['account'] = row[12] !== undefined ? String(row[12]) : '';
+                        newRow['password'] = row[13] !== undefined ? String(row[13]) : '';
+                        newRow['driverName'] = row[14] !== undefined ? String(row[14]) : '';
 
                         extractedData.push(newRow);
                     }
 
-                    fetch('/Config/UpdateConfiguration', {
+                    fetch('/Config/UpdateModelConfiguration', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -151,13 +485,9 @@
 
         // 读取失败时的回调
         reader.onerror = function() {
-            // fileContentElement.innerHTML = '<span style="color: red;">读取文件失败!</span>';
         };
 
         // 开始读取文件内容
         reader.readAsArrayBuffer(file);
-
-        // 显示加载状态
-        // fileContentElement.textContent = '正在读取文件内容...';
     }
 </script>

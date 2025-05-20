@@ -1,6 +1,6 @@
 ﻿<style>
     .layui-table-body {
-        max-height: calc(100vh - 340px);
+        max-height: calc(100vh - 360px);
     }
 </style>
 
@@ -32,6 +32,14 @@
         </div>
         <div class="layui-input-wrap me-3">
             <div class="layui-input-prefix">
+                <i class="iconfont icon-ip"></i>
+            </div>
+            <select name="ip" id="ipSelect" class="layui-input">
+                <option value="" selected disabled>IP地址</option>
+            </select>
+        </div>
+        <div class="layui-input-wrap me-3">
+            <div class="layui-input-prefix">
                 <i class="iconfont icon-file-type"></i>
             </div>
             <select name="logType" id="logTypeSelect" class="layui-input">
@@ -52,8 +60,8 @@
     <div class="layui-btn-container">
         <button class="layui-btn" lay-event="showCheckRow">显示</button>
         <button class="layui-btn" lay-event="copyCheckRowData">复制</button>
-        <button class="layui-btn" lay-event="resetTable">重置</button>
         <button class="layui-btn" lay-event="manualPatrol">巡检</button>
+        <button class="layui-btn layui-btn-primary" lay-event="resetTable">重置</button>
     </div>
 </script>
 
@@ -65,6 +73,9 @@
 </script>
 
 <script>
+    // 巡检文件路径
+    localStorage.setItem("filePath", "@ViewBag.FilePath");
+
     fetch('/Config/GetConfiguration', {
         method: 'GET',
         headers: {
@@ -86,11 +97,11 @@
         var lineSet = groupByField(allData, 'line', false);
         var deviceTypeSet = groupByField(allData, 'deviceType');
         var codeSet = groupByField(allData, 'code');
+        var ipSet = groupByField(allData, 'ip');
         var logTypeSet = groupByField(allData, 'logType');
         
         var form = layui.form;
         var table = layui.table;
-        var element = layui.element;
 
         layui.use(['form', 'table'], function() {
             // 填充下拉选项
@@ -105,6 +116,10 @@
             codeSet.forEach(value => {
                 var option = $('<option>').val(value).text(value);
                 layui.$('#codeSelect').append(option);
+            });
+            ipSet.forEach(value => {
+                var option = $('<option>').val(value).text(value);
+                layui.$('#ipSelect').append(option);
             });
             logTypeSet.forEach(value => {
                 var option = $('<option>').val(value).text(value);
@@ -126,11 +141,14 @@
                     { field:'num', width: 100, title: '线体顺序', align: 'center' },
                     { field:'deviceType', width: 160, title: '设备类型', align: 'center' },
                     { field:'code', width: 160, title: '设备编码', align: 'center' },
-                    { field:'ip', width: 160, title: 'IP', align: 'center' },
+                    { field:'ip', width: 160, title: 'IP地址', align: 'center' },
                     { field:'logType', width: 240, title: '日志类型', align: 'center' },
                     { field:'path', width: 240, title: '日志路径', align: 'center' },
+                    { field:'floor', width: 100, title: '文件层级', align: 'center' },
+                    { field:'postfix', width: 100, title: '文件后缀', align: 'center' },
                     { field:'account', width: 160, title: '账号', align: 'center' },
                     { field:'password', width: 160, title: '密码', align: 'center' },
+                    { field:'driverName', width: 240, title: '驱动名称', align: 'center' },
                     { fixed:'right', width: 100, title: '操作', templet: '#operationList', align: 'center' },
                 ]],
                 done: function() {
@@ -232,10 +250,11 @@
                     });
                 })
                 .then(data => {
-                    layer.msg(data.message, {
+                    layer.msg('单行数据巡检完成，文件已存入', {
                         time: 2000,
                         icon: 1
                     });
+                    
                 })
                 .catch(error => {
                     layer.msg(error.message, {
@@ -254,8 +273,9 @@
                     var lineMatch = !field.line || item.line === field.line;
                     var deviceTypeMatch = !field.deviceType || item.deviceType === field.deviceType;
                     var codeMatch = !field.code || item.code === field.code;
+                    var ipMatch = !field.ip || item.ip === field.ip;
                     var logTypeMatch = !field.logType || item.logType === field.logType;
-                    return lineMatch && deviceTypeMatch && codeMatch && logTypeMatch;
+                    return lineMatch && deviceTypeMatch && codeMatch && ipMatch && logTypeMatch;
                 });
 
                 // 搜索重载

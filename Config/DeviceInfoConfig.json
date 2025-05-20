@@ -7,8 +7,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\*\\sptrace\\C1\\C1\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0918.."
+    "Password": "gy0918..",
+    "DriverName": ""
   },
   {
     "Line": "C1",
@@ -18,8 +21,11 @@
     "Ip": "10.2.181.141",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.141\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "SPI1004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C1",
@@ -29,8 +35,11 @@
     "Ip": "10.2.181.130",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C1",
@@ -40,8 +49,11 @@
     "Ip": "10.2.181.130",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C1",
@@ -51,8 +63,11 @@
     "Ip": "10.2.177.97",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.97\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AOI1006",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C1",
@@ -62,8 +77,11 @@
     "Ip": "10.2.177.102",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.177.102\\Log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C1",
@@ -73,8 +91,11 @@
     "Ip": "10.2.177.102",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.102\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C1",
@@ -84,8 +105,11 @@
     "Ip": "10.2.177.113",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.113\\outputpathbk_bk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TRI",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C2",
@@ -95,8 +119,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\*\\sptrace\\C2\\C2\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0918.."
+    "Password": "gy0918..",
+    "DriverName": ""
   },
   {
     "Line": "C2",
@@ -106,8 +133,11 @@
     "Ip": "10.2.181.196",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.196\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "SPI1005",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C2",
@@ -117,8 +147,11 @@
     "Ip": "10.2.177.99",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C2",
@@ -128,8 +161,11 @@
     "Ip": "10.2.177.216",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.216\\d\\OUTPUTPATHBK-NEW\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TRI",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C2",
@@ -139,8 +175,11 @@
     "Ip": "10.2.177.95",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.177.95\\Log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1005",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C2",
@@ -150,8 +189,11 @@
     "Ip": "10.2.177.95",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.95\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1005",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C2",
@@ -161,8 +203,11 @@
     "Ip": "10.2.178.141",
     "LogType": "生产日志",
     "Path": "\\\\10.2.178.141\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TRI",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C2",
@@ -172,8 +217,11 @@
     "Ip": "10.2.181.114",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.114\\Mes_BK\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AOI3001",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C2线外",
@@ -183,8 +231,11 @@
     "Ip": "10.2.180.133",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.133\\cf\\XRay\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "X-Ray1002",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C3",
@@ -194,8 +245,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\*\\sptrace\\C3\\C3\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0918.."
+    "Password": "gy0918..",
+    "DriverName": ""
   },
   {
     "Line": "C3",
@@ -205,8 +259,11 @@
     "Ip": "10.2.178.11",
     "LogType": "生产日志",
     "Path": "\\\\10.2.178.11\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7007"
+    "Password": "aoi7007",
+    "DriverName": ""
   },
   {
     "Line": "C3",
@@ -216,8 +273,11 @@
     "Ip": "10.2.177.197",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C3",
@@ -227,8 +287,11 @@
     "Ip": "10.2.177.197",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C3",
@@ -238,8 +301,11 @@
     "Ip": "10.2.180.21",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.21\\mes bk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "dgs",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C3",
@@ -249,8 +315,11 @@
     "Ip": "10.2.178.132",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.178.132\\Log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1009",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C3",
@@ -260,8 +329,11 @@
     "Ip": "10.2.178.132",
     "LogType": "生产日志",
     "Path": "\\\\10.2.178.132\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1009",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C3",
@@ -271,8 +343,11 @@
     "Ip": "10.2.187.85",
     "LogType": "生产日志",
     "Path": "\\\\10.2.187.85\\mes_bk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TRI",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C3",
@@ -282,8 +357,11 @@
     "Ip": "10.2.181.43",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.43\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TRI",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -293,8 +371,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\2024-06-29\\sptrace\\2\\C5\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0501.."
+    "Password": "gy0501..",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -304,8 +385,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\2024-06-29\\sptrace\\2\\C5\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0501.."
+    "Password": "gy0501..",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -315,8 +399,11 @@
     "Ip": "10.2.180.166",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.166\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TRI",
-    "Password": "aoi7007"
+    "Password": "aoi7007",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -326,8 +413,11 @@
     "Ip": "10.2.181.173",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -337,8 +427,11 @@
     "Ip": "10.2.181.173",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -348,8 +441,11 @@
     "Ip": "10.2.181.173",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -359,8 +455,11 @@
     "Ip": "10.2.180.195",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.195\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -370,8 +469,11 @@
     "Ip": "10.2.178.250",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.178.250\\log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1011",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -381,8 +483,11 @@
     "Ip": "10.2.178.250",
     "LogType": "生产日志",
     "Path": "\\\\10.2.178.250\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1011",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -392,8 +497,11 @@
     "Ip": "10.2.187.78",
     "LogType": "生产日志",
     "Path": "\\\\10.2.187.78\\tri-back\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TRI",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C5",
@@ -403,8 +511,11 @@
     "Ip": "10.2.185.143",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C6",
@@ -414,8 +525,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\*\\sptrace\\C6\\C6\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0918.."
+    "Password": "gy0918..",
+    "DriverName": ""
   },
   {
     "Line": "C6",
@@ -425,8 +539,11 @@
     "Ip": "10.2.180.130",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.130\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "SPI1015",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C6",
@@ -436,8 +553,11 @@
     "Ip": "10.2.183.5",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C6",
@@ -447,8 +567,11 @@
     "Ip": "10.2.179.103",
     "LogType": "生产日志",
     "Path": "\\\\10.2.179.103\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AOI1004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C6",
@@ -458,8 +581,11 @@
     "Ip": "10.2.180.65",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.180.65\\log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CT-23.71121296N",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C6",
@@ -469,8 +595,11 @@
     "Ip": "10.2.180.65",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.65\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CT-23.71121296N",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C6",
@@ -480,8 +609,11 @@
     "Ip": "10.2.180.168",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.168\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AOI1032",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C10",
@@ -491,8 +623,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\2024-08-23\\sptrace\\C10\\C10\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0501.."
+    "Password": "gy0501..",
+    "DriverName": ""
   },
   {
     "Line": "C10",
@@ -502,8 +637,11 @@
     "Ip": "10.2.188.14",
     "LogType": "生产日志",
     "Path": "\\\\10.2.188.14\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7007"
+    "Password": "aoi7007",
+    "DriverName": ""
   },
   {
     "Line": "C10",
@@ -513,8 +651,11 @@
     "Ip": "10.2.180.56",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C10",
@@ -524,8 +665,11 @@
     "Ip": "10.2.180.56",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C10",
@@ -535,8 +679,11 @@
     "Ip": "10.2.188.74",
     "LogType": "生产日志",
     "Path": "\\\\10.2.188.74\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7007"
+    "Password": "aoi7007",
+    "DriverName": ""
   },
   {
     "Line": "C10",
@@ -546,8 +693,11 @@
     "Ip": "10.2.188.76",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.188.76\\log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1023",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C10",
@@ -557,8 +707,11 @@
     "Ip": "10.2.188.76",
     "LogType": "生产日志",
     "Path": "\\\\10.2.188.76\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1023",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C10",
@@ -568,8 +721,11 @@
     "Ip": "10.2.188.184",
     "LogType": "生产日志",
     "Path": "（log文件）\\\\10.2.188.15\\mes bk\\PASS\n（csv文件）\\\\10.2.188.184\\mes bk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7007"
+    "Password": "aoi7007",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -579,8 +735,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\2024-08-23\\sptrace\\C11\\C11\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0501.."
+    "Password": "gy0501..",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -590,8 +749,11 @@
     "Ip": "10.2.187.198",
     "LogType": "生产日志",
     "Path": "\\\\10.2.187.198\\CompeQDispenserClient\\Logs",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "DJJ1090",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -601,8 +763,11 @@
     "Ip": "10.2.187.38",
     "LogType": "生产日志",
     "Path": "\\\\10.2.187.38\\CompeQDispenserClient\\Logs",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "DJJ1089",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -612,8 +777,11 @@
     "Ip": "10.2.188.86",
     "LogType": "生产日志",
     "Path": "\\\\10.2.188.86\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7007"
+    "Password": "aoi7007",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -623,8 +791,11 @@
     "Ip": "10.2.179.226",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -634,8 +805,11 @@
     "Ip": "10.2.188.184",
     "LogType": "生产日志",
     "Path": "\\\\10.2.188.184\\mes bk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7007"
+    "Password": "aoi7007",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -645,8 +819,11 @@
     "Ip": "10.2.177.165",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.165\\mes_log_bk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YKJ1003",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -656,8 +833,11 @@
     "Ip": "10.2.188.94",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.188.94\\log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1014",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -667,8 +847,11 @@
     "Ip": "10.2.188.94",
     "LogType": "生产日志",
     "Path": "\\\\10.2.188.94\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1014",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -678,8 +861,11 @@
     "Ip": "10.2.177.165",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.165\\mes_log_bk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YKJ1004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -689,8 +875,11 @@
     "Ip": "10.2.181.78",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.78\\Data\\线扫数据",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "JCJ1032",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C11",
@@ -700,8 +889,11 @@
     "Ip": "10.2.188.72",
     "LogType": "生产日志",
     "Path": "\\\\10.2.188.72\\mes bk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7007"
+    "Password": "aoi7007",
+    "DriverName": ""
   },
   {
     "Line": "C11线外",
@@ -711,8 +903,11 @@
     "Ip": "10.2.188.102",
     "LogType": "生产日志",
     "Path": "\\\\10.2.188.102\\cf\\Xray\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "XRY1005",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C12",
@@ -722,8 +917,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\*\\sptrace\\19\\C12\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0501.."
+    "Password": "gy0501..",
+    "DriverName": ""
   },
   {
     "Line": "C12",
@@ -733,8 +931,11 @@
     "Ip": "10.2.182.55",
     "LogType": "生产日志",
     "Path": "\\\\10.2.182.55\\f\\OUTPUTPATHBK\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7007"
+    "Password": "aoi7007",
+    "DriverName": ""
   },
   {
     "Line": "C12",
@@ -744,8 +945,11 @@
     "Ip": "10.2.178.128",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C12",
@@ -755,8 +959,11 @@
     "Ip": "10.2.178.128",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C12",
@@ -766,8 +973,11 @@
     "Ip": "10.2.178.128",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C12",
@@ -777,8 +987,11 @@
     "Ip": "10.2.181.16",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.16\\d\\OUTPUTPATHBK-NEW\\PASS\\",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "xdomain\\TRI",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C12",
@@ -788,8 +1001,11 @@
     "Ip": "10.2.181.44",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.181.44\\Log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1024",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C12",
@@ -799,8 +1015,11 @@
     "Ip": "10.2.181.44",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.44\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1024",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C12",
@@ -810,8 +1029,11 @@
     "Ip": "10.2.181.15",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.15\\mes bk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TRI",
-    "Password": "aoi7700"
+    "Password": "aoi7700",
+    "DriverName": ""
   },
   {
     "Line": "C18",
@@ -821,8 +1043,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\*\\sptrace\\C18\\C18\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0918.."
+    "Password": "gy0918..",
+    "DriverName": ""
   },
   {
     "Line": "C18",
@@ -832,8 +1057,11 @@
     "Ip": "10.2.225.53",
     "LogType": "生产日志",
     "Path": "\\\\10.2.225.53\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "SPI1046",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C18",
@@ -843,8 +1071,11 @@
     "Ip": "10.2.225.121",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C18",
@@ -854,8 +1085,11 @@
     "Ip": "10.2.225.121",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C18",
@@ -865,8 +1099,11 @@
     "Ip": "10.2.227.65",
     "LogType": "生产日志",
     "Path": "\\\\10.2.227.65\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AOI1056",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C18",
@@ -876,8 +1113,11 @@
     "Ip": "10.2.226.145",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.226.145\\Log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1040",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C18",
@@ -887,8 +1127,11 @@
     "Ip": "10.2.226.145",
     "LogType": "生产日志",
     "Path": "\\\\10.2.226.145\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1040",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C18",
@@ -898,8 +1141,11 @@
     "Ip": "10.2.225.250",
     "LogType": "生产日志",
     "Path": "\\\\10.2.225.250\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AOI1057",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C18线外",
@@ -909,8 +1155,11 @@
     "Ip": "10.2.227.46",
     "LogType": "生产日志",
     "Path": "\\\\10.2.227.46\\xray\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "XRAY1007",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C19",
@@ -920,8 +1169,11 @@
     "Ip": "10.2.186.231",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.231\\OnePanaServer\\Archives\\Backup\\*\\sptrace\\C19\\C19\\sp01",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "gy0918.."
+    "Password": "gy0918..",
+    "DriverName": ""
   },
   {
     "Line": "C19",
@@ -931,8 +1183,11 @@
     "Ip": "10.2.226.66",
     "LogType": "生产日志",
     "Path": "\\\\10.2.226.66\\outputpathbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "SPI1047",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C19",
@@ -942,8 +1197,11 @@
     "Ip": "10.2.227.45",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C19",
@@ -953,8 +1211,11 @@
     "Ip": "10.2.227.45",
     "LogType": "生产日志",
     "Path": "http://192.168.10.1:8080/lws/ReferProductManageReportDtlAction.do?listindex=0",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "pfsc",
-    "Password": "1qaz2wsx"
+    "Password": "1qaz2wsx",
+    "DriverName": ""
   },
   {
     "Line": "C19",
@@ -964,8 +1225,11 @@
     "Ip": "10.2.227.126",
     "LogType": "生产日志",
     "Path": "\\\\10.2.227.126\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AOI1058",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C19",
@@ -975,8 +1239,11 @@
     "Ip": "10.2.226.143",
     "LogType": "含氧量日志",
     "Path": "\\\\10.2.226.143\\log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1041",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C19",
@@ -986,8 +1253,11 @@
     "Ip": "10.2.226.143",
     "LogType": "生产日志",
     "Path": "\\\\10.2.226.143\\reflow_databases_bak",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "HHL1041",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "C19",
@@ -997,8 +1267,11 @@
     "Ip": "10.2.226.26",
     "LogType": "生产日志",
     "Path": "\\\\10.2.226.26\\outputpathbk-new\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AOI1059",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D6",
@@ -1007,9 +1280,12 @@
     "Code": "Plasma003",
     "Ip": "10.2.184.91",
     "LogType": "/",
-    "Path": "无电脑",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D7",
@@ -1019,8 +1295,11 @@
     "Ip": "10.2.187.215",
     "LogType": "生产日志",
     "Path": "\\\\10.2.187.215\\d\\CompeQDispenserClient\\Logs",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "Asymtek",
-    "Password": "compeq"
+    "Password": "compeq",
+    "DriverName": ""
   },
   {
     "Line": "D7",
@@ -1029,9 +1308,12 @@
     "Code": "UVJ1017",
     "Ip": "10.2.185.145",
     "LogType": "/",
-    "Path": "PLC和通讯模块采集，机况：10.2.185.145，线速度：10.2.185.217",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D8",
@@ -1041,8 +1323,11 @@
     "Ip": "10.2.187.203",
     "LogType": "生产日志",
     "Path": "\\\\10.2.187.203\\CompeQDispenserClient\\Logs",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "DJJ1008",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D8",
@@ -1052,8 +1337,11 @@
     "Ip": "10.2.177.94",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.94\\CompeQDispenserClient\\Logs",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "DJJ1007",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D8",
@@ -1062,9 +1350,12 @@
     "Code": "UVJ1010",
     "Ip": "10.2.184.196",
     "LogType": "/",
-    "Path": "PLC和通讯模块采集，机况：10.2.184.196，线速度：10.2.184.196",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D9",
@@ -1074,8 +1365,11 @@
     "Ip": "10.2.187.209",
     "LogType": "生产日志",
     "Path": "待排查",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "待排查",
-    "Password": "待排查"
+    "Password": "待排查",
+    "DriverName": ""
   },
   {
     "Line": "D9",
@@ -1084,9 +1378,12 @@
     "Code": "UVJ1011",
     "Ip": "10.2.188.107",
     "LogType": "/",
-    "Path": "PLC和通讯模块采集，机况：10.2.188.107，线速度：10.2.180.181",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1096,8 +1393,11 @@
     "Ip": "10.2.179.34",
     "LogType": "生产日志",
     "Path": "\\\\10.2.179.34\\mes\\过站文件夹",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "Plasma2001",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1107,8 +1407,11 @@
     "Ip": "10.2.186.179",
     "LogType": "产量日志",
     "Path": "\\\\10.2.186.179\\dst120最新软件111\\PCSData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3019",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1118,8 +1421,11 @@
     "Ip": "10.2.186.179",
     "LogType": "参数日志",
     "Path": "\\\\10.2.186.179\\dst120最新软件111\\Log\\ParaChange",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3019",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1129,8 +1435,11 @@
     "Ip": "10.2.181.144",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.144\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2228",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1140,8 +1449,11 @@
     "Ip": "10.2.186.116",
     "LogType": "产量日志",
     "Path": "\\\\10.2.186.116\\新软件\\PCSData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ5004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1151,8 +1463,11 @@
     "Ip": "10.2.186.116",
     "LogType": "参数日志",
     "Path": "\\\\10.2.186.116\\新软件\\Log\\ParaChange",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ5004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1162,8 +1477,11 @@
     "Ip": "10.2.178.251",
     "LogType": "生产日志",
     "Path": "\\\\10.2.178.251\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2219",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1173,8 +1491,11 @@
     "Ip": "10.2.182.46",
     "LogType": "生产日志",
     "Path": "\\\\10.2.182.46\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1184,8 +1505,11 @@
     "Ip": "10.2.182.46",
     "LogType": "生产日志",
     "Path": "\\\\10.2.182.46\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1195,8 +1519,11 @@
     "Ip": "10.2.182.155",
     "LogType": "过程日志",
     "Path": "\\\\10.2.182.155\\生产信息",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1206,8 +1533,11 @@
     "Ip": "10.2.182.155",
     "LogType": "异常日志",
     "Path": "\\\\10.2.182.155\\dt",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1217,8 +1547,11 @@
     "Ip": "10.2.177.82",
     "LogType": "过程日志",
     "Path": "\\\\10.2.177.82\\生产信息",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ005",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D11",
@@ -1228,8 +1561,11 @@
     "Ip": "10.2.177.82",
     "LogType": "异常日志",
     "Path": "\\\\10.2.177.82\\dt",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ005",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1239,8 +1575,11 @@
     "Ip": "10.2.186.158",
     "LogType": "产量日志",
     "Path": "\\\\10.2.186.158\\PCSData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3035",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1250,8 +1589,11 @@
     "Ip": "10.2.186.158",
     "LogType": "参数日志",
     "Path": "\\\\10.2.186.158\\新dst120\\Log\\ParaChange",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3035",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1260,9 +1602,12 @@
     "Code": "YHJ1003",
     "Ip": "10.2.184.130",
     "LogType": "/",
-    "Path": "硬件采集",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1272,8 +1617,11 @@
     "Ip": "10.2.177.96",
     "LogType": "产量日志",
     "Path": "\\\\10.2.177.96\\PCSData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3023",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1283,8 +1631,11 @@
     "Ip": "10.2.177.96",
     "LogType": "参数日志",
     "Path": "\\\\10.2.177.96\\新dst120\\Log\\ParaChange",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3023",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1294,8 +1645,11 @@
     "Ip": "10.2.177.111",
     "LogType": "产量日志",
     "Path": "\\\\10.2.177.111\\PCSData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3015",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1305,8 +1659,11 @@
     "Ip": "10.2.177.111",
     "LogType": "参数日志",
     "Path": "\\\\10.2.177.111\\Log\\ParaChange",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3015",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1315,9 +1672,12 @@
     "Code": "YHJ1011",
     "Ip": "10.2.184.147",
     "LogType": "/",
-    "Path": "硬件采集",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1327,8 +1687,11 @@
     "Ip": "10.2.180.202",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.202\\PCSData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3021",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1338,8 +1701,11 @@
     "Ip": "10.2.177.78",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.78\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ2002",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D12",
@@ -1349,8 +1715,11 @@
     "Ip": "10.2.185.57",
     "LogType": "生产日志",
     "Path": "\\\\10.2.185.57\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CXJ1015",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D14",
@@ -1359,9 +1728,26 @@
     "Code": "LMJ006",
     "Ip": "10.2.182.52",
     "LogType": "生产日志",
-    "Path": "\\\\10.2.182.52\\生产信息\n\\\\10.2.182.52\\dt",
+    "Path": "\\\\10.2.182.52\\生产信息",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ006",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
+  },
+  {
+    "Line": "D14",
+    "Num": 1,
+    "DeviceType": "龙门机",
+    "Code": "LMJ006",
+    "Ip": "10.2.182.52",
+    "LogType": "报警日志",
+    "Path": "\\\\10.2.182.52\\dt",
+    "Floor": "1",
+    "Postfix": "",
+    "Account": "LMJ006",
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D14",
@@ -1370,9 +1756,26 @@
     "Code": "LMJ007",
     "Ip": "10.2.182.178",
     "LogType": "生产日志",
-    "Path": "\\\\10.2.182.178\\生产信息\n\\\\10.2.182.178\\dt",
+    "Path": "\\\\10.2.182.178\\生产信息",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ006",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
+  },
+  {
+    "Line": "D14",
+    "Num": 2,
+    "DeviceType": "龙门机",
+    "Code": "LMJ007",
+    "Ip": "10.2.182.178",
+    "LogType": "报警日志",
+    "Path": "\\\\10.2.182.178\\dt",
+    "Floor": "1",
+    "Postfix": "",
+    "Account": "LMJ006",
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D16",
@@ -1382,8 +1785,11 @@
     "Ip": "10.2.181.198",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.198\\RXSMPData\\RXSMPLog",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CXJ2401",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D16",
@@ -1391,10 +1797,27 @@
     "DeviceType": "取放板机",
     "Code": "QFBJ1070",
     "Ip": "10.2.183.36",
-    "LogType": "生产日志",
-    "Path": "（过程数据）\\\\10.2.183.36\\dt_data\n（异常日志）\\\\10.2.183.36\\dt",
+    "LogType": "过程日志",
+    "Path": "\\\\10.2.183.36\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "QFBJ1070",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
+  },
+  {
+    "Line": "D16",
+    "Num": 2,
+    "DeviceType": "取放板机",
+    "Code": "QFBJ1070",
+    "Ip": "10.2.183.36",
+    "LogType": "异常日志",
+    "Path": "\\\\10.2.183.36\\dt",
+    "Floor": "1",
+    "Postfix": "",
+    "Account": "QFBJ1070",
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D16",
@@ -1404,8 +1827,11 @@
     "Ip": "10.2.183.16",
     "LogType": "生产日志",
     "Path": "\\\\10.2.183.16\\kHost_4.01.06\\Komodo_wiFlexInline\\Statistics",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CSJ1168",
-    "Password": "123456"
+    "Password": "123456",
+    "DriverName": ""
   },
   {
     "Line": "D17",
@@ -1415,8 +1841,11 @@
     "Ip": "10.2.180.16",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.16\\mes\\过站文件夹",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D17",
@@ -1425,9 +1854,12 @@
     "Code": "TJJ8006",
     "Ip": "10.2.185.148",
     "LogType": "/",
-    "Path": "硬件采集",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D17",
@@ -1437,8 +1869,11 @@
     "Ip": "10.2.179.111",
     "LogType": "生产日志",
     "Path": "\\\\10.2.179.111\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D17",
@@ -1447,9 +1882,12 @@
     "Code": "TJJ8007",
     "Ip": "10.2.185.150",
     "LogType": "/",
-    "Path": "硬件采集",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D17",
@@ -1459,8 +1897,11 @@
     "Ip": "10.2.181.76",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.76\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2248",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D17",
@@ -1469,9 +1910,12 @@
     "Code": "TJJ8008",
     "Ip": "10.2.185.152",
     "LogType": "/",
-    "Path": "硬件采集",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D17",
@@ -1481,8 +1925,11 @@
     "Ip": "10.2.178.216",
     "LogType": "生产日志",
     "Path": "\\\\10.2.178.216\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2249",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D17",
@@ -1492,8 +1939,11 @@
     "Ip": "10.2.179.42",
     "LogType": "生产日志",
     "Path": "\\\\10.2.179.42\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ016",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D18",
@@ -1503,8 +1953,11 @@
     "Ip": "10.2.181.63",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.63\\FPC LCS_20241011_1728RunLog",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LSJ1090",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1514,8 +1967,11 @@
     "Ip": "10.2.182.25",
     "LogType": "过程日志",
     "Path": "\\\\10.2.182.25\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1525,8 +1981,11 @@
     "Ip": "10.2.182.25",
     "LogType": "异常日志",
     "Path": "\\\\10.2.182.25\\dt\\LMS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1536,8 +1995,11 @@
     "Ip": "10.2.190.110",
     "LogType": "过程日志",
     "Path": "\\\\10.2.190.110\\12345",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1547,8 +2009,11 @@
     "Ip": "10.2.190.110",
     "LogType": "工艺日志",
     "Path": "\\\\10.2.190.110\\Resultbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1558,8 +2023,11 @@
     "Ip": "10.2.182.6",
     "LogType": "过程日志",
     "Path": "\\\\10.2.182.6\\123452",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1569,8 +2037,11 @@
     "Ip": "10.2.182.6",
     "LogType": "工艺日志",
     "Path": "\\\\10.2.182.6\\Resultbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1580,8 +2051,11 @@
     "Ip": "10.2.180.103",
     "LogType": "过程日志",
     "Path": "\\\\10.2.180.103\\12345",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1591,8 +2065,11 @@
     "Ip": "10.2.180.103",
     "LogType": "工艺日志",
     "Path": "\\\\10.2.180.103\\Resultbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1602,8 +2079,11 @@
     "Ip": "10.2.180.23",
     "LogType": "过程日志",
     "Path": "\\\\10.2.180.23\\12345S",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D19",
@@ -1613,8 +2093,11 @@
     "Ip": "10.2.180.23",
     "LogType": "工艺日志",
     "Path": "\\\\10.2.180.23\\Resultbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2026",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D21",
@@ -1624,8 +2107,11 @@
     "Ip": "10.2.185.10",
     "LogType": "生产日志",
     "Path": "待排查",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "待排查",
-    "Password": "待排查"
+    "Password": "待排查",
+    "DriverName": ""
   },
   {
     "Line": "D23",
@@ -1635,8 +2121,11 @@
     "Ip": "10.2.181.62",
     "LogType": "产量日志",
     "Path": "\\\\10.2.181.62\\PCSData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3010",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D23",
@@ -1646,8 +2135,11 @@
     "Ip": "10.2.181.62",
     "LogType": "参数日志",
     "Path": "\\\\10.2.181.62\\Log\\ParaChange",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3010",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D23",
@@ -1656,9 +2148,12 @@
     "Code": "YHJ1020",
     "Ip": "10.2.184.191",
     "LogType": "/",
-    "Path": "硬件采集",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D23",
@@ -1668,8 +2163,11 @@
     "Ip": "10.2.182.230",
     "LogType": "生产日志",
     "Path": "\\\\10.2.182.230\\三色灯软件\\PCSData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ3032",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D23",
@@ -1678,9 +2176,12 @@
     "Code": "YHJ1096",
     "Ip": "10.2.184.195",
     "LogType": "/",
-    "Path": "硬件采集",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D23",
@@ -1690,8 +2191,11 @@
     "Ip": "10.2.184.203",
     "LogType": "生产日志",
     "Path": "待排查",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "待排查",
-    "Password": "待排查"
+    "Password": "待排查",
+    "DriverName": ""
   },
   {
     "Line": "D23",
@@ -1701,8 +2205,11 @@
     "Ip": "10.2.181.182",
     "LogType": "过程日志",
     "Path": "\\\\10.2.181.182\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "QFBJ1011",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D23",
@@ -1712,8 +2219,11 @@
     "Ip": "10.2.181.182",
     "LogType": "异常日志",
     "Path": "\\\\10.2.181.182\\dt",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "QFBJ1011",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1723,8 +2233,11 @@
     "Ip": "10.2.177.100",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.100\\mes\\过站文件夹",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "Administrator",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1734,8 +2247,11 @@
     "Ip": "10.2.186.120",
     "LogType": "过程日志",
     "Path": "\\\\10.2.186.120\\MachineUse2\\Debug\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6008",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1745,8 +2261,11 @@
     "Ip": "10.2.186.120",
     "LogType": "异常日志",
     "Path": "\\\\10.2.186.120\\MachineUse\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6008",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1756,8 +2275,11 @@
     "Ip": "10.2.177.114",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.114\\Data2",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2225",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1767,8 +2289,11 @@
     "Ip": "10.2.183.207",
     "LogType": "生产日志",
     "Path": "\\\\10.2.183.207\\mes\\过站文件夹",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "Administrator",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1778,8 +2303,11 @@
     "Ip": "10.2.186.252",
     "LogType": "过程日志",
     "Path": "\\\\10.2.186.252\\MachineUse\\Debug\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6010",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1789,8 +2317,11 @@
     "Ip": "10.2.186.252",
     "LogType": "异常日志",
     "Path": "\\\\10.2.186.252\\MachineUse2\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6010",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1800,8 +2331,11 @@
     "Ip": "10.2.182.156",
     "LogType": "生产日志",
     "Path": "\\\\10.2.182.156\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2226",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1811,8 +2345,11 @@
     "Ip": "10.2.186.250",
     "LogType": "过程日志",
     "Path": "\\\\10.2.186.250\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6011",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1822,8 +2359,11 @@
     "Ip": "10.2.186.250",
     "LogType": "异常日志",
     "Path": "\\\\10.2.186.250\\MachineUse\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6011",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "D29",
@@ -1833,8 +2373,11 @@
     "Ip": "10.2.177.46",
     "LogType": "生产日志",
     "Path": "\\\\10.2.177.46\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2227",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E7",
@@ -1844,8 +2387,11 @@
     "Ip": "10.2.182.164",
     "LogType": "过程日志",
     "Path": "\\\\10.2.182.164\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ027",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E7",
@@ -1855,8 +2401,11 @@
     "Ip": "10.2.182.164",
     "LogType": "异常日志",
     "Path": "\\\\10.2.177.239\\dt",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ027",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E7",
@@ -1866,8 +2415,11 @@
     "Ip": "10.2.182.162",
     "LogType": "过程日志",
     "Path": "\\\\10.2.182.162\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ027",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E7",
@@ -1877,8 +2429,11 @@
     "Ip": "10.2.182.162",
     "LogType": "异常日志",
     "Path": "\\\\10.2.182.162\\dt",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ027",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E8",
@@ -1888,8 +2443,11 @@
     "Ip": "10.2.179.140",
     "LogType": "产量日志",
     "Path": "\\\\10.2.179.140\\LVData\\TestData\\产能记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AVI1120",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E8",
@@ -1899,8 +2457,11 @@
     "Ip": "10.2.179.140",
     "LogType": "警告日志",
     "Path": "\\\\10.2.179.140\\LVData\\AlarmLog",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AVI1120",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E9",
@@ -1910,8 +2471,11 @@
     "Ip": "10.2.180.25",
     "LogType": "产量日志",
     "Path": "\\\\10.2.180.25\\LVData\\TestData\\产能记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AVI1122",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E9",
@@ -1921,8 +2485,11 @@
     "Ip": "10.2.180.25",
     "LogType": "警告日志",
     "Path": "\\\\10.2.180.25\\LVData\\AlarmLog",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "AVI1122",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -1932,8 +2499,11 @@
     "Ip": "10.2.185.68",
     "LogType": "生产日志",
     "Path": "待排查",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "待排查",
-    "Password": "待排查"
+    "Password": "待排查",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -1943,8 +2513,11 @@
     "Ip": "10.2.190.126",
     "LogType": "过程日志",
     "Path": "\\\\10.2.190.126\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6018",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -1954,8 +2527,11 @@
     "Ip": "10.2.190.126",
     "LogType": "报警日志",
     "Path": "\\\\10.2.190.126\\MachineUse\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6018",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -1965,8 +2541,11 @@
     "Ip": "10.2.190.126",
     "LogType": "过程日志",
     "Path": "\\\\10.2.190.126\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6018",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -1976,8 +2555,11 @@
     "Ip": "10.2.190.126",
     "LogType": "报警日志",
     "Path": "\\\\10.2.190.126\\MachineUse\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6018",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -1987,8 +2569,11 @@
     "Ip": "10.2.187.35",
     "LogType": "生产日志",
     "Path": "\\\\10.2.187.35\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2009",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -1998,8 +2583,11 @@
     "Ip": "10.2.186.249",
     "LogType": "过程日志",
     "Path": "\\\\10.2.186.249\\MachineUse\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6019",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -2009,8 +2597,11 @@
     "Ip": "10.2.186.249",
     "LogType": "报警日志",
     "Path": "\\\\10.2.186.249\\MachineUse2\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6019",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -2020,8 +2611,11 @@
     "Ip": "10.2.186.59",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.59\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2232",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -2031,8 +2625,11 @@
     "Ip": "10.2.180.66",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.66\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ001",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E12",
@@ -2042,8 +2639,11 @@
     "Ip": "10.2.187.247",
     "LogType": "生产日志",
     "Path": "\\\\10.2.187.247\\RunDataFiles_Log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CXJ1008",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E14",
@@ -2053,8 +2653,11 @@
     "Ip": "10.2.187.42",
     "LogType": "/",
     "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E14",
@@ -2064,8 +2667,11 @@
     "Ip": "10.2.187.28",
     "LogType": "生产日志",
     "Path": "待排查",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "待排查",
-    "Password": "待排查"
+    "Password": "待排查",
+    "DriverName": ""
   },
   {
     "Line": "E14",
@@ -2075,8 +2681,11 @@
     "Ip": "10.2.187.50",
     "LogType": "/",
     "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E14",
@@ -2086,8 +2695,11 @@
     "Ip": "10.2.187.134",
     "LogType": "/",
     "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E14",
@@ -2097,8 +2709,11 @@
     "Ip": "10.2.190.143",
     "LogType": "/",
     "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E14",
@@ -2108,8 +2723,11 @@
     "Ip": "10.2.190.136",
     "LogType": "生产日志",
     "Path": "待排查",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "待排查",
-    "Password": "待排查"
+    "Password": "待排查",
+    "DriverName": ""
   },
   {
     "Line": "E15",
@@ -2119,8 +2737,11 @@
     "Ip": "10.2.183.205",
     "LogType": "过程日志",
     "Path": "\\\\10.2.183.205\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ031",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E15",
@@ -2130,8 +2751,11 @@
     "Ip": "10.2.183.205",
     "LogType": "异常日志",
     "Path": "\\\\10.2.183.205\\dt",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ031",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E15",
@@ -2141,8 +2765,11 @@
     "Ip": "10.2.182.114",
     "LogType": "过程日志",
     "Path": "\\\\10.2.182.114\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ037",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E15",
@@ -2152,8 +2779,11 @@
     "Ip": "10.2.182.114",
     "LogType": "异常日志",
     "Path": "\\\\10.2.182.114\\dt",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ037",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E18",
@@ -2163,8 +2793,11 @@
     "Ip": "10.2.186.152",
     "LogType": "过程日志",
     "Path": "\\\\10.2.186.152\\MachineUse2\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6015",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E18",
@@ -2174,8 +2807,11 @@
     "Ip": "10.2.186.152",
     "LogType": "报警日志",
     "Path": "\\\\10.2.186.152\\MachineUse\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6015",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E18",
@@ -2185,8 +2821,11 @@
     "Ip": "10.2.181.83",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.83\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E18",
@@ -2196,8 +2835,11 @@
     "Ip": "10.2.186.96",
     "LogType": "过程日志",
     "Path": "\\\\10.2.186.96\\MachineUse2\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6016",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E18",
@@ -2207,8 +2849,11 @@
     "Ip": "10.2.186.96",
     "LogType": "报警日志",
     "Path": "\\\\10.2.186.96\\MachineUse\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6016",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E18",
@@ -2218,8 +2863,11 @@
     "Ip": "10.2.181.83",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.83\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "Administrator",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E18",
@@ -2229,8 +2877,11 @@
     "Ip": "10.2.181.46",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.46\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ1006",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E18",
@@ -2240,8 +2891,11 @@
     "Ip": "10.2.189.212",
     "LogType": "生产日志",
     "Path": "待排查",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "待排查",
-    "Password": "待排查"
+    "Password": "待排查",
+    "DriverName": ""
   },
   {
     "Line": "E19",
@@ -2251,8 +2905,11 @@
     "Ip": "10.2.180.8",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.8\\mes\\过站文件夹",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "Plasma2004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E19",
@@ -2262,8 +2919,11 @@
     "Ip": "10.2.179.54",
     "LogType": "过程日志",
     "Path": "\\\\10.2.179.54\\MachineUse\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6017",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E19",
@@ -2273,8 +2933,11 @@
     "Ip": "10.2.179.54",
     "LogType": "报警日志",
     "Path": "\\\\10.2.179.54\\MachineUse\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6017",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E19",
@@ -2284,8 +2947,11 @@
     "Ip": "10.2.180.36",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.36\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2237",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E19",
@@ -2294,9 +2960,12 @@
     "Code": "TJJ8003",
     "Ip": "10.2.185.213",
     "LogType": "/",
-    "Path": "硬件采集",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E19",
@@ -2306,8 +2975,11 @@
     "Ip": "10.2.182.124",
     "LogType": "生产日志",
     "Path": "\\\\10.2.182.124\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2236",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E19",
@@ -2317,8 +2989,11 @@
     "Ip": "10.2.186.25",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.25\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ014",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E20",
@@ -2328,8 +3003,11 @@
     "Ip": "10.2.178.129",
     "LogType": "生产日志",
     "Path": "\\\\10.2.178.129\\mes\\过站文件夹",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "Plasma2003",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E20",
@@ -2339,8 +3017,11 @@
     "Ip": "10.2.186.173",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.173\\MachineUse\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6014",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E20",
@@ -2350,8 +3031,11 @@
     "Ip": "10.2.179.214",
     "LogType": "生产日志",
     "Path": "\\\\10.2.179.214\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2233",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E20",
@@ -2361,8 +3045,11 @@
     "Ip": "10.2.180.44",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.44\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6006",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E20",
@@ -2372,8 +3059,11 @@
     "Ip": "10.2.180.15",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.15\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2235",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E20",
@@ -2383,8 +3073,11 @@
     "Ip": "10.2.181.162",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.162\\Data2",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "YHJ2234",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E20",
@@ -2394,8 +3087,11 @@
     "Ip": "10.2.181.79",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.79\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ1001",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E21",
@@ -2405,8 +3101,11 @@
     "Ip": "10.2.186.246",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.246\\RunDataFiles_Log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CXJ2313",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E21",
@@ -2416,8 +3115,11 @@
     "Ip": "10.2.186.21",
     "LogType": "生产日志",
     "Path": "\\\\10.2.186.21\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ3003",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2427,8 +3129,11 @@
     "Ip": "10.2.186.170",
     "LogType": "过程日志",
     "Path": "\\\\10.2.186.170\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6009",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2438,8 +3143,11 @@
     "Ip": "10.2.186.170",
     "LogType": "报警日志",
     "Path": "\\\\10.2.186.170\\MachineUse\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6009",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2449,8 +3157,11 @@
     "Ip": "10.2.181.59",
     "LogType": "生产日志",
     "Path": "\\\\10.2.181.59\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "QFBJ1042",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2460,8 +3171,11 @@
     "Ip": "/",
     "LogType": "/",
     "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2471,8 +3185,11 @@
     "Ip": "/",
     "LogType": "/",
     "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2482,8 +3199,11 @@
     "Ip": "10.2.180.162",
     "LogType": "过程日志",
     "Path": "\\\\10.2.180.162\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ040",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2493,8 +3213,11 @@
     "Ip": "10.2.180.162",
     "LogType": "异常日志",
     "Path": "\\\\10.2.180.162\\dt",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ040",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2504,8 +3227,11 @@
     "Ip": "10.2.180.190",
     "LogType": "过程日志",
     "Path": "\\\\10.2.180.190\\Logdata",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CSJ0701-FT-0003",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2515,8 +3241,11 @@
     "Ip": "10.2.180.190",
     "LogType": "工艺日志",
     "Path": "\\\\10.2.180.190\\Resultbk\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CSJ0701-FT-0003",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2526,8 +3255,11 @@
     "Ip": "10.2.190.169",
     "LogType": "过程日志",
     "Path": "\\\\10.2.190.169\\Logdata",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CSJ0701-FT-0001",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "E23",
@@ -2537,8 +3269,11 @@
     "Ip": "10.2.190.169",
     "LogType": "工艺日志",
     "Path": "\\\\10.2.190.169\\ResultBK\\PASS",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "CSJ0701-FT-0001",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2548,8 +3283,11 @@
     "Ip": "10.2.227.113",
     "LogType": "生产日志",
     "Path": "\\\\10.2.227.113\\过站文件夹",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "admin",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2559,8 +3297,11 @@
     "Ip": "10.2.227.110",
     "LogType": "过程日志",
     "Path": "\\\\10.2.227.110\\MachineUse\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6013",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2570,8 +3311,11 @@
     "Ip": "10.2.227.110",
     "LogType": "报警日志",
     "Path": "\\\\10.2.227.110\\MachineUse3\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6013",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2581,8 +3325,11 @@
     "Ip": "10.2.227.110",
     "LogType": "过程日志",
     "Path": "\\\\10.2.227.110\\MachineUse\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6013",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2592,8 +3339,11 @@
     "Ip": "10.2.227.110",
     "LogType": "报警日志",
     "Path": "\\\\10.2.227.110\\MachineUse3\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6013",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2603,8 +3353,11 @@
     "Ip": "10.2.227.97",
     "LogType": "过程日志",
     "Path": "\\\\10.2.227.97\\MachineUse\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6027",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2614,8 +3367,11 @@
     "Ip": "10.2.227.97",
     "LogType": "报警日志",
     "Path": "\\\\10.2.227.97\\MachineUse2\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6027",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2625,8 +3381,11 @@
     "Ip": "10.2.227.115",
     "LogType": "过程日志",
     "Path": "\\\\10.2.227.115\\MachineUse\\Debug\\华通生产记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6032",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2636,8 +3395,11 @@
     "Ip": "10.2.227.115",
     "LogType": "报警日志",
     "Path": "\\\\10.2.227.115\\MachineUse2\\Debug\\LOGFLOW\\报警记录",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "TJJ6032",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2647,8 +3409,11 @@
     "Ip": "10.2.225.6",
     "LogType": "生产日志",
     "Path": "\\\\10.2.225.6\\Data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "administrator",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2657,9 +3422,12 @@
     "Code": "TJJ8011",
     "Ip": "10.2.238.166",
     "LogType": "/",
-    "Path": "硬件采集",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8",
@@ -2669,8 +3437,11 @@
     "Ip": "10.2.225.57",
     "LogType": "生产日志",
     "Path": "\\\\10.2.225.57\\data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BDJ007",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "F8后",
@@ -2680,8 +3451,11 @@
     "Ip": "10.2.225.48",
     "LogType": "生产日志",
     "Path": "\\\\10.2.225.48\\FPC LCS_20241030_2015RunLog",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LSJA1070",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "G8",
@@ -2691,8 +3465,11 @@
     "Ip": "10.2.227.130",
     "LogType": "生产日志",
     "Path": "\\\\10.2.227.130\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2018",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "G8",
@@ -2702,8 +3479,11 @@
     "Ip": "10.2.228.253",
     "LogType": "生产日志",
     "Path": "\\\\10.2.228.253\\LogData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2018",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "G8",
@@ -2713,8 +3493,11 @@
     "Ip": "10.2.227.6",
     "LogType": "生产日志",
     "Path": "\\\\10.2.227.6\\LogData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2020",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "G8",
@@ -2724,8 +3507,11 @@
     "Ip": "10.2.227.117",
     "LogType": "生产日志",
     "Path": "\\\\10.2.227.117\\dt_data",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2020",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "G8",
@@ -2735,8 +3521,11 @@
     "Ip": "10.2.226.2",
     "LogType": "生产日志",
     "Path": "\\\\10.2.226.2\\LogData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2018",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "G8",
@@ -2746,8 +3535,11 @@
     "Ip": "10.2.227.41",
     "LogType": "生产日志",
     "Path": "\\\\10.2.227.41\\LogData",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LMJ2020",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "G12",
@@ -2756,9 +3548,12 @@
     "Code": "AVI001",
     "Ip": "10.2.225.84",
     "LogType": "生产日志",
-    "Path": "数据库读取",
+    "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "AVI001",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "G12",
@@ -2768,8 +3563,11 @@
     "Ip": "10.2.225.242",
     "LogType": "生产日志",
     "Path": "\\\\10.2.225.242\\生产数据",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "BZJ",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "缴库区",
@@ -2779,8 +3577,11 @@
     "Ip": "10.2.188.139",
     "LogType": "/",
     "Path": "/",
+    "Floor": "/",
+    "Postfix": "/",
     "Account": "/",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "原料仓",
@@ -2790,8 +3591,11 @@
     "Ip": "10.2.191.2",
     "LogType": "生产日志",
     "Path": "待排查",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "待排查",
-    "Password": "待排查"
+    "Password": "待排查",
+    "DriverName": ""
   },
   {
     "Line": "原料仓",
@@ -2801,8 +3605,11 @@
     "Ip": "10.2.180.126",
     "LogType": "生产日志",
     "Path": "\\\\10.2.180.126\\Log",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "KXJ1004",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "原料仓",
@@ -2812,8 +3619,11 @@
     "Ip": "10.2.182.251",
     "LogType": "生产日志",
     "Path": "\\\\10.2.182.251\\WBLaserMarking-Coaxial\\logs",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LSJ1206",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   },
   {
     "Line": "原料仓",
@@ -2823,7 +3633,10 @@
     "Ip": "10.2.178.18",
     "LogType": "生产日志",
     "Path": "\\\\10.2.178.18\\WBLaserMarking-Coaxial\\logs",
+    "Floor": "1",
+    "Postfix": "",
     "Account": "LSJ1207",
-    "Password": "/"
+    "Password": "/",
+    "DriverName": ""
   }
 ]

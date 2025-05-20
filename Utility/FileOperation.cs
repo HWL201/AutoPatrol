@@ -19,6 +19,10 @@ namespace AutoPatrol.Utility
         public static List<ResultViewModel> ReadExcel(string filePath) {
             var result = new List<ResultViewModel>();
 
+            if (!File.Exists(filePath)) {
+                return result;
+            }
+
             // 设置许可证（非商业用途可免费使用）
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -59,6 +63,7 @@ namespace AutoPatrol.Utility
             return result;
         }
 
+
         /// <summary>
         /// 将数据流写进 xlsx 文件中
         /// </summary>
@@ -87,26 +92,61 @@ namespace AutoPatrol.Utility
 
 
         /// <summary>
-        /// 获取指定目录下所有文件名
+        /// 判断指定时间，指定后缀的文件是否存在
         /// </summary>
-        /// <param name="partialFileName"></param>
-        /// <returns>文件名列表</returns>
-        public static List<string> GetFileNameList(string directory) {
-            var result = new List<string>();
+        /// <param name="filePath"></param>
+        /// <param name="floor"></param>
+        /// <returns></returns>
+        public static bool IsFileExists(string filePath, DateTime date, string postfix = "", int floor = 1) {
+            List<FileInfo> files = GetFiles(filePath, floor);
 
-            if (!Directory.Exists(directory)) {
-                Directory.CreateDirectory(directory);
-                return result;
+            if (files.Count == 0) {
+                return false;
+            }
+            if (!string.IsNullOrEmpty(postfix)) {
+                files = files.Where(f => f.Extension.ToUpper() == postfix.ToUpper() && f.LastWriteTime == date).ToList();
             }
 
-            // 非递归遍历
-            foreach (var filePath in Directory.EnumerateFiles(directory)) {
-                // 获取文件名，不包含路径
-                string fileName = Path.GetFileName(filePath);
-                result.Add(fileName);
+            return files.Count > 0;
+        }
+
+
+        /// <summary>
+        /// 获取指定目录下文件
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="floor"></param>
+        /// <returns></returns>
+        public static List<FileInfo> GetFiles(string filePath, int floor) {
+            List<FileInfo> files = new List<FileInfo>();
+
+            foreach (var item in GetDirectorys(filePath, floor)) {
+                files.AddRange(item.GetFiles());
             }
 
-            return result;
+            return files.OrderBy(a => a.LastWriteTime).ToList();
+        }
+
+
+        /// <summary>
+        /// 获取共享路径指定层级下所有子目录
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static List<DirectoryInfo> GetDirectorys(string filePath, int floor) {
+            List<DirectoryInfo> directorys = new List<DirectoryInfo>();
+
+            directorys.Add(new DirectoryInfo(filePath));
+
+            for (int i = 0; i < floor - 1; i++) {
+                List<DirectoryInfo> tempList = new List<DirectoryInfo>();
+                foreach (var directory in directorys) {
+                    tempList.AddRange(directory.GetDirectories());
+                }
+                directorys = tempList;
+            }
+
+            return directorys;
         }
 
 
@@ -117,7 +157,7 @@ namespace AutoPatrol.Utility
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns>文件内容</returns>
-        public static List<Dictionary<string, object>> CommonReadExcel(string filePath) {
+        private static List<Dictionary<string, object>> CommonReadExcel(string filePath) {
             var result = new List<Dictionary<string, object>>();
 
             // 设置许可证（非商业用途可免费使用）
@@ -171,7 +211,6 @@ namespace AutoPatrol.Utility
                package.SaveAs(new FileInfo(filePath));
            }
        }*/
-
 
         #endregion
     }

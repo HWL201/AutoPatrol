@@ -3,9 +3,9 @@
         width: 200px;
     }
 
-    .layui-table-body {
-        max-height: calc(100vh - 340px);
-    }
+    /* .layui-table-body { */
+    /*     max-height: calc(100vh - 360px); */
+    /* } */
 </style>
 
 <div class="mx-5 my-5 d-flex align-items-center" style="box-shadow: 0 3px 6px rgba(0,0,0,0.15); border-radius: 10px; height: 80px">
@@ -36,6 +36,14 @@
         </div>
         <div class="layui-input-wrap me-3">
             <div class="layui-input-prefix">
+                <i class="iconfont icon-item"></i>
+            </div>
+            <select name="item" id="itemSelect" class="layui-input">
+                <option value="" selected disabled>巡检项目</option>
+            </select>
+        </div>
+        <div class="layui-input-wrap me-3">
+            <div class="layui-input-prefix">
                 <i class="iconfont icon-result"></i>
             </div>
             <select name="result" id="resultSelect" class="layui-input">
@@ -57,9 +65,9 @@
         <div class="layui-btn-container">
             <button class="layui-btn" lay-event="showCheckRow">显示</button>
             <button class="layui-btn" lay-event="copyCheckRowData">复制</button>
-            <button class="layui-btn" lay-event="resetTable">重置</button>
+            <button class="layui-btn layui-btn-primary" lay-event="resetTable">重置</button>
         </div>
-        <div class="layui-input-wrap ms-5 me-3" style="width: 160px;">
+        <div class="layui-input-wrap me-3" style="width: 160px;margin-left: 100px">
             <div class="layui-input-prefix">
                 <i class="layui-icon layui-icon-date"></i>
             </div>
@@ -141,366 +149,337 @@
 <script>
     var currentDate = getFormattedDate();
     var fileNameList;
-    var currentFileName = `${currentDate}自动巡检.xlsx`;
+    var currentFileName;
     var patrolWay = "自动巡检";
     var allData;
 
-    fetch(`/Home/GetPatrolResult?fileName=${currentFileName}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json' // 指定期望的响应格式为 JSON
-        }
-    })
-    .then(response => {
-        return response.json().then(data => {
-            if (!response.ok) {
-                throw new Error(data.message || `操作失败 (${response.status})`);
+    requestFileList(currentDate)
+    .then(fileNames => {
+        fetch(`/Home/GetPatrolResult?fileName=${fileNames[0]}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json' // 指定期望的响应格式为 JSON
             }
-            return data; // 200 状态码，正常返回数据
-        });
-    })
-    .then(data => {
-        allData = data.data;
-
-        // 搜索栏下拉选项填充
-        fillSearchBarOption(allData);
-
-        var form = layui.form;
-        var table = layui.table;
-        var laydate = layui.laydate;
-
-        layui.use(['form', 'table', 'laydate'], function() {
-
-            table.render({
-                elem: '#resultTable',
-                // height: 'full-400',
-                data: allData,
-                toolbar: '#toolbar',
-                defaultToolbar: ['filter', 'exports'],
-                page: true,
-                limits: [10, 20, 30, 50],
-                cols: [[
-                    { fixed:'left', type: 'checkbox', width: 59 },
-                    { type: 'numbers', title: '序号', width: 59 },
-                    { field:'line', width: 100, title: '产线', align: 'center' },
-                    { field:'num', width: 100, title: '线体顺序', align: 'center' },
-                    { field:'deviceType', width: 160, title: '设备类型', align: 'center' },
-                    { field:'code', width: 160, title: '设备编码', align: 'center' },
-                    { field:'item', width: 100, title: '检查项', align: 'center' },
-                    { field:'result', width: 160, title: '巡检结论', align: 'center' },
-                    { field:'describe', width: 160, title: '异常描述', align: 'center' },
-                    { field:'message', width: 240, title: '可能原因', align: 'center' },
-                    { fixed:'right', width: 100, title: '操作', templet: '#operationList', align: 'center' },
-                ]],
-                done: function() {
-                    // 表格渲染完成后，添加样式使表头居中
-                    $('.layui-table-header th').each(function(){
-                        $(this).css('text-align', 'center');
-                    });
-
-                    console.log('表格重载后日期' + currentDate);
-
+        })
+        .then(response => {
+            return response.json().then(data => {
+                if (!response.ok) {
+                    throw new Error(data.message || `操作失败 (${response.status})`);
                 }
+                return data; // 200 状态码，正常返回数据
             });
+        })
+        .then(data => {
+            allData = data.data;
 
-            // 填充文件选择输入框的下拉选项
-            requestFileList(currentDate)
-            .then(fileNames => {
-                // 文件列表加载完成后执行后续操作
-                restoreFileSelectStatus(fileNames);
+            // 搜索栏下拉选项填充
+            fillSearchBarOption(allData);
 
-                // 继续其他操作...
-                console.log('首文件:', fileNames[0]);
-            })
-            .catch(error => {
-                console.error('加载失败:', error);
-            });
+            var form = layui.form;
+            var table = layui.table;
+            var laydate = layui.laydate;
 
-            laydate.render({
-                elem: '.calendar-controls',
-                value: new Date(),
-                format: 'yyyy-MM-dd',
-                done: function(value, date) {
-                    if(!value) {
-                        return;
+            layui.use(['form', 'table', 'laydate'], function() {
+
+                table.render({
+                    elem: '#resultTable',
+                    // height: 'full-400',
+                    data: allData,
+                    toolbar: '#toolbar',
+                    defaultToolbar: ['filter', 'exports'],
+                    page: true,
+                    limits: [10, 20, 30, 50],
+                    cols: [[
+                        { fixed:'left', type: 'checkbox', width: 59 },
+                        { type: 'numbers', title: '序号', width: 59 },
+                        { field:'line', width: 100, title: '产线', align: 'center' },
+                        { field:'num', width: 100, title: '线体顺序', align: 'center' },
+                        { field:'deviceType', width: 160, title: '设备类型', align: 'center' },
+                        { field:'code', width: 160, title: '设备编码', align: 'center' },
+                        { field:'item', width: 100, title: '巡检项目', align: 'center' },
+                        { field:'result', width: 160, title: '巡检结论', align: 'center' },
+                        { field:'describe', width: 160, title: '异常描述', align: 'center' },
+                        { field:'message', width: 240, title: '可能原因', align: 'center' },
+                        { fixed:'right', width: 100, title: '操作', templet: '#operationList', align: 'center' },
+                    ]],
+                    done: function() {
+                        // 表格渲染完成后，添加样式使表头居中
+                        $('.layui-table-header th').each(function(){
+                            $(this).css('text-align', 'center');
+                        });
                     }
+                });
 
-                    console.log('进来');
+                // 填充文件选择输入框的下拉选项
+                requestFileList(currentDate)
+                .then(fileNames => {
+                    // 文件列表加载完成后执行后续操作
+                    restoreFileSelectStatus(fileNames);
+                })
+                .catch(error => {
+                    console.error('加载失败:', error);
+                });
 
-                    currentDate = value.split('-').join('');
+                laydate.render({
+                    elem: '.calendar-controls',
+                    value: new Date(),
+                    format: 'yyyy-MM-dd',
+                    done: function(value, date) {
+                        if(!value) {
+                            return;
+                        }
 
-                    console.log('选择日期' + currentDate);
+                        currentDate = value.split('-').join('');
+                        // 文件选择下拉选项重新请求、存储、填充
+                        requestFileList(currentDate)
+                        .then(fileNames => {
+                            // 文件列表加载完成后执行后续操作
+                            restoreFileSelectStatus(fileNames);
 
-                    // 文件选择下拉选项重新请求、存储、填充
-                    // requestFileList(currentDate, restoreFileSelectStatus);
-                    requestFileList(currentDate)
-                    .then(fileNames => {
-                        // 文件列表加载完成后执行后续操作
-                        restoreFileSelectStatus(fileNames);
+                            // 表格数据重新加载
+                            requestTableData(
+                                fileNames[0],
+                                // 成功回调
+                                (data, message) => {
+                                    table.reload('resultTable', {
+                                        data: data,
+                                        page: {
+                                            curr: 1 // 重新从第 1 页开始
+                                        }
+                                    });
+                                    // 重新填充搜索栏下拉选项
+                                    fillSearchBarOption(data);
+                                    // 重新填充与选中文件选择框
+                                    restoreFileSelectStatus(fileNames);
+                                    // 重新填充时间选择框
+                                    restoreDateChangeStatus(currentDate);
 
-                        // 继续其他操作...
-                        console.log('首文件:', fileNames[0]);
+                                    layer.msg(message, { icon: 1 });
+                                },
+                                // 失败回调
+                                (error) => {
+                                    layer.msg(error, { icon: 2 });
+                                }
+                            );
+                        })
+                        .catch(error => {
+                            console.error('加载失败:', error);
+                        });
+                    }
+                });
 
-                        // console.log('渲染' + fileNameList[0]);
+                form.render('select');
 
-                        // 表格数据重新加载
-                        requestTableData(
-                            fileNames[0],
-                            // 成功回调
-                            (data, message) => {
-                                table.reload('resultTable', {
-                                    data: data,
-                                    page: {
-                                        curr: 1 // 重新从第 1 页开始
-                                    }
+                // 表格事件
+                table.on('toolbar(resultOperation)', function(obj) {
+                    var id = obj.config.id;
+                    var checkStatus = table.checkStatus(id);
+                    var data = checkStatus.data;
+
+                    switch(obj.event) {
+                        case 'showCheckRow':
+                            if(data.length !== 0) {
+                                table.reload(id, {
+                                    data: data
                                 });
-                                // 重新填充搜索栏下拉选项
-                                fillSearchBarOption(data);
                                 // 重新填充与选中文件选择框
-                                restoreFileSelectStatus(fileNames);
+                                restoreFileSelectStatus(fileNameList);
                                 // 重新填充时间选择框
                                 restoreDateChangeStatus(currentDate);
-
-                                layer.msg(message, { icon: 1 });
-                            },
-                            // 失败回调
-                            (error) => {
-                                layer.msg(error, { icon: 2 });
                             }
-                        );
-                    })
-                    .catch(error => {
-                        console.error('加载失败:', error);
-                    });
-                }
-            });
-
-            form.render('select');
-
-            // 表格事件
-            table.on('toolbar(resultOperation)', function(obj) {
-                var id = obj.config.id;
-                var checkStatus = table.checkStatus(id);
-                var data = checkStatus.data;
-
-                switch(obj.event) {
-                    case 'showCheckRow':
-                        if(data.length !== 0) {
+                            else {
+                                layer.msg('未选中行', { icon: 2 });
+                            }
+                            break;
+                        case 'copyCheckRowData':
+                            if(data.length !== 0) {
+                                copyToClipboard(data);
+                            }
+                            else {
+                                layer.msg('未选中行', { icon: 2 });
+                            }
+                            break;
+                        case 'resetTable':
                             table.reload(id, {
-                                data: data
+                                data: allData
+                            });
+                            // 取消选中行
+                            table.setRowChecked(id, {
+                                index: 'all', // 所有行
+                                checked: false // 此处若设置 true，则表示全选
                             });
                             // 重新填充与选中文件选择框
                             restoreFileSelectStatus(fileNameList);
                             // 重新填充时间选择框
                             restoreDateChangeStatus(currentDate);
-                        }
-                        else {
-                            layer.msg('未选中行', { icon: 2 });
-                        }
-                        break;
-                    case 'copyCheckRowData':
-                        if(data.length !== 0) {
-                            copyToClipboard(data);
-                        }
-                        else {
-                            layer.msg('未选中行', { icon: 2 });
-                        }
-                        break;
-                    case 'resetTable':
-                    console.log('当前文件名');
-                    console.log(currentFileName);
-                    console.log('所有数据');
-                    console.log(allData);
-                        table.reload(id, {
-                            data: allData
-                        });
-                        // 取消选中行
-                        table.setRowChecked(id, {
-                            index: 'all', // 所有行
-                            checked: false // 此处若设置 true，则表示全选
-                        });
-                        // 重新填充与选中文件选择框
-                        restoreFileSelectStatus(fileNameList);
-                        // 重新填充时间选择框
-                        restoreDateChangeStatus(currentDate);
-                        break;
-                    default:
-                };
-            });
+                            break;
+                        default:
+                    };
+                });
 
-            // 单元格工具事件
-            table.on('tool(resultOperation)', function(obj) {
-                var rowData = obj.data;
+                // 单元格工具事件
+                table.on('tool(resultOperation)', function(obj) {
+                    var rowData = obj.data;
 
-                if(obj.event === 'checkDetail') {
-                    layer.open({
-                        title: '巡检详情',
-                        type: 1,
-                        area: ['25%','45%'],
-                        content: Handlebars.compile(document.getElementById('resultTempalte').innerHTML)(rowData),
-                        success: function (layero, index) {
-                            layero.find('.layui-layer-title').css({
-                                'font-size': '18px',
-                                'font-weight': 'bold',
-                                'font-family': 'Arial, sans-serif',
-                            });
+                    if(obj.event === 'checkDetail') {
+                        layer.open({
+                            title: '巡检详情',
+                            type: 1,
+                            area: ['25%','45%'],
+                            content: Handlebars.compile(document.getElementById('resultTempalte').innerHTML)(rowData),
+                            success: function (layero, index) {
+                                layero.find('.layui-layer-title').css({
+                                    'font-size': '18px',
+                                    'font-weight': 'bold',
+                                    'font-family': 'Arial, sans-serif',
+                                });
+                            }
+                        });
+                    }
+                });
+
+                // 表单搜索
+                form.on('submit(table-search)', function(data) {
+                    var field = data.field;
+
+                    // 过滤数据
+                    var filterData = allData.filter(item => {
+                        var lineMatch = !field.line || item.line === field.line;
+                        var deviceTypeMatch = !field.deviceType || item.deviceType === field.deviceType;
+                        var codeMatch = !field.code || item.code === field.code;
+                        var itemMatch = !field.item || item.item === field.item;
+                        var resultMatch = !field.result || item.result === field.result;
+                        return lineMatch && deviceTypeMatch && codeMatch && itemMatch && resultMatch;
+                    });
+
+                    // 搜索重载
+                    table.reload('resultTable', {
+                        data: filterData,
+                        page: {
+                            curr: 1 // 重新从第 1 页开始
                         }
                     });
+
+                    // 重新填充与选中文件选择框
+                    restoreFileSelectStatus(fileNameList);
+                    // 重新填充时间选择框
+                    restoreDateChangeStatus(currentDate);
+
+                    layer.msg('搜索成功');
+                    return false; // 阻止默认 form 跳转
+                });
+
+                // 表格数据源切换
+                form.on('select(fileSelect)', function(data) {
+                    fiileName = data.value;
+                    requestTableData(
+                        fiileName,
+                        // 成功回调
+                        (data, message) => {
+                            table.reload('resultTable', {
+                                data: data,
+                                page: {
+                                    curr: 1 // 重新从第 1 页开始
+                                }
+                            });
+
+                            // 重新填充与选中文件选择框
+                            restoreFileSelectStatus(fileNameList);
+                            // 重新填充时间选择框
+                            restoreDateChangeStatus(currentDate);
+
+                            layer.msg(message, { icon: 1 });
+                        },
+                        // 失败回调
+                        (error) => {
+                            layer.msg(error, { icon: 2 });
+                        }
+                    );
+                });
+
+                // 内部方法 更新或恢复表格工具栏 文件选择输入框状态
+                function restoreFileSelectStatus(data) {
+                    // 清空原有选项
+                    layui.$('#fileSelect').empty();
+                    data.forEach(value => {
+                        var option = $('<option>').val(value).text(value);
+                        layui.$('#fileSelect').append(option);
+                    });
+                    layui.$('#fileSelect').find(`option[value="${currentFileName}"]`).prop('selected', true);
+                    form.render('select');
                 }
-            });
 
-            // 表单搜索
-            form.on('submit(table-search)', function(data) {
-                var field = data.field;
+                // 内部方法 更新或恢复表格工具栏 时间选择输入框状态
+                function restoreDateChangeStatus(data) {
+                    var value = data.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3');    laydate.render({
+                    elem: '.calendar-controls',
+                    value: value,
+                    format: 'yyyy-MM-dd',
+                    done: function(value, date) {
+                        if(!value) {
+                            return;
+                        }
 
-                // 过滤数据
-                var filterData = allData.filter(item => {
-                    var lineMatch = !field.line || item.line === field.line;
-                    var deviceTypeMatch = !field.deviceType || item.deviceType === field.deviceType;
-                    var codeMatch = !field.code || item.code === field.code;
-                    var resultMatch = !field.result || item.result === field.result;
-                    return lineMatch && deviceTypeMatch && codeMatch && resultMatch;
-                });
+                        currentDate = value.split('-').join('');
+                        // 文件选择下拉选项重新请求、存储、填充
+                        requestFileList(currentDate)
+                        .then(fileNames => {
+                            // 文件列表加载完成后执行后续操作
+                            restoreFileSelectStatus(fileNames);
 
-                // 搜索重载
-                table.reload('resultTable', {
-                    data: filterData,
-                    page: {
-                        curr: 1 // 重新从第 1 页开始
-                    }
-                });
+                            // 表格数据重新加载
+                            requestTableData(
+                                fileNames[0],
+                                // 成功回调
+                                (data, message) => {
+                                    table.reload('resultTable', {
+                                        data: data,
+                                        page: {
+                                            curr: 1 // 重新从第 1 页开始
+                                        }
+                                    });
+                                    // 重新填充与选中文件选择框
+                                    restoreFileSelectStatus(fileNames);
+                                    // 重新填充时间选择框
+                                    restoreDateChangeStatus(currentDate);
 
-                // 重新填充与选中文件选择框
-                restoreFileSelectStatus(fileNameList);
-                // 重新填充时间选择框
-                restoreDateChangeStatus(currentDate);
-
-                layer.msg('搜索成功');
-                return false; // 阻止默认 form 跳转
-            });
-
-            // 表格数据源切换
-            form.on('select(fileSelect)', function(data) {
-                fiileName = data.value;
-                requestTableData(
-                    fiileName,
-                    // 成功回调
-                    (data, message) => {
-                        table.reload('resultTable', {
-                            data: data,
-                            page: {
-                                curr: 1 // 重新从第 1 页开始
-                            }
-                        });
-                        
-                        // 重新填充与选中文件选择框
-                        restoreFileSelectStatus(fileNameList);
-                        // 重新填充时间选择框
-                        restoreDateChangeStatus(currentDate);
-
-                        layer.msg(message, { icon: 1 });
-                    },
-                    // 失败回调
-                    (error) => {
-                        layer.msg(error, { icon: 2 });
-                    }
-                );
-                console.log('当前文件名');
-                console.log(currentFileName);
-                console.log('所有数据');
-                console.log(allData);
-            });
-
-            // 内部方法 更新或恢复表格工具栏 文件选择输入框状态
-            function restoreFileSelectStatus(data) {
-                // 清空原有选项
-                layui.$('#fileSelect').empty();
-                data.forEach(value => {
-                    var option = $('<option>').val(value).text(value);
-                    layui.$('#fileSelect').append(option);
-                });
-                layui.$('#fileSelect').find(`option[value="${currentFileName}"]`).prop('selected', true);
-                form.render('select');
-            }
-
-            // 内部方法 更新或恢复表格工具栏 时间选择输入框状态
-            function restoreDateChangeStatus(data) {
-                var value = data.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3');    laydate.render({
-                elem: '.calendar-controls',
-                value: value,
-                format: 'yyyy-MM-dd',
-                done: function(value, date) {
-                    if(!value) {
-                        return;
-                    }
-
-                    console.log('进来');
-
-                    currentDate = value.split('-').join('');
-
-                    console.log('选择日期' + currentDate);
-
-                    // 文件选择下拉选项重新请求、存储、填充
-                    // requestFileList(currentDate, restoreFileSelectStatus);
-                    requestFileList(currentDate)
-                    .then(fileNames => {
-                        // 文件列表加载完成后执行后续操作
-                        restoreFileSelectStatus(fileNames);
-
-                        // 继续其他操作...
-                        console.log('首文件:', fileNames[0]);
-
-                        // console.log('渲染' + fileNameList[0]);
-
-                        // 表格数据重新加载
-                        requestTableData(
-                            fileNames[0],
-                            // 成功回调
-                            (data, message) => {
-                                table.reload('resultTable', {
-                                    data: data,
-                                    page: {
-                                        curr: 1 // 重新从第 1 页开始
-                                    }
-                                });
-                                // 重新填充与选中文件选择框
-                                restoreFileSelectStatus(fileNames);
-                                // 重新填充时间选择框
-                                restoreDateChangeStatus(currentDate);
-
-                                layer.msg(message, { icon: 1 });
-                            },
-                            // 失败回调
-                            (error) => {
-                                layer.msg(error, { icon: 2 });
-                            }
-                        );
+                                    layer.msg(message, { icon: 1 });
+                                },
+                                // 失败回调
+                                (error) => {
+                                    layer.msg(error, { icon: 2 });
+                                }
+                            );
                         })
                         .catch(error => {
                             console.error('加载失败:', error);
                         });
-
+                    }
+                });
 
                 }
             });
-
-            }
-        });
+        })
+        .catch(error => {
+            alert(error.message);
+        })
     })
     .catch(error => {
-        alert(error.message);
-    })
+        console.error('加载失败:', error);
+    });
 
     // 填充下拉选项
     function fillSearchBarOption(data) {
         var lineSet = groupByField(data, 'line', false);
         var deviceTypeSet = groupByField(data, 'deviceType');
         var codeSet = groupByField(data, 'code');
+        var itemSet = groupByField(data, 'item');
         var resultSet = groupByField(data, 'result');
 
         var lineSelect = layui.$('#lineSelect');
         var deviceTypeSelect = layui.$('#deviceTypeSelect');
         var codeSelect = layui.$('#codeSelect');
+        var itemSelect = layui.$('#itemSelect');
         var resultSelect = layui.$('#resultSelect');
 
         function addOption(object, value, prompt = false) {
@@ -515,29 +494,29 @@
         }
 
         // 清空原有选项
-        layui.$('#lineSelect, #deviceTypeSelect, #codeSelect, #resultSelect').each(function() {
+        layui.$('#lineSelect, #deviceTypeSelect, #codeSelect, #itemSelect, #resultSelect').each(function() {
             layui.$(this).find('option:gt(0)').remove(); // 保留第一个选项，删除其余选项
-             // 确保第一个选项被选中
+             // 确保第一个选项被选中，其他选项清空
             layui.$(this).find('option:first').prop('selected', true);
-            // layui.$(this).empty(); 
+            // layui.$(this).empty();
         });
 
-        // addOption(lineSelect, '产线', true);
         lineSet.forEach(value => {
             addOption(lineSelect, value);
         });
 
-        // addOption(deviceTypeSelect, '设备类型', true);
         deviceTypeSet.forEach(value => {
             addOption(deviceTypeSelect, value);
         });
 
-        // addOption(codeSelect, '设备编码', true);
         codeSet.forEach(value => {
             addOption(codeSelect, value);
         });
 
-        // addOption(resultSelect, '巡检结论', true);
+        itemSet.forEach(value => {
+            addOption(itemSelect, value);
+        });
+
         resultSet.forEach(value => {
             addOption(resultSelect, value);
         });
@@ -566,12 +545,7 @@
             allData = data.data;
             // 表格数据更新，搜索栏下拉选项也更新
             fillSearchBarOption(allData);
-            console.log('所有数据');
-            console.log(allData);
             currentFileName = fileName;
-            console.log('当前文件名');
-            console.log(currentFileName);
-
             // 执行成功回调
             successCallback(allData, data.message);
         })
@@ -645,7 +619,6 @@
             })
             .then(data => {
                 fileNameList = sortPatrolFiles(data.data);
-                console.log('请求到文件名集合', fileNameList);
                 return fileNameList; // 返回 Promise 结果
             })
             .catch(error => {

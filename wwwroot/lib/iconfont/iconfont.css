@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4922298 */
-  src: url('iconfont.woff2?t=1747377851767') format('woff2'),
-       url('iconfont.woff?t=1747377851767') format('woff'),
-       url('iconfont.ttf?t=1747377851767') format('truetype');
+  src: url('iconfont.woff2?t=1747710389078') format('woff2'),
+       url('iconfont.woff?t=1747710389078') format('woff'),
+       url('iconfont.ttf?t=1747710389078') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,46 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-calender:before {
+  content: "\e62f";
+}
+
+.icon-item:before {
+  content: "\e67e";
+}
+
+.icon-ip:before {
+  content: "\e60e";
+}
+
+.icon-import:before {
+  content: "\ee34";
+}
+
+.icon-edit:before {
+  content: "\e602";
+}
+
+.icon-delete:before {
+  content: "\e691";
+}
+
+.icon-time:before {
+  content: "\e733";
+}
+
+.icon-add:before {
+  content: "\e784";
+}
+
+.icon-config:before {
+  content: "\e606";
+}
+
+.icon-home:before {
+  content: "\e66c";
 }
 
 .icon-file-type:before {

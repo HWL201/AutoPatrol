@@ -13,7 +13,7 @@
         /// <summary>
         /// 线体顺序
         /// </summary>
-        public int? Num { get; set; }
+        public int Num { get; set; } = 1;
 
         /// <summary>
         /// 设备类型
@@ -41,6 +41,16 @@
         public string? Path { get; set; }
 
         /// <summary>
+        /// 文件层级
+        /// </summary>
+        public string? Floor { get; set; }
+
+        /// <summary>
+        /// 文件后缀
+        /// </summary>
+        public string? Postfix { get; set; }
+
+        /// <summary>
         /// 账号
         /// </summary>
         public string? Account { get; set; }
@@ -49,5 +59,10 @@
         /// 密码
         /// </summary>
         public string? Password { get; set; }
+
+        /// <summary>
+        /// 驱动名称
+        /// </summary>
+        public string? DriverName { get; set; }
     }
 }
