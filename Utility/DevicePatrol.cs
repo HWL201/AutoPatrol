@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace AutoPatrol.Utility
@@ -307,6 +308,7 @@ namespace AutoPatrol.Utility
 
             // 等待所有任务完成
             await Task.WhenAll(tasks);
+
             return results;
         }
 
@@ -319,7 +321,15 @@ namespace AutoPatrol.Utility
         /// <returns>连接成功返回true，失败返回false</returns>
         public static async Task<bool> ConnectToShareAsync(string sharePath, string username, string password) {
             // 使用 Task.Run 将同步操作转换为异步执行
-            return await Task.Run(() => ConnectToShare(sharePath, username, password));
+            // return await Task.Run(() => ConnectToShare(sharePath, username, password));
+            var cts = new CancellationTokenSource(3000);
+            try {
+                return await Task.Run(() => ConnectToShare(sharePath, username, password), cts.Token);
+            }
+            catch (OperationCanceledException) {
+                WNetCancelConnection2(sharePath, 0, true);
+                return false;
+            }
         }
 
 
