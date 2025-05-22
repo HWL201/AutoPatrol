@@ -61,5 +61,10 @@
         /// 日志路径变更
         /// </summary>
         public static readonly string DEVICE_NOT_PRODUCED = "设备未生产";
+
+        /// <summary>
+        /// 设备被拆除
+        /// </summary>
+        public static readonly string DEVICE_REMOVAL = "设备被拆除";
     }
 }

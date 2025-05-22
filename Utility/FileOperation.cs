@@ -104,7 +104,7 @@ namespace AutoPatrol.Utility
                 return false;
             }
             if (!string.IsNullOrEmpty(postfix)) {
-                files = files.Where(f => f.Extension.ToUpper() == postfix.ToUpper() && f.LastWriteTime == date).ToList();
+                files = files.Where(f => f.Extension.ToUpper() == postfix.ToUpper() && f.LastWriteTime.Date == date).ToList();
             }
 
             return files.Count > 0;

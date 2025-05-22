@@ -87,7 +87,7 @@ public class FixedTimeScheduler : BackgroundService
                 .ToList();
         }
         catch (Exception ex) {
-            _logger.LogError(ex, "解析定时任务配置文件失败，使用默认执行时间");
+            _logger.LogError(ex, "解析定时任务配置文件失败，使用默认执行时间，请检查是否已配置定时任务");
             return new List<TimeSpan>
             {
                 TimeSpan.FromHours(8),
@@ -110,7 +110,7 @@ public class FixedTimeScheduler : BackgroundService
 
                 if (delay < TimeSpan.Zero) {
                     delay += TimeSpan.FromDays(1);
-                    _logger.LogInformation($"当天任务执行完毕，进入休眠过程，下一次任务执行时间: {DateTime.Today.AddDays(1).ToShortDateString()} {nextExecution}");
+                    _logger.LogInformation($"当天无可执行任务，进入休眠过程，下一次任务执行时间: {DateTime.Today.AddDays(1).ToShortDateString()} {nextExecution}");
                 }
                 else {
                     _logger.LogInformation($"下一次任务执行时间: {nextExecution}");

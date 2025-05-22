@@ -21,7 +21,7 @@ namespace AutoPatrol.Utility
         /// <param name="deviceList"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static async Task Patrol(List<DeviceViewModel> deviceList, string filePath) {
+        public static async Task Patrol(List<DeviceViewModel> allDeviceList, string filePath) {
             // 设置EPPlus许可证（非商业用途）
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             var stream = new MemoryStream();
@@ -38,44 +38,84 @@ namespace AutoPatrol.Utility
                 worksheet.Cells[1, 9].Value = "提示信息";
                 int rowIndex = 2;
 
+                // 过滤IP为空的数据
+                var deviceList = allDeviceList.Where(a => a.Ip != "/").ToList();
+
+                #region IP巡检
+
                 var pingResult = await PingIPList(deviceList.Select(a => a.Ip).ToList());
 
                 foreach (var device in deviceList) {
-                    bool isPingSuccess;
 
+                    bool isPingSuccess;
 
                     string? result;
                     string? describe;
-
                     List<string> message = new List<string>();
-                    if (pingResult.TryGetValue(device.Ip, out isPingSuccess) && isPingSuccess) {
-                        result = "成功";
-                        describe = "无异常";
-                        message.Add("");
+
+                    if (DriverClassify.TypeJudge(device.DriverName) == "机况") {
+                        if (pingResult.TryGetValue(device.Ip, out isPingSuccess) && isPingSuccess) {
+                            result = "成功";
+                            describe = "无异常";
+                            message.Add("");
+                        }
+                        else {
+                            result = "失败";
+                            describe = PromptMessage.IP_ADDRESS_PING_FAILURE;
+                            message.Add(PromptMessage.DEVICE_REMOVAL);
+                            message.Add(PromptMessage.DEVICE_SHUT_DOWN);
+                            message.Add(PromptMessage.ETHERNET_CABLE_PULLED_OUT);
+                            message.Add(PromptMessage.IP_CHANGE);
+                        }
+
+                        worksheet.Cells[rowIndex, 1].Value = device.Line;
+                        worksheet.Cells[rowIndex, 2].Value = device.Num;
+                        worksheet.Cells[rowIndex, 3].Value = device.DeviceType;
+                        worksheet.Cells[rowIndex, 4].Value = device.Code;
+                        worksheet.Cells[rowIndex, 5].Value = device.Ip;
+                        worksheet.Cells[rowIndex, 6].Value = "机况";
+                        worksheet.Cells[rowIndex, 7].Value = result;
+                        worksheet.Cells[rowIndex, 8].Value = describe;
+                        worksheet.Cells[rowIndex, 9].Value = string.Join('，', message);
+                        rowIndex++;
                     }
                     else {
-                        result = "失败";
-                        describe = PromptMessage.IP_ADDRESS_PING_FAILURE;
-                        message.Add(PromptMessage.DEVICE_SHUT_DOWN);
-                        message.Add(PromptMessage.ETHERNET_CABLE_PULLED_OUT);
-                        message.Add(PromptMessage.IP_CHANGE);
-                    }
+                        if (pingResult.TryGetValue(device.Ip, out isPingSuccess) && isPingSuccess) {
+                            result = "成功";
+                            describe = "无异常";
+                            message.Add("");
+                        }
+                        else {
+                            result = "失败";
+                            describe = PromptMessage.IP_ADDRESS_PING_FAILURE;
+                            message.Add(PromptMessage.DEVICE_SHUT_DOWN);
+                            message.Add(PromptMessage.ETHERNET_CABLE_PULLED_OUT);
+                            message.Add(PromptMessage.IP_CHANGE);
+                        }
 
-                    worksheet.Cells[rowIndex, 1].Value = device.Line;
-                    worksheet.Cells[rowIndex, 2].Value = device.Num;
-                    worksheet.Cells[rowIndex, 3].Value = device.DeviceType;
-                    worksheet.Cells[rowIndex, 4].Value = device.Code;
-                    worksheet.Cells[rowIndex, 5].Value = device.Ip;
-                    worksheet.Cells[rowIndex, 6].Value = "IP";
-                    worksheet.Cells[rowIndex, 7].Value = result;
-                    worksheet.Cells[rowIndex, 8].Value = describe;
-                    worksheet.Cells[rowIndex, 9].Value = string.Join('，', message);
-                    rowIndex++;
+                        worksheet.Cells[rowIndex, 1].Value = device.Line;
+                        worksheet.Cells[rowIndex, 2].Value = device.Num;
+                        worksheet.Cells[rowIndex, 3].Value = device.DeviceType;
+                        worksheet.Cells[rowIndex, 4].Value = device.Code;
+                        worksheet.Cells[rowIndex, 5].Value = device.Ip;
+                        worksheet.Cells[rowIndex, 6].Value = "IP";
+                        worksheet.Cells[rowIndex, 7].Value = result;
+                        worksheet.Cells[rowIndex, 8].Value = describe;
+                        worksheet.Cells[rowIndex, 9].Value = string.Join('，', message);
+                        rowIndex++;
+                    }
                 }
 
-                var accessSharePath = await ConnectToSharesAsync(pingResult, deviceList);
+                #endregion
 
-                foreach (var device in deviceList) {
+                #region 共享路径巡检
+
+                // 过滤机况类型，剩下数据类型
+                var dataList = deviceList.Where(a => a.DriverType == "数据").ToList();
+
+                var accessSharePath = await ConnectToSharesAsync(pingResult, dataList);
+
+                foreach (var device in dataList) {
                     ConnectionResult connResult;
 
                     string? result;
@@ -83,7 +123,7 @@ namespace AutoPatrol.Utility
                     if (accessSharePath.TryGetValue(device.Path, out connResult) && connResult.Status == ConnectionStatus.Success) {
                         result = "成功";
                     }
-                    else if(connResult.Status == ConnectionStatus.Failure && connResult.Profile == "无异常") {
+                    else if (connResult.Status == ConnectionStatus.Failure && connResult.Profile == "无异常") {
                         result = "其他";
                     }
                     else {
@@ -101,6 +141,8 @@ namespace AutoPatrol.Utility
                     worksheet.Cells[rowIndex, 9].Value = connResult.Message;
                     rowIndex++;
                 }
+
+                #endregion
 
                 package.Save();
             }
@@ -162,32 +204,46 @@ namespace AutoPatrol.Utility
                 // 等待信号量，确保并发数不超过限制
                 await semaphore.WaitAsync();
 
+                string ip = device.Ip;
+                string path = device.Path;
+                string account = device.Account == "/" ? "" : device.Account;
+                string password = device.Password == "/" ? "" : device.Password;
+                string postfix = device.Postfix == "/" ? "" : device.Postfix;
+
                 try {
-                    if (device.Path == "/") {
-                        results[device.Path] = new ConnectionResult {
+                    if (path == "/") {
+                        results[path] = new ConnectionResult {
                             Status = ConnectionStatus.Failure,
                             Profile = "无异常",
                             Message = "数据采集不依赖共享文件"
                         };
                     }
-                    else if (device.Path == "待排查") {
-                        results[device.Path] = new ConnectionResult {
+                    else if (path == "待排查") {
+                        results[path] = new ConnectionResult {
                             Status = ConnectionStatus.Failure,
                             Profile = "无异常",
                             Message = "共享文件路径未填入"
                         };
                     }
                     // 如果设备IP是PING通的
-                    else if(pingResult[device.Ip]) {
+                    else if (pingResult[ip]) {
+
+                        //string path = device.Path;
+                        //string account = device.Account == "/" ? "" : device.Account;
+                        //string password = device.Password == "/" ? "" : device.Password;
+                        //string postfix = device.Postfix == "/" ? "" : device.Account;
+                        int floor = int.Parse(device.Floor);
+                        // 如果是印刷机，需要额外的处理逻辑
+                        if (device.DriverName == "CQ.IOT.HT.PanasonicPrintingDriver.dll") {
+                            path = path.Replace("*", today.ToString("yyyy-MM-dd"));
+                        }
                         // 执行连接操作
-                        bool success = await ConnectToShareAsync(device.Path, device.Account == "/" ? "" : device.Account, device.Password == "/" ? "" : device.Password);
+                        bool success = await ConnectToShareAsync(path, account, password);
 
                         if (success) {
 
                             // 获取目录中的所有文件
-                            // string[] files = Directory.GetFiles(device.Path);
-                            // bool exist = files.Any(file => File.GetCreationTime(file) == today);
-                            bool exist = FileOperation.IsFileExists(device.Path, today, device.Postfix, int.Parse(device.Floor));
+                            bool exist = FileOperation.IsFileExists(path, today, postfix, floor);
 
                             if (exist) {
                                 results[device.Path] = new ConnectionResult {
@@ -222,6 +278,7 @@ namespace AutoPatrol.Utility
                             PromptMessage.ETHERNET_CABLE_PULLED_OUT,
                             PromptMessage.IP_CHANGE,
                         };
+                        // 使用device.Path而不是局部变量path，是因为要基于源路径对字典进行搜索，印刷机的path是动态拼接的
                         results[device.Path] = new ConnectionResult { Status = ConnectionStatus.Failure, Profile = PromptMessage.ACCESS_PATH_FAILURE, Message = string.Join('，', message) };
                     }
                 }
@@ -245,7 +302,6 @@ namespace AutoPatrol.Utility
             await Task.WhenAll(tasks);
             return results;
         }
-
 
         /// <summary>
         /// 异步连接到指定的网络共享路径
@@ -374,133 +430,6 @@ namespace AutoPatrol.Utility
         }
 
         #endregion
-
-
-        #region 废弃代码
-
-        /// <summary>
-        /// 使用Windows命令行工具net use连接到远程共享文件夹
-        /// </summary>
-        /// <param name="ip">远程计算机IP地址或主机名</param>
-        /// <param name="userName">用于身份验证的用户名</param>
-        /// <param name="password">用于身份验证的密码</param>
-        /// <returns></returns>
-        public static bool ConnectShareFolder_Windows(string ip, string userName, string password) {
-            bool flag = false;
-            Process process = new Process();
-
-            try {
-                // 配置命令行进程
-                process.StartInfo.FileName = "cmd.exe";                   // 指定要启动的程序为命令提示符
-                process.StartInfo.UseShellExecute = false;                // 不使用操作系统外壳程序启动进程
-                process.StartInfo.RedirectStandardInput = true;           // 重定向标准输入，以便向进程发送命令
-                process.StartInfo.RedirectStandardOutput = true;          // 重定向标准输出，以便获取命令执行结果
-                process.StartInfo.RedirectStandardError = true;           // 重定向错误输出，以便获取错误信息
-                process.StartInfo.CreateNoWindow = true;                  // 不创建可见窗口
-
-                // 启动命令行进程
-                process.Start();
-
-                // 构建并执行net use命令连接到共享文件夹
-                // 格式示例: net use \\192.168.1.100 /User:domain\username password /PERSISTENT:NO
-                string command = "net use \\\\" + ip + " /User:" + userName + " " + password + " /PERSISTENT:NO";
-                process.StandardInput.WriteLine(command);
-
-                // 执行exit命令退出命令提示符
-                process.StandardInput.WriteLine("exit");
-
-                // 等待进程执行完成
-                // 循环等待，每次等待1秒，避免无限阻塞
-                while (!process.HasExited) {
-                    process.WaitForExit(1000);
-                }
-
-                // 获取命令执行的错误输出
-                string errorOutput = process.StandardError.ReadToEnd();
-                process.StandardError.Close();
-
-                // 如果错误输出为空，表示命令成功执行
-                if (string.IsNullOrEmpty(errorOutput)) {
-                    return true;
-                }
-
-                // 若有错误输出，抛出包含错误信息的异常
-                throw new Exception(errorOutput);
-            }
-            catch (Exception ex) {
-                // 捕获异常并重新抛出，保持调用栈完整性
-                throw ex;
-            }
-            finally {
-                // 确保无论是否发生异常，都释放进程资源
-                process.Close();
-                process.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// 获取共享路径的根路径
-        /// </summary>
-        /// <param name="directory"></param>
-        /// <returns></returns>
-        private static void GetRootSharePath(string directory) {
-            string pattern = @"^\\\\(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\\(?=[^\\]*)"; // 严格匹配 IP 地址
-
-            Match match = Regex.Match(directory, pattern);
-            if (match.Success) {
-                string rootPath = match.Value; // 结果：\\10.2.181.141\
-            }
-        }
-
-        /// <summary>
-        /// Ping IP 地址并返回结果
-        /// </summary>
-        /// <param name="ip">IP地址</param>
-        /// <returns></returns>
-        public static async Task<bool> PingIP(string ip) {
-            if (string.IsNullOrEmpty(ip)) {
-                return false;
-            }
-
-            try {
-                using (Ping ping = new Ping()) {
-                    PingReply reply = await ping.SendPingAsync(ip);
-                    return reply.Status == IPStatus.Success;
-                }
-            }
-            catch {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Ping IP 地址集合并分别返回结果
-        /// </summary>
-        /// <param name="ipList">IP地址集合</param>
-        /// <returns></returns>
-        public static async IAsyncEnumerable<bool> PingIPList2(List<string> ipList) {
-            if (ipList == null || ipList.Count == 0) {
-                yield break;
-            }
-
-            using (Ping ping = new Ping()) {
-                bool result;
-                foreach (var ip in ipList) {
-                    try {
-                        PingReply reply = await ping.SendPingAsync(ip, 500);
-                        result = reply.Status == IPStatus.Success;
-                    }
-                    catch {
-                        // 单个IP ping失败，返回false但继续处理其他IP
-                        result = false;
-                    }
-                    yield return result;
-                }
-            }
-        }
-
-        #endregion
-
     }
 
 

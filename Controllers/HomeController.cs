@@ -25,7 +25,6 @@ namespace AutoPatrol.Controllers
         }
 
         public IActionResult Index() {
-            // ViewBag.FilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Record");
             return View();
         }
 

@@ -68,7 +68,7 @@
     .scroll-bar {
         /* 固定高度 */
         min-height: 200px;
-        max-height: 450px;
+        max-height: 425px;
         overflow-y: scroll;
         border-radius: 0.375rem;
         padding: 0 25px;
@@ -111,8 +111,8 @@
         <h4 class="text-lg font-bold text-black" style="margin: 15px 0 0 15px; font-size: 18px">模板设置</h4>
     </div>
     <div class="file-input-area mx-5 my-3">
-        <input class="file-input" type="file" id="fileInput" />
-        <p id="filePath">未选择文件</p>
+        <input class="file-input" type="file" id="fileInput"/>
+        <p id="filePath">模板文件导入</p>
     </div>
 </div>
 
@@ -446,11 +446,12 @@
                         newRow['ip'] = row[7] !== undefined ? String(row[7]) : '';
                         newRow['logType'] = row[8] !== undefined ? String(row[8]) : '';
                         newRow['path'] = row[9] !== undefined ? String(row[9]) : '';
-                        newRow['floor'] = row[10] !== undefined ? row[10] : '1';
+                        newRow['floor'] = row[10] !== undefined ? String(row[10]) : '1';
                         newRow['postfix'] = row[11] !== undefined ? String(row[11]) : '';
                         newRow['account'] = row[12] !== undefined ? String(row[12]) : '';
                         newRow['password'] = row[13] !== undefined ? String(row[13]) : '';
                         newRow['driverName'] = row[14] !== undefined ? String(row[14]) : '';
+                        newRow['driverType'] = row[15] !== undefined ? String(row[15]) : '';
 
                         extractedData.push(newRow);
                     }

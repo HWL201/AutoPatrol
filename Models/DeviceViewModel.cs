@@ -64,5 +64,10 @@
         /// 驱动名称
         /// </summary>
         public string? DriverName { get; set; }
+
+        /// <summary>
+        /// 驱动类型
+        /// </summary>
+        public string? DriverType { get; set; }
     }
 }
