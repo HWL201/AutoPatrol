@@ -113,7 +113,10 @@ namespace AutoPatrol.Utility
                 // 过滤机况类型，剩下数据类型
                 var dataList = deviceList.Where(a => a.DriverType == "数据").ToList();
 
-                var accessSharePath = await ConnectToSharesAsync(pingResult, dataList);
+                var accessSharePath = await ConnectToSharesAsync(pingResult, dataList);  // 默认10并发
+                //var accessSharePath = await ConnectToSharesAsync(pingResult, dataList, 8);  // 8并发
+                //var accessSharePath = await ConnectToSharesAsync(pingResult, dataList, 6);  // 8并发
+                //var accessSharePath = await ConnectToSharesAsync(pingResult, dataList, 4);  // 8并发
 
                 foreach (var device in dataList) {
                     ConnectionResult connResult;
@@ -197,7 +200,7 @@ namespace AutoPatrol.Utility
             DateTime today = DateTime.Today;
 
             // 使用信号量控制最大并发数，防止资源耗尽
-            var semaphore = new SemaphoreSlim(maxConcurrency);
+            var semaphore = new SemaphoreSlim(maxConcurrency); 
 
             // 为每个共享路径创建异步任务
             var tasks = devices.Select(async device => {
@@ -241,27 +244,31 @@ namespace AutoPatrol.Utility
                         bool success = await ConnectToShareAsync(path, account, password);
 
                         if (success) {
+                            try {
+                                // 获取目录中的所有文件
+                                bool exist = FileOperation.IsFileExists(path, today, postfix, floor);
 
-                            // 获取目录中的所有文件
-                            bool exist = FileOperation.IsFileExists(path, today, postfix, floor);
-
-                            if (exist) {
-                                results[device.Path] = new ConnectionResult {
-                                    Status = ConnectionStatus.Success,
-                                    Profile = "无异常",
-                                    Message = ""
-                                };
+                                if (exist) {
+                                    results[device.Path] = new ConnectionResult {
+                                        Status = ConnectionStatus.Success,
+                                        Profile = "无异常",
+                                        Message = ""
+                                    };
+                                }
+                                else {
+                                    List<string> message = new List<string>() {
+                                        PromptMessage.DEVICE_NOT_PRODUCED,
+                                        PromptMessage.LOG_PATH_CHANGE,
+                                    };
+                                    results[device.Path] = new ConnectionResult {
+                                        Status = ConnectionStatus.Success,
+                                        Profile = PromptMessage.DAILY_LOG_NOT_EXIST,
+                                        Message = string.Join("，", message),
+                                    };
+                                }
                             }
-                            else {
-                                List<string> message = new List<string>() {
-                                    PromptMessage.DEVICE_NOT_PRODUCED,
-                                    PromptMessage.LOG_PATH_CHANGE,
-                                };
-                                results[device.Path] = new ConnectionResult {
-                                    Status = ConnectionStatus.Success,
-                                    Profile = PromptMessage.DAILY_LOG_NOT_EXIST,
-                                    Message = string.Join("，", message),
-                                };
+                            finally {
+                                DisconnectShare(path, true);
                             }
                         }
                         else {
