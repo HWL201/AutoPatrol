@@ -120,7 +120,11 @@ namespace AutoPatrol.Utility
         public static List<FileInfo> GetFiles(string filePath, int floor) {
             List<FileInfo> files = new List<FileInfo>();
 
-            foreach (var item in GetDirectorys(filePath, floor)) {
+            //foreach (var item in GetDirectorys(filePath, floor)) {
+            //    files.AddRange(item.GetFiles());
+            //}
+
+            foreach (var item in GetDirectorys(filePath)) {
                 files.AddRange(item.GetFiles());
             }
 
@@ -147,6 +151,42 @@ namespace AutoPatrol.Utility
             }
 
             return directorys;
+        }
+
+        /// <summary>
+        /// 返回路径下所有子目录
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <returns></returns>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        public static List<DirectoryInfo> GetDirectorys(string rootPath) {
+            if (!Directory.Exists(rootPath))
+                throw new DirectoryNotFoundException($"目录不存在: {rootPath}");
+
+            var directories = new List<DirectoryInfo>();
+            var stack = new Stack<DirectoryInfo>();
+            stack.Push(new DirectoryInfo(rootPath));
+
+            while (stack.Count > 0) {
+                var currentDir = stack.Pop();
+
+                try {
+                    // 将当前目录添加到结果列表
+                    directories.Add(currentDir);
+
+                    // 获取子目录并压入栈
+                    foreach (var subDir in currentDir.GetDirectories()) {
+                        stack.Push(subDir);
+                    }
+                }
+                catch (UnauthorizedAccessException) {
+                    Console.WriteLine($"警告: 无权访问目录 {currentDir.FullName}");
+                }
+                catch (DirectoryNotFoundException) {
+                    Console.WriteLine($"警告: 目录已不存在 {currentDir.FullName}");
+                }
+            }
+            return directories.OrderBy(d => d.LastWriteTime).ToList();
         }
 
 
