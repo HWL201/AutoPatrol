@@ -197,33 +197,39 @@
                         });
                         break;
                     case 'manualPatrol':
-                        fetch('/Home/ManualPatrol', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(allData)
-                        })
-                        .then(response => {
-                            return response.json().then(data => {
-                                if (!response.ok) {
-                                    throw new Error(data.message || `操作失败 (${response.status})`);
-                                }
-                                return data; // 200 状态码，正常返回数据
+                        if(data.length !== 0) {
+                            fetch('/Home/ManualPatrol', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(data)
+                            })
+                            .then(response => {
+                                return response.json().then(data => {
+                                    if (!response.ok) {
+                                        throw new Error(data.message || `操作失败 (${response.status})`);
+                                    }
+                                    return data; // 200 状态码，正常返回数据
+                                });
+                            })
+                            .then(data => {
+                                layer.msg(data.message, {
+                                    time: 2000,
+                                    icon: 1
+                                });
+                            })
+                            .catch(error => {
+                                layer.msg(error.message, {
+                                    time: 2000,
+                                    icon: 2
+                                });
                             });
-                        })
-                        .then(data => {
-                            layer.msg(data.message, {
-                                time: 2000,
-                                icon: 1
-                            });
-                        })
-                        .catch(error => {
-                            layer.msg(error.message, {
-                                time: 2000,
-                                icon: 2
-                            });
-                        });
+                        }
+                        else {
+                            layer.msg('未选中行', { icon: 2 });
+                        }
+                        
                         break;
                     default:
                 };

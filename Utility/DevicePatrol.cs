@@ -114,7 +114,7 @@ namespace AutoPatrol.Utility
                 // 过滤机况类型，剩下数据类型
                 var dataList = deviceList.Where(a => a.DriverType == "数据").ToList();
 
-                var accessSharePath = await ConnectToSharesAsync(pingResult, dataList);  // 默认10并发
+                var accessSharePath = await ConnectToSharesAsync(pingResult, dataList, 5);  // 默认10并发
                 //var accessSharePath = await ConnectToSharesAsync(pingResult, dataList, 8);  // 8并发
                 //var accessSharePath = await ConnectToSharesAsync(pingResult, dataList, 6);  // 8并发
                 //var accessSharePath = await ConnectToSharesAsync(pingResult, dataList, 4);  // 8并发
@@ -231,18 +231,18 @@ namespace AutoPatrol.Utility
                     }
                     // 如果设备IP是PING通的
                     else if (pingResult[ip]) {
-
-                        //string path = device.Path;
-                        //string account = device.Account == "/" ? "" : device.Account;
-                        //string password = device.Password == "/" ? "" : device.Password;
-                        //string postfix = device.Postfix == "/" ? "" : device.Account;
                         int floor = int.Parse(device.Floor);
                         // 如果是印刷机，需要额外的处理逻辑
                         if (device.DriverName == "CQ.IOT.HT.PanasonicPrintingDriver.dll") {
                             path = path.Replace("*", today.ToString("yyyy-MM-dd"));
                         }
                         // 执行连接操作
+
+                        Console.WriteLine($"{device.Line} {device.Code} {path} 执行共享连接");
+                        Stopwatch stopwatch = Stopwatch.StartNew();
                         bool success = await ConnectToShareAsync(path, account, password);
+                        stopwatch.Stop();
+                        Console.WriteLine($"连接耗时: {stopwatch.ElapsedMilliseconds} 毫秒");
 
                         if (success) {
                             try {
@@ -269,6 +269,8 @@ namespace AutoPatrol.Utility
                                 }
                             }
                             finally {
+                                // 断开共享连接
+                                Console.WriteLine($"{device.Line} {device.Code} {path} 断开共享连接");
                                 DisconnectShare(path, true);
                             }
                         }
@@ -322,6 +324,8 @@ namespace AutoPatrol.Utility
         public static async Task<bool> ConnectToShareAsync(string sharePath, string username, string password) {
             // 使用 Task.Run 将同步操作转换为异步执行
             // return await Task.Run(() => ConnectToShare(sharePath, username, password));
+
+            /*  同步函数异步调用，可能无法取消
             var cts = new CancellationTokenSource(3000);
             try {
                 return await Task.Run(() => ConnectToShare(sharePath, username, password), cts.Token);
@@ -330,6 +334,24 @@ namespace AutoPatrol.Utility
                 WNetCancelConnection2(sharePath, 0, true);
                 return false;
             }
+            */
+
+            try {
+                var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
+                var timeoutTask = Task.Delay(3000);
+                var completedTask = await Task.WhenAny(connectTask, timeoutTask);   // completedTask 指向最先完成的任务
+
+                if (completedTask == timeoutTask) { // 如果超时
+                    DisconnectShare(sharePath, true);
+                    return false;
+                }
+
+                return await connectTask;
+            }
+            catch {
+                return false;
+            }
+            
         }
 
 
