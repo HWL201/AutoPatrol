@@ -3,9 +3,14 @@
     public class PromptMessage
     {
         /// <summary>
-        /// IP地址无法PING通
+        /// 设备IP地址无法PING通
         /// </summary>
-        public static readonly string IP_ADDRESS_PING_FAILURE = "IP地址无法PING通";
+        public static readonly string DEVICE_IP_ADDRESS_PING_FAILURE = "IP地址无法PING通";
+
+        /// <summary>
+        /// 网关IP地址无法PING通
+        /// </summary>
+        public static readonly string GATEWAY_IP_ADDRESS_PING_FAILURE = "网关IP不通，机况异常";
 
         /// <summary>
         /// 设备关机

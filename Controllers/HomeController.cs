@@ -122,7 +122,7 @@ namespace AutoPatrol.Controllers
                             product_code = "",
                             @params = new List<dynamic>() {
                                 new { 
-                                    k = result.Message,
+                                    k = "STATUS_MSG",
                                     v = result.Describe,
                                 }
                             }

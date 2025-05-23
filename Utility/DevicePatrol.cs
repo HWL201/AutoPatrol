@@ -81,12 +81,12 @@ namespace AutoPatrol.Utility
                     if (DriverClassify.TypeJudge(device.DriverName) == "机况") {
                         if (pingResult.TryGetValue(device.Ip, out isPingSuccess) && isPingSuccess) {
                             result = "成功";
-                            describe = "无异常";
+                            describe = "正常";
                             message.Add("");
                         }
                         else {
                             result = "失败";
-                            describe = PromptMessage.IP_ADDRESS_PING_FAILURE;
+                            describe = PromptMessage.GATEWAY_IP_ADDRESS_PING_FAILURE;
                             message.Add(PromptMessage.DEVICE_REMOVAL);
                             message.Add(PromptMessage.DEVICE_SHUT_DOWN);
                             message.Add(PromptMessage.ETHERNET_CABLE_PULLED_OUT);
@@ -122,7 +122,7 @@ namespace AutoPatrol.Utility
                         }
                         else {
                             result = "失败";
-                            describe = PromptMessage.IP_ADDRESS_PING_FAILURE;
+                            describe = PromptMessage.DEVICE_IP_ADDRESS_PING_FAILURE;
                             message.Add(PromptMessage.DEVICE_SHUT_DOWN);
                             message.Add(PromptMessage.ETHERNET_CABLE_PULLED_OUT);
                             message.Add(PromptMessage.IP_CHANGE);

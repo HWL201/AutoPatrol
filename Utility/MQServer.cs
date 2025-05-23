@@ -120,7 +120,7 @@ namespace AutoPatrol.Utility
                         // 创建通道
                         _channel = _connection.CreateModel();
 
-                        // ✅ 关键：在通道创建后立即启用确认模式
+                        // 关键：在通道创建后立即启用确认模式
                         _channel.ConfirmSelect(); // 必须在此处调用！
 
                         ConfigureConnectionEvents();
