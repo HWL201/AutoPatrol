@@ -56,6 +56,12 @@ namespace AutoPatrol.Utility
                     rowData.Result = worksheet.Cells[row, 7].Value.ToString();
                     rowData.Describe = worksheet.Cells[row, 8].Value.ToString();
                     rowData.Message = worksheet.Cells[row, 9].Value.ToString();
+                    if (int.TryParse(worksheet.Cells[row, 10].Value?.ToString(), out int duration)) {
+                        rowData.Duration = duration;
+                    }
+                    else {
+                        rowData.Duration = 1;
+                    }
                     result.Add(rowData);
                 }
             }

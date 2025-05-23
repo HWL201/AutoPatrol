@@ -13,14 +13,19 @@ namespace AutoPatrol
             builder.Services.AddScoped<ITimerService, TimerService>();
 
             // 添加日志服务
-            builder.Services.AddLogging(loggingBuilder =>
-            {
+            builder.Services.AddLogging(loggingBuilder => {
                 loggingBuilder.AddConsole();
                 loggingBuilder.AddDebug();
             });
 
             // 注册定时任务服务
             builder.Services.AddHostedService<FixedTimeScheduler>();
+
+            // 绑定配置文件中的 "DeviceTagCfg" 节点到 DeviceTagConfig 类
+            builder.Services.Configure<MqConfig>(builder.Configuration.GetSection("DeviceTagCfg"));
+
+            // 注册 MQServer 
+            builder.Services.AddSingleton<MQServer>();
 
             var app = builder.Build();
 

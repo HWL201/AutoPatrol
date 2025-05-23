@@ -18,10 +18,14 @@ namespace AutoPatrol.Controllers
 
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment) {
+        private readonly MQServer _mqServer;
+
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment, MQServer mqServer) {
             _logger = logger;
 
             _webHostEnvironment = webHostEnvironment;
+
+            _mqServer = mqServer;
         }
 
         public IActionResult Index() {
@@ -97,6 +101,41 @@ namespace AutoPatrol.Controllers
             return Ok(new { code = 200, message = "加载成功", data = fileNameList });
         }
 
+
+        public async Task<IActionResult> ThrowUpData([FromBody] List<ResultViewModel> resultList) {
+            if (!ModelState.IsValid) {
+                return BadRequest(new { code = 400, message = "数据模型匹配失败" });
+            }
+            if (resultList == null || resultList.Count == 0) {
+                return BadRequest(new { code = 400, message = "无可用巡检信息" });
+            }
+
+            try {
+                foreach (var result in resultList) {
+                    await _mqServer.SendMesDataAsync(new {
+                        trx_name = "eqp_data",
+                        rpt_time = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff"),
+                        box_code = result.Code,
+                        msg_id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
+                        data = new {
+                            eqp_code = result.Code,
+                            product_code = "",
+                            @params = new List<dynamic>() {
+                                new { 
+                                    k = result.Message,
+                                    v = result.Describe,
+                                }
+                            }
+                        }
+                    });
+                }
+
+                return Ok(new { status = 200, message = "上抛成功" });
+            }
+            catch (Exception ex) {
+                return StatusCode(500, new { status = 500, message = ex.Message });
+            }
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {

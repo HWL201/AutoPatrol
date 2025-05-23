@@ -65,6 +65,7 @@
         <div class="layui-btn-container">
             <button class="layui-btn" lay-event="showCheckRow">显示</button>
             <button class="layui-btn" lay-event="copyCheckRowData">复制</button>
+            <button class="layui-btn" lay-event="throwUpData">上抛</button>
             <button class="layui-btn layui-btn-primary" lay-event="resetTable">重置</button>
         </div>
         <div class="layui-input-wrap me-3" style="width: 160px;margin-left: 100px">
@@ -200,6 +201,7 @@
                         { field:'result', width: 160, title: '巡检结论', align: 'center' },
                         { field:'describe', width: 160, title: '异常描述', align: 'center' },
                         { field:'message', width: 240, title: '可能原因', align: 'center' },
+                        { field:'duration', width: 240, title: '持续天数', align: 'center' },
                         { fixed:'right', width: 100, title: '操作', templet: '#operationList', align: 'center' },
                     ]],
                     done: function() {
@@ -299,6 +301,35 @@
                                 layer.msg('未选中行', { icon: 2 });
                             }
                             break;
+
+                        case 'throwUpData':
+                            fetch('/Home/ThrowUpData', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(allData)
+                            })
+                            .then(response => {
+                                return response.json().then(data => {
+                                    if (!response.ok) {
+                                        throw new Error(data.message || `操作失败 (${response.status})`);
+                                    }
+                                    return data; // 200 状态码，正常返回数据
+                                });
+                            })
+                            .then(data => {
+                                layer.msg(data.message, {
+                                    time: 2000,
+                                    icon: 1
+                                });
+                            })
+                            .catch(error => {
+                                layer.msg(error.message, {
+                                    time: 2000,
+                                    icon: 2
+                                });
+                            });
                         case 'resetTable':
                             table.reload(id, {
                                 data: allData

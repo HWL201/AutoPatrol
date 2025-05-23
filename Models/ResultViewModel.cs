@@ -49,5 +49,10 @@
         /// 提示信息
         /// </summary>
         public string? Message { get; set; }
+
+        /// <summary>
+        /// 持续时间
+        /// </summary>
+        public int Duration { get; set; } = 1;
     }
 }
