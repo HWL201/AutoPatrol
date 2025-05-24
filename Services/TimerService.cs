@@ -9,8 +9,12 @@ namespace AutoPatrol.Services
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public TimerService(IWebHostEnvironment webHostEnvironment) {
+        private readonly MQServer _mqServer;
+
+        public TimerService(IWebHostEnvironment webHostEnvironment, MQServer mqServer) {
             _webHostEnvironment = webHostEnvironment;
+
+            _mqServer = mqServer;
         }
 
         public async Task ExecuteScheduledTaskAsync() {
@@ -33,7 +37,30 @@ namespace AutoPatrol.Services
                 string fileName = $"{DateTime.Now.ToString("yyyyMMdd")}自动巡检{GetShiftName()}.xlsx";
                 string filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Record", fileName);
 
-                await DevicePatrol.Patrol(deviceList, filePath);
+                var resultList = await DevicePatrol.Patrol(deviceList, filePath);
+
+                await _mqServer.InitializeAsync();
+
+                foreach (var result in resultList) {
+                    await _mqServer.SendMesDataAsync(new {
+                        trx_name = "eqp_data",
+                        rpt_time = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff"),
+                        box_code = result.Code,
+                        msg_id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
+                        data = new {
+                            eqp_code = result.Code,
+                            product_code = "",
+                            @params = new List<dynamic>() {
+                                new {
+                                    k = "STATUS_MSG",
+                                    v = result.Describe,
+                                }
+                            }
+                        }
+                    });
+                }
+
+                _mqServer.CloseConnection();
 
                 await Task.CompletedTask;
             }

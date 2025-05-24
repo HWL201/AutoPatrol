@@ -31,7 +31,7 @@ namespace AutoPatrol.Utility
             }
             */
 
-            var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
+            /*var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
 
             try {
                 // 等待连接任务完成或超时
@@ -44,14 +44,22 @@ namespace AutoPatrol.Utility
                 // 连接任务已完成，获取结果
                 return await connectTask;
             }
-            //catch (Win32Exception) {
-            //    // 将 Win32Exception 重新抛出，让调用者处理
-            //    throw;
-            //}
-            //catch {
-            //    // 其他异常仍然返回 false
-            //    return false;
-            //}
+            catch {
+                throw;
+            }*/
+
+            try {
+                var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
+                var timeoutTask = Task.Delay(3000);
+                var completedTask = await Task.WhenAny(connectTask, timeoutTask);   // completedTask 指向最先完成的任务
+
+                if (completedTask == timeoutTask) { // 如果超时
+                    DisconnectShare(sharePath, true);
+                    return false;
+                }
+
+                return await connectTask;
+            }
             catch {
                 throw;
             }

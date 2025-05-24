@@ -23,7 +23,7 @@ namespace AutoPatrol.Utility
         /// <param name="deviceList"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static async Task Patrol(List<DeviceViewModel> allDeviceList, string filePath) {
+        public static async Task<List<ResultViewModel>> Patrol(List<DeviceViewModel> allDeviceList, string filePath) {
             // 获取最近一份记录
             List<ResultViewModel> lastRecords = new List<ResultViewModel>();
             List<ResultViewModel> nextRecords = new List<ResultViewModel>();
@@ -256,12 +256,12 @@ namespace AutoPatrol.Utility
 
                 int rowIndex = 2;
                 foreach (var record in sortedRecords) {
+                    worksheet.Cells[rowIndex, 1].Value = record.Line;
                     worksheet.Cells[rowIndex, 2].Value = record.Num;
                     worksheet.Cells[rowIndex, 3].Value = record.DeviceType;
                     worksheet.Cells[rowIndex, 4].Value = record.Code;
                     worksheet.Cells[rowIndex, 5].Value = record.Ip;
                     worksheet.Cells[rowIndex, 6].Value = record.Item;
-                    worksheet.Cells[rowIndex, 1].Value = record.Line;
                     worksheet.Cells[rowIndex, 7].Value = record.Result;
                     worksheet.Cells[rowIndex, 8].Value = record.Describe;
                     worksheet.Cells[rowIndex, 9].Value = record.Message;
@@ -273,6 +273,8 @@ namespace AutoPatrol.Utility
             }
 
             FileOperation.WriteExcel(stream, filePath);
+
+            return nextRecords;
         }
 
 

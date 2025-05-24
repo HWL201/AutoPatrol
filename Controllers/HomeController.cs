@@ -111,6 +111,8 @@ namespace AutoPatrol.Controllers
             }
 
             try {
+                await _mqServer.InitializeAsync();
+
                 foreach (var result in resultList) {
                     await _mqServer.SendMesDataAsync(new {
                         trx_name = "eqp_data",
@@ -129,6 +131,8 @@ namespace AutoPatrol.Controllers
                         }
                     });
                 }
+
+                _mqServer.CloseConnection();
 
                 return Ok(new { status = 200, message = "上抛成功" });
             }

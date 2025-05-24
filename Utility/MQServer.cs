@@ -32,7 +32,22 @@ namespace AutoPatrol.Utility
             _config = configOptions.Value;
 
             // 初始化连接
-            _ = InitializeAsync();
+            // _ = InitializeAsync();
+
+            // 设置定时重试任务
+            //_retryTimer = new Timer(
+            //    async _ => await RetryFailedMessagesAsync(),
+            //    null,
+            //    TimeSpan.FromSeconds(30),  // 首次延迟30秒
+            //    _retryInterval);  // 之后每5分钟重试一次
+        }
+
+        /// <summary>
+        /// 异步初始化
+        /// </summary>
+        /// <returns></returns>
+        public async Task InitializeAsync() {
+            await InitMQChannelAsync();
 
             // 设置定时重试任务
             _retryTimer = new Timer(
@@ -41,17 +56,6 @@ namespace AutoPatrol.Utility
                 TimeSpan.FromSeconds(30),  // 首次延迟30秒
                 _retryInterval);  // 之后每5分钟重试一次
         }
-
-        // 异步初始化
-        private async Task InitializeAsync() {
-            await InitMQChannelAsync();
-        }
-
-        /// <summary>
-        /// 发送MQ数据
-        /// </summary>
-        /// 
-
 
         /// <summary>
         /// 发送MQ数据
@@ -260,8 +264,12 @@ namespace AutoPatrol.Utility
         /// <summary>
         /// 关闭连接
         /// </summary>
-        private void CloseConnection() {
+        public void CloseConnection() {
             try {
+                _retryTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+                _retryTimer?.Dispose();
+                _retryTimer = null;
+
                 _channel?.Close();
                 _channel?.Dispose();
                 _channel = null;
