@@ -50,7 +50,7 @@ namespace AutoPatrol.Utility
 
             try {
                 var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
-                var timeoutTask = Task.Delay(3000);
+                var timeoutTask = Task.Delay(10000);
                 var completedTask = await Task.WhenAny(connectTask, timeoutTask);   // completedTask 指向最先完成的任务
 
                 if (completedTask == timeoutTask) { // 如果超时
@@ -145,13 +145,20 @@ namespace AutoPatrol.Utility
         /// <returns>对应的连接状态</returns>
         public static ConnectionResult MapWin32ErrorCodeToStatus(int errorCode) {
             switch (errorCode) {
-                case 5:     // 无访问权限
+                //case 5:     // 无访问权限
+                //    return new ConnectionResult() {
+                //        Status = ConnectionStatus.PermissionDenied,
+                //        Profile = PromptMessage.ACCESS_PATH_FAILURE,
+                //        Message = PromptMessage.ACCOUNT_NOT_ACCESS_PERMISSIONS,
+                //    };
+
+                case 55:    //  网络资源繁忙
                     return new ConnectionResult() {
-                        Status = ConnectionStatus.PermissionDenied,
+                        Status = ConnectionStatus.NetworkBusy,
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
-                        Message = PromptMessage.ACCOUNT_NOT_ACCESS_PERMISSIONS,
+                        Message = PromptMessage.NETWORK_BUSY,
                     };
-                case 67:    //  共享路径变更
+                case 67:    //  日志路径变更
                     return new ConnectionResult() {
                         Status = ConnectionStatus.PathNotFound,
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
@@ -174,6 +181,12 @@ namespace AutoPatrol.Utility
                         Status = ConnectionStatus.PasswordOverdue,
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
                         Message = PromptMessage.PASSWORD_OVERDUE,
+                    };
+                case 1327:  // 无访问权限
+                    return new ConnectionResult() {
+                        Status = ConnectionStatus.PermissionDenied,
+                        Profile = PromptMessage.ACCESS_PATH_FAILURE,
+                        Message = PromptMessage.ACCOUNT_NOT_ACCESS_PERMISSIONS,
                     };
                 //case 53:
                 //    return new ConnectionResult() {
@@ -282,6 +295,7 @@ namespace AutoPatrol.Utility
         PermissionDenied,       // 权限被拒绝
         NetworkError,           // 网络错误
         PasswordOverdue,        // 密码过期
-        UnknownError            // 未知错误
+        NetworkBusy,            // 网络繁忙
+        UnknownError,            // 未知错误
     }
 }

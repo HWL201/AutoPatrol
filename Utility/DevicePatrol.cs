@@ -476,7 +476,7 @@ namespace AutoPatrol.Utility
                             results[device.Path] = new ConnectionResult {
                                 Status = ConnectionStatus.Failure,
                                 Profile = PromptMessage.CONNECTION_TIMED_OUT,
-                                Message = "未知原因",
+                                Message = "网络异常",
                             };
                         }
                     }

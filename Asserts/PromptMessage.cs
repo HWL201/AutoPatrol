@@ -63,7 +63,7 @@
         public static readonly string LOG_PATH_CHANGE = "日志路径变更";
 
         /// <summary>
-        /// 日志路径变更
+        /// 设备未生产
         /// </summary>
         public static readonly string DEVICE_NOT_PRODUCED = "设备未生产";
 
@@ -76,5 +76,15 @@
         /// 连接超时
         /// </summary>
         public static readonly string CONNECTION_TIMED_OUT = "连接超时";
+
+        /// <summary>
+        /// 网络繁忙
+        /// </summary>
+        public static readonly string NETWORK_BUSY = "网络繁忙";
+
+        /// <summary>
+        /// 找不到网络名
+        /// </summary>
+        public static readonly string NETWORK_NOT_FOUND = "找不到网络名";
     }
 }
