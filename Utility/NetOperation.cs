@@ -1,4 +1,5 @@
 ﻿using AutoPatrol.Asserts;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace AutoPatrol.Utility
@@ -30,22 +31,30 @@ namespace AutoPatrol.Utility
             }
             */
 
-            try {
-                var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
-                var timeoutTask = Task.Delay(3000);
-                var completedTask = await Task.WhenAny(connectTask, timeoutTask);   // completedTask 指向最先完成的任务
+            var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
 
-                if (completedTask == timeoutTask) { // 如果超时
+            try {
+                // 等待连接任务完成或超时
+                if (await Task.WhenAny(connectTask, Task.Delay(5000)) != connectTask) {
+                    // 如果不是连接任务先完成，说明超时了
                     DisconnectShare(sharePath, true);
                     return false;
                 }
 
+                // 连接任务已完成，获取结果
                 return await connectTask;
             }
+            //catch (Win32Exception) {
+            //    // 将 Win32Exception 重新抛出，让调用者处理
+            //    throw;
+            //}
+            //catch {
+            //    // 其他异常仍然返回 false
+            //    return false;
+            //}
             catch {
-                return false;
+                throw;
             }
-
         }
 
 
@@ -77,7 +86,12 @@ namespace AutoPatrol.Utility
                 username,
                 0); // 0表示默认标志，不保存连接
 
-            return result == 0;
+            // return result == 0;
+            // 如果连接失败，抛出 Win32Exception
+            if (result != 0)
+                throw new Win32Exception(result);
+
+            return true;
         }
 
 
@@ -123,36 +137,48 @@ namespace AutoPatrol.Utility
         /// <returns>对应的连接状态</returns>
         public static ConnectionResult MapWin32ErrorCodeToStatus(int errorCode) {
             switch (errorCode) {
-                case 5:     // ERROR_ACCESS_DENIED
+                case 5:     // 无访问权限
                     return new ConnectionResult() {
                         Status = ConnectionStatus.PermissionDenied,
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
                         Message = PromptMessage.ACCOUNT_NOT_ACCESS_PERMISSIONS,
                     };
-                case 1219:  // ERROR_MULTIPLE_LOGONS
-                    return new ConnectionResult() {
-                        Status = ConnectionStatus.NetworkError,
-                        Profile = PromptMessage.ACCESS_PATH_FAILURE,
-                        Message = PromptMessage.MULTIPLE_LOGONS,
-                    };
-                case 1326:  // ERROR_LOGON_FAILURE
-                    return new ConnectionResult() {
-                        Status = ConnectionStatus.InvalidCredentials,
-                        Profile = PromptMessage.ACCESS_PATH_FAILURE,
-                        Message = PromptMessage.ACCOUNT_OR_PASSWORD_ERROR,
-                    };
-                case 53:    // ERROR_BAD_NETPATH
+                case 67:    //  共享路径变更
                     return new ConnectionResult() {
                         Status = ConnectionStatus.PathNotFound,
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
                         Message = PromptMessage.LOG_PATH_CHANGE,
                     };
-                case 67:    // ERROR_NETNAME_DELETED
+                case 86:    // 账号或密码错误
                     return new ConnectionResult() {
-                        Status = ConnectionStatus.PathNotFound,
+                        Status = ConnectionStatus.InvalidCredentials,
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
-                        Message = "共享名称被删除或服务器暂时无法访问",
+                        Message = PromptMessage.ACCOUNT_OR_PASSWORD_ERROR,
                     };
+                case 1219:  // 多凭据重复登录
+                    return new ConnectionResult() {
+                        Status = ConnectionStatus.NetworkError,
+                        Profile = PromptMessage.ACCESS_PATH_FAILURE,
+                        Message = PromptMessage.MULTIPLE_LOGONS,
+                    };
+                case 1326:  // 密码过期
+                    return new ConnectionResult() {
+                        Status = ConnectionStatus.PasswordOverdue,
+                        Profile = PromptMessage.ACCESS_PATH_FAILURE,
+                        Message = PromptMessage.PASSWORD_OVERDUE,
+                    };
+                //case 53:
+                //    return new ConnectionResult() {
+                //        Status = ConnectionStatus.PathNotFound,
+                //        Profile = PromptMessage.ACCESS_PATH_FAILURE,
+                //        Message = PromptMessage.LOG_PATH_CHANGE,
+                //    };
+                //case 1330:
+                //    return new ConnectionResult() {
+                //        Status = ConnectionStatus.PasswordOverdue,
+                //        Profile = PromptMessage.ACCESS_PATH_FAILURE,
+                //        Message = PromptMessage.PASSWORD_OVERDUE,
+                //    };
                 default:
                     return new ConnectionResult() {
                         Status = ConnectionStatus.UnknownError,
@@ -247,6 +273,7 @@ namespace AutoPatrol.Utility
         PathNotFound,           // 路径不存在
         PermissionDenied,       // 权限被拒绝
         NetworkError,           // 网络错误
+        PasswordOverdue,        // 密码过期
         UnknownError            // 未知错误
     }
 }

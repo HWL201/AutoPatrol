@@ -5,7 +5,7 @@
         /// <summary>
         /// 设备IP地址无法PING通
         /// </summary>
-        public static readonly string DEVICE_IP_ADDRESS_PING_FAILURE = "IP地址无法PING通";
+        public static readonly string DEVICE_IP_ADDRESS_PING_FAILURE = "电脑IP地址无法PING通";
 
         /// <summary>
         /// 网关IP地址无法PING通
@@ -40,7 +40,7 @@
         /// <summary>
         /// 密码过期
         /// </summary>
-        public static readonly string PASSWORD_LAPSED = "密码过期";
+        public static readonly string PASSWORD_OVERDUE = "密码过期";
 
         /// <summary>
         /// 当前账号无访问权限
@@ -71,5 +71,10 @@
         /// 设备被拆除
         /// </summary>
         public static readonly string DEVICE_REMOVAL = "设备被拆除";
+
+        /// <summary>
+        /// 连接超时
+        /// </summary>
+        public static readonly string CONNECTION_TIMED_OUT = "连接超时";
     }
 }

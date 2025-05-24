@@ -159,6 +159,7 @@ namespace AutoPatrol.Utility
             return directorys;
         }
 
+
         /// <summary>
         /// 返回路径下所有子目录
         /// </summary>
@@ -194,6 +195,87 @@ namespace AutoPatrol.Utility
             }
             return directories.OrderBy(d => d.LastWriteTime).ToList();
         }
+
+
+        /// <summary>
+        /// 检查指定根目录下的最新子文件夹中是否存在今天的文件
+        /// </summary>
+        /// <param name="rootFolderPath">根目录路径</param>
+        public static bool CheckLatestFolderForTodayFiles(string rootFolderPath) {
+            try {
+                // 1. 获取最新的子文件夹
+                string latestSubFolder = FindDeepestLatestFolder(rootFolderPath);
+
+                if (latestSubFolder == null) {
+                    Console.WriteLine("未找到任何子文件夹！");
+                    return false;
+                }
+
+                Console.WriteLine($"最新的子文件夹路径: {latestSubFolder}");
+
+                // 2. 检查该文件夹中是否有今天的文件
+                bool foundTodayFile = CheckTodayFilesInFolder(latestSubFolder);
+
+                Console.WriteLine(foundTodayFile
+                    ? "存在今天的日志文件！"
+                    : "未找到今天的日志文件。");
+                return foundTodayFile;
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"发生错误: {ex.Message}");
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// 逐层查找最新的最深层子文件夹
+        /// </summary>
+        static string FindDeepestLatestFolder(string rootFolder) {
+            string currentFolder = rootFolder;
+            string latestSubFolder = null;
+
+            while (true) {
+                // 获取当前层级的子文件夹，并按修改时间降序排序
+                var subFolders = Directory.GetDirectories(currentFolder)
+                    .OrderByDescending(dir => Directory.GetLastWriteTime(dir))
+                    .ToList();
+
+                if (subFolders.Count == 0)
+                    break; // 没有更多子文件夹，退出循环
+
+                latestSubFolder = subFolders.First(); // 当前层级最新的子文件夹
+                currentFolder = latestSubFolder;     // 进入下一层
+            }
+
+            return latestSubFolder ?? rootFolder; // 如果没有任何子文件夹，返回根目录
+        }
+
+
+        /// <summary>
+        /// 检查文件夹中是否有今天的文件（按文件名或修改时间）
+        /// </summary>
+        static bool CheckTodayFilesInFolder(string folderPath) {
+            string todayDateString = DateTime.Now.ToString("yyyy-MM-dd");
+            DateTime today = DateTime.Today;
+
+            foreach (string file in Directory.GetFiles(folderPath)) {
+                // 按文件名匹配（如 log_2023-10-05.txt）
+                if (Path.GetFileName(file).Contains(todayDateString)) {
+                    Console.WriteLine($"匹配到今天的文件（按文件名）: {Path.GetFileName(file)}");
+                    return true;
+                }
+
+                // 按文件修改时间匹配
+                if (File.GetLastWriteTime(file).Date == today) {
+                    Console.WriteLine($"匹配到今天的文件（按修改时间）: {Path.GetFileName(file)}");
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
 
         #region 废弃代码
