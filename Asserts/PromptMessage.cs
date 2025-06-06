@@ -86,5 +86,15 @@
         /// 找不到网络名
         /// </summary>
         public static readonly string NETWORK_NOT_FOUND = "找不到网络名";
+
+        /// <summary>
+        /// 目标服务器不可到达
+        /// </summary>
+        public static readonly string TARGET_SERVER_NOT_REACHABLE = "目标服务器不可到达";
+
+        /// <summary>
+        /// 共享名称错误
+        /// </summary>
+        public static readonly string SHARE_NAME_ERROR = "共享名称错误";
     }
 }

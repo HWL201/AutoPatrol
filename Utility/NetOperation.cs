@@ -151,7 +151,12 @@ namespace AutoPatrol.Utility
                 //        Profile = PromptMessage.ACCESS_PATH_FAILURE,
                 //        Message = PromptMessage.ACCOUNT_NOT_ACCESS_PERMISSIONS,
                 //    };
-
+                case 53:
+                    return new ConnectionResult() {
+                        Status = ConnectionStatus.PathNotFound,
+                        Profile = PromptMessage.ACCESS_PATH_FAILURE,
+                        Message = PromptMessage.LOG_PATH_CHANGE,
+                    };
                 case 55:    //  网络资源繁忙
                     return new ConnectionResult() {
                         Status = ConnectionStatus.NetworkBusy,
@@ -188,12 +193,7 @@ namespace AutoPatrol.Utility
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
                         Message = PromptMessage.ACCOUNT_NOT_ACCESS_PERMISSIONS,
                     };
-                //case 53:
-                //    return new ConnectionResult() {
-                //        Status = ConnectionStatus.PathNotFound,
-                //        Profile = PromptMessage.ACCESS_PATH_FAILURE,
-                //        Message = PromptMessage.LOG_PATH_CHANGE,
-                //    };
+                
                 //case 1330:
                 //    return new ConnectionResult() {
                 //        Status = ConnectionStatus.PasswordOverdue,
