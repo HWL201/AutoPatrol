@@ -16,10 +16,6 @@
     <PackageReference Include="System.Net.NetworkInformation" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Record\" />
-  </ItemGroup>
-
   <ProjectExtensions><VisualStudio><UserProperties config_4deviceinfoconfig_1json__JsonSchema="https://geojson.org/schema/GeoJSON.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# 忽略项目根目录下的 Record 和 Log 文件夹
+Record/
+Log/
