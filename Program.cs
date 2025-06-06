@@ -16,10 +16,12 @@ namespace AutoPatrol
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .MinimumLevel.Override("System", LogEventLevel.Warning)
                 .WriteTo.File(
-                    Path.Combine("Log", $"{DateTime.Now:yyyyMMdd}.log"),
+                    Path.Combine("Log", ".log"),
                     rollingInterval: RollingInterval.Day,
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
+
+            Console.WriteLine(Path.Combine("Log", $"{DateTime.Now:yyyyMMdd}.log"));
 
             builder.Host.UseSerilog();
 

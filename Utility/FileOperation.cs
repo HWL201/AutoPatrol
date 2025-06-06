@@ -168,8 +168,9 @@ namespace AutoPatrol.Utility
         /// <returns></returns>
         /// <exception cref="DirectoryNotFoundException"></exception>
         public static List<DirectoryInfo> GetDirectorys(string rootPath) {
-            if (!Directory.Exists(rootPath))
-                throw new DirectoryNotFoundException($"目录不存在: {rootPath}");
+            Directory.CreateDirectory(rootPath);
+            //if (!Directory.Exists(rootPath))
+            //    throw new DirectoryNotFoundException($"目录不存在: {rootPath}");
 
             var directories = new List<DirectoryInfo>();
             var stack = new Stack<DirectoryInfo>();

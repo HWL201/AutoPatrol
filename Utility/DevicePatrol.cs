@@ -30,6 +30,7 @@ namespace AutoPatrol.Utility
             List<ResultViewModel> nextRecords = new List<ResultViewModel>();
 
             string rootPath = Path.GetDirectoryName(filePath);
+            Directory.CreateDirectory(rootPath);
             var lastFile = new DirectoryInfo(rootPath)
                 .GetFiles("*.xlsx", SearchOption.TopDirectoryOnly)
                 .Concat(new DirectoryInfo(rootPath).GetFiles("*.xls", SearchOption.TopDirectoryOnly))
