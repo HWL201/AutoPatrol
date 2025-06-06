@@ -2,6 +2,7 @@
 using AutoPatrol.Models;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
+using Serilog;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -432,13 +433,13 @@ namespace AutoPatrol.Utility
                         if (device.DriverName == "CQ.IOT.HT.PanasonicPrintingDriver.dll") {
                             path = path.Replace("*", today.ToString("yyyy-MM-dd"));
                         }
-                        // 执行连接操作
 
-                        Console.WriteLine($"{device.Line} {device.Code} {path} 执行共享连接");
+                        // 执行连接操作
+                        Log.Information($"{device.Line} {device.Code} {path} 执行共享连接");
                         Stopwatch stopwatch = Stopwatch.StartNew();
                         bool success = await NetOperation.ConnectToShareAsync(path, account, password);
                         stopwatch.Stop();
-                        Console.WriteLine($"连接耗时: {stopwatch.ElapsedMilliseconds} 毫秒");
+                        Log.Information($"连接耗时: {stopwatch.ElapsedMilliseconds} 毫秒");
 
                         if (success) {
                             try {
@@ -468,8 +469,8 @@ namespace AutoPatrol.Utility
                             }
                             finally {
                                 // 断开共享连接
-                                Console.WriteLine($"{device.Line} {device.Code} {path} 断开共享连接");
                                 NetOperation.DisconnectShare(path, true);
+                                Log.Information($"{device.Line} {device.Code} {path} 断开共享连接");
                             }
                         }
                         else {
@@ -508,6 +509,7 @@ namespace AutoPatrol.Utility
 
             // 等待所有任务完成
             await Task.WhenAll(tasks);
+            Log.Information("当前共享连接任务完成");
 
             return results;
         }

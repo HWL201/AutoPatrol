@@ -2,6 +2,7 @@
 using AutoPatrol.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace AutoPatrol.Services
 {
@@ -65,7 +66,8 @@ namespace AutoPatrol.Services
                 await Task.CompletedTask;
             }
             catch (Exception ex) {
-                Console.WriteLine($"执行定时巡检任务时发生错误：{ex.Message}");
+                // Console.WriteLine($"执行定时巡检任务时发生错误：{ex.Message}");
+                Log.Error(ex, "执行定时巡检任务时发生错误");
             }
         }
 

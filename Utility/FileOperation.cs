@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OfficeOpenXml;
+using Serilog;
 using System;
 using System.IO;
 using System.Linq;
@@ -88,10 +89,10 @@ namespace AutoPatrol.Utility
                     stream.CopyTo(fileStream); // 复制到文件流
                 }
 
-                Console.WriteLine($"Excel文件已保存至: {filePath}");
+                Log.Information($"Excel文件已保存至: {filePath}");
             }
             catch (Exception ex) {
-                Console.WriteLine($"保存Excel文件时出错: {ex.Message}");
+                Log.Error(ex, "保存Excel文件时出错");
                 // 可以考虑记录日志或抛出更具体的异常
             }
         }
@@ -187,10 +188,10 @@ namespace AutoPatrol.Utility
                     }
                 }
                 catch (UnauthorizedAccessException) {
-                    Console.WriteLine($"警告: 无权访问目录 {currentDir.FullName}");
+                    Log.Warning($"无权访问目录: {currentDir.FullName}");
                 }
                 catch (DirectoryNotFoundException) {
-                    Console.WriteLine($"警告: 目录已不存在 {currentDir.FullName}");
+                    Log.Warning($"警告: 目录已不存在 {currentDir.FullName}");
                 }
             }
             return directories.OrderBy(d => d.LastWriteTime).ToList();
@@ -207,22 +208,22 @@ namespace AutoPatrol.Utility
                 string latestSubFolder = FindDeepestLatestFolder(rootFolderPath);
 
                 if (latestSubFolder == null) {
-                    Console.WriteLine("未找到任何子文件夹！");
+                    Log.Information("未找到任何子文件夹！");
                     return false;
                 }
 
-                Console.WriteLine($"最新的子文件夹路径: {latestSubFolder}");
+                Log.Information($"最新的子文件夹路径: {latestSubFolder}");
 
                 // 2. 检查该文件夹中是否有今天的文件
                 bool foundTodayFile = CheckTodayFilesInFolder(latestSubFolder);
 
-                Console.WriteLine(foundTodayFile
+                Log.Information(foundTodayFile
                     ? "存在今天的日志文件！"
                     : "未找到今天的日志文件。");
                 return foundTodayFile;
             }
             catch (Exception ex) {
-                Console.WriteLine($"发生错误: {ex.Message}");
+                Log.Error(ex, "发生错误");
                 return false;
             }
         }
@@ -262,13 +263,13 @@ namespace AutoPatrol.Utility
             foreach (string file in Directory.GetFiles(folderPath)) {
                 // 按文件名匹配（如 log_2023-10-05.txt）
                 if (Path.GetFileName(file).Contains(todayDateString)) {
-                    Console.WriteLine($"匹配到今天的文件（按文件名）: {Path.GetFileName(file)}");
+                    Log.Information($"匹配到今天的文件（按文件名）: {Path.GetFileName(file)}");
                     return true;
                 }
 
                 // 按文件修改时间匹配
                 if (File.GetLastWriteTime(file).Date == today) {
-                    Console.WriteLine($"匹配到今天的文件（按修改时间）: {Path.GetFileName(file)}");
+                    Log.Information($"匹配到今天的文件（按修改时间）: {Path.GetFileName(file)}");
                     return true;
                 }
             }

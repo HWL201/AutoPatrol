@@ -1,6 +1,7 @@
 ﻿using AutoPatrol.Models;
 using AutoPatrol.Services;
 using Newtonsoft.Json;
+using Serilog;
 using System.Globalization;
 
 public class FixedTimeScheduler : BackgroundService
@@ -52,14 +53,15 @@ public class FixedTimeScheduler : BackgroundService
             var newTimes = LoadExecutionTimes();
             if (newTimes != null && newTimes.Any()) {
                 _executionTimes = newTimes;
-                _logger.LogInformation($"检测到文件变更，已重新加载定时任务配置，新配置包含 {_executionTimes.Count} 个执行时间点\n      {string.Join("\n      ", _executionTimes.Select(t => t.ToString(@"hh\:mm\:ss")))}");
-
+                // _logger.LogInformation($"检测到文件变更，已重新加载定时任务配置，新配置包含 {_executionTimes.Count} 个执行时间点\n      {string.Join("\n      ", _executionTimes.Select(t => t.ToString(@"hh\:mm\:ss")))}");
+                Log.Information($"检测到文件变更，已重新加载定时任务配置，新配置包含 {_executionTimes.Count} 个执行时间点\n      {string.Join("\n      ", _executionTimes.Select(t => t.ToString(@"hh\:mm\:ss")))}");
                 // 取消当前延迟，触发重新计算
                 _delayCancellationTokenSource.Cancel();
             }
         }
         catch (Exception ex) {
-            _logger.LogError(ex, "重新加载定时任务配置失败");
+            // _logger.LogError(ex, "重新加载定时任务配置失败");
+            Log.Error(ex, "重新加载定时任务配置失败");
         }
         finally {
             _reloadLock.Release();
@@ -71,7 +73,8 @@ public class FixedTimeScheduler : BackgroundService
             var configPath = Path.Combine(_env.ContentRootPath, "Config", "TimerConfig.json");
 
             if (!File.Exists(configPath)) {
-                _logger.LogWarning("定时任务配置文件不存在，使用默认执行时间");
+                // _logger.LogWarning("定时任务配置文件不存在，使用默认执行时间");
+                Log.Warning("定时任务配置文件不存在，使用默认执行时间");
                 return new List<TimeSpan>
                 {
                     TimeSpan.FromHours(8),
@@ -87,7 +90,9 @@ public class FixedTimeScheduler : BackgroundService
                 .ToList();
         }
         catch (Exception ex) {
-            _logger.LogError(ex, "解析定时任务配置文件失败，使用默认执行时间，请检查是否已配置定时任务");
+            // _logger.LogError(ex, "解析定时任务配置文件失败，使用默认执行时间，请检查是否已配置定时任务");
+            Log.Error(ex, "解析定时任务配置文件失败，使用默认执行时间，请检查是否已配置定时任务");
+
             return new List<TimeSpan>
             {
                 TimeSpan.FromHours(8),
@@ -110,10 +115,12 @@ public class FixedTimeScheduler : BackgroundService
 
                 if (delay < TimeSpan.Zero) {
                     delay += TimeSpan.FromDays(1);
-                    _logger.LogInformation($"当天无可执行任务，进入休眠过程，下一次任务执行时间: {DateTime.Today.AddDays(1).ToShortDateString()} {nextExecution}");
+                    // _logger.LogInformation($"当天无可执行任务，进入休眠过程，下一次任务执行时间: {DateTime.Today.AddDays(1).ToShortDateString()} {nextExecution}");
+                    Log.Information($"当天无可执行任务，进入休眠过程，下一次任务执行时间: {DateTime.Today.AddDays(1).ToShortDateString()} {nextExecution}");
                 }
                 else {
-                    _logger.LogInformation($"下一次任务执行时间: {nextExecution}");
+                    // _logger.LogInformation($"下一次任务执行时间: {nextExecution}");
+                    Log.Information($"下一次任务执行时间: {nextExecution}");
                 }
 
                 // 合并两个取消令牌
@@ -133,14 +140,17 @@ public class FixedTimeScheduler : BackgroundService
             catch (OperationCanceledException) {
                 // 检查是否因配置变更而取消
                 if (_delayCancellationTokenSource.IsCancellationRequested && !stoppingToken.IsCancellationRequested) {
-                    _logger.LogInformation("休眠过程已中断，定时任务继续执行");
+                    // _logger.LogInformation("休眠过程已中断，定时任务继续执行");
+                    Log.Information("休眠过程已中断，定时任务继续执行");
                     continue;
                 }
-                _logger.LogInformation("定时任务服务被取消");
+                // _logger.LogInformation("定时任务服务被取消");
+                Log.Information("定时任务服务被取消");
                 break;
             }
             catch (Exception ex) {
-                _logger.LogError(ex, "执行定时任务时发生错误");
+                // _logger.LogError(ex, "执行定时任务时发生错误");
+                Log.Error(ex, "执行定时任务时发生错误");
                 // 发生错误时等待1分钟再重试
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }

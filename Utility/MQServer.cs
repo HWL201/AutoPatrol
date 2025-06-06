@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
+using Serilog;
 
 namespace AutoPatrol.Utility
 {
@@ -64,7 +65,8 @@ namespace AutoPatrol.Utility
         /// <param name="data"></param>
         public async Task SendMesDataAsync<T>(T data) {
             if (_disposed || !_config.Enabled) {
-                _logger.LogWarning($"MQServer已被释放或未启用，无法发送消息");
+                // _logger.LogWarning($"MQServer已被释放或未启用，无法发送消息");
+                Log.Warning($"MQServer已被释放或未启用，无法发送消息");
                 return;
             }
 
@@ -82,16 +84,19 @@ namespace AutoPatrol.Utility
                 bool isSuccess = _channel.WaitForConfirms(TimeSpan.FromSeconds(5));
 
                 if (isSuccess) {
-                    _logger.LogInformation($"数据发送成功并已确认，报文内容: {msgBody}");
+                    // _logger.LogInformation($"数据发送成功并已确认，报文内容: {msgBody}");
+                    Log.Information($"数据发送成功并已确认，报文内容: {msgBody}");
                 }
                 else {
-                    _logger.LogWarning($"数据发送未收到服务器确认，可能已丢失，报文内容: {msgBody}");
+                    // _logger.LogWarning($"数据发送未收到服务器确认，可能已丢失，报文内容: {msgBody}");
+                    Log.Warning($"数据发送未收到服务器确认，可能已丢失，报文内容: {msgBody}");
                 }
 
                 // _logger.LogInformation($"数据发送成功，报文内容: {msgBody}");
             }
             catch (Exception ex) {
-                _logger.LogError(ex, $"数据发送失败: {ex.Message}，数据格式：{JsonConvert.SerializeObject(data)}");
+                // _logger.LogError(ex, $"数据发送失败: {ex.Message}，数据格式：{JsonConvert.SerializeObject(data)}");
+                Log.Error(ex, $"数据发送失败: {ex.Message}，数据格式：{JsonConvert.SerializeObject(data)}");
 
                 // 保存失败消息到内存队列
                 _failedMessages.Enqueue(new FailedMessage {
@@ -146,11 +151,13 @@ namespace AutoPatrol.Utility
                             _props.Persistent = _config.Persistent;
                         }
 
-                        _logger.LogInformation("MQ连接初始化成功");
+                        // _logger.LogInformation("MQ连接初始化成功");
+                        Log.Information("MQ连接初始化成功");
                         break;
                     }
                     catch (Exception ex) {
-                        _logger.LogError(ex, "MQ连接初始化失败，将在5秒后重试");
+                        // _logger.LogError(ex, "MQ连接初始化失败，将在5秒后重试");
+                        Log.Error(ex, "MQ连接初始化失败，将在5秒后重试");
                         await Task.Delay(5000);
                     }
                 }
@@ -182,7 +189,8 @@ namespace AutoPatrol.Utility
         /// </summary>
         private async Task EnsureConnectionAsync() {
             if (_channel == null || !_channel.IsOpen || _connection == null || !_connection.IsOpen) {
-                _logger.LogWarning("MQ连接已关闭，尝试重新连接");
+                // _logger.LogWarning("MQ连接已关闭，尝试重新连接");
+                Log.Warning("MQ连接已关闭，尝试重新连接");
                 await InitMQChannelAsync();
             }
         }
@@ -193,15 +201,18 @@ namespace AutoPatrol.Utility
         private void ConfigureConnectionEvents() {
             if (_connection != null) {
                 _connection.ConnectionShutdown += (sender, args) => {
-                    _logger.LogWarning($"MQ连接关闭: {args.ReplyText}");
+                    // _logger.LogWarning($"MQ连接关闭: {args.ReplyText}");
+                    Log.Warning($"MQ连接关闭: {args.ReplyText}");
                 };
 
                 _connection.CallbackException += (sender, args) => {
-                    _logger.LogError(args.Exception, "MQ回调异常");
+                    // _logger.LogError(args.Exception, "MQ回调异常");
+                    Log.Error(args.Exception, "MQ回调异常");
                 };
 
                 _connection.ConnectionBlocked += (sender, args) => {
-                    _logger.LogWarning($"MQ连接被阻塞: {args.Reason}");
+                    // _logger.LogWarning($"MQ连接被阻塞: {args.Reason}");
+                    Log.Warning($"MQ连接被阻塞: {args.Reason}");
                 };
             }
         }
@@ -212,7 +223,8 @@ namespace AutoPatrol.Utility
         private async Task RetryFailedMessagesAsync() {
             if (_failedMessages.IsEmpty) return;
 
-            _logger.LogInformation($"开始重试发送 {_failedMessages.Count} 条失败消息");
+            // _logger.LogInformation($"开始重试发送 {_failedMessages.Count} 条失败消息");
+            Log.Information($"开始重试发送 {_failedMessages.Count} 条失败消息");
 
             // 临时队列，避免并发问题
             var tempQueue = new ConcurrentQueue<FailedMessage>();
@@ -223,24 +235,28 @@ namespace AutoPatrol.Utility
             while (tempQueue.TryDequeue(out var failedMsg)) {
                 // 检查是否超过最大重试次数
                 if (failedMsg.RetryCount >= _maxRetryCount) {
-                    _logger.LogWarning($"消息已达到最大重试次数 ({_maxRetryCount})，将不再重试: {JsonConvert.SerializeObject(failedMsg.Message)}");
+                    // _logger.LogWarning($"消息已达到最大重试次数 ({_maxRetryCount})，将不再重试: {JsonConvert.SerializeObject(failedMsg.Message)}");
+                    Log.Warning($"消息已达到最大重试次数 ({_maxRetryCount})，将不再重试: {JsonConvert.SerializeObject(failedMsg.Message)}");
                     continue;
                 }
 
                 // 检查是否超过重试时间阈值
                 var timeSinceFirstFailure = DateTime.Now - failedMsg.FirstFailedTime;
                 if (timeSinceFirstFailure > TimeSpan.FromHours(24)) {
-                    _logger.LogWarning($"消息已超过24小时未发送成功，将不再重试: {JsonConvert.SerializeObject(failedMsg.Message)}");
+                    // _logger.LogWarning($"消息已超过24小时未发送成功，将不再重试: {JsonConvert.SerializeObject(failedMsg.Message)}");
+                    Log.Warning($"消息已超过24小时未发送成功，将不再重试: {JsonConvert.SerializeObject(failedMsg.Message)}");
                     continue;
                 }
 
                 try {
                     await SendMesDataAsync(failedMsg.Message);
-                    _logger.LogInformation($"消息重试发送成功: {JsonConvert.SerializeObject(failedMsg.Message)}");
+                    // _logger.LogInformation($"消息重试发送成功: {JsonConvert.SerializeObject(failedMsg.Message)}");
+                    Log.Information($"消息重试发送成功: {JsonConvert.SerializeObject(failedMsg.Message)}");
                 }
                 catch (Exception ex) {
                     failedMsg.RetryCount++;
-                    _logger.LogWarning(ex, $"消息重试发送失败 (第 {failedMsg.RetryCount} 次): {JsonConvert.SerializeObject(failedMsg.Message)}");
+                    // _logger.LogWarning(ex, $"消息重试发送失败 (第 {failedMsg.RetryCount} 次): {JsonConvert.SerializeObject(failedMsg.Message)}");
+                    Log.Warning(ex, $"消息重试发送失败 (第 {failedMsg.RetryCount} 次): {JsonConvert.SerializeObject(failedMsg.Message)}");
 
                     // 重新加入队列，等待下次重试
                     _failedMessages.Enqueue(failedMsg);
@@ -253,11 +269,13 @@ namespace AutoPatrol.Utility
         /// </summary>
         private async Task TryReconnectAsync() {
             try {
-                _logger.LogInformation("尝试重新连接MQ");
+                // _logger.LogInformation("尝试重新连接MQ");
+                Log.Information("尝试重新连接MQ");
                 await InitMQChannelAsync();
             }
             catch (Exception ex) {
-                _logger.LogError(ex, "重新连接MQ失败");
+                // _logger.LogError(ex, "重新连接MQ失败");
+                Log.Error(ex, "重新连接MQ失败");
             }
         }
 
@@ -279,7 +297,8 @@ namespace AutoPatrol.Utility
                 _connection = null;
             }
             catch (Exception ex) {
-                _logger.LogError(ex, "关闭MQ连接时发生错误");
+                // _logger.LogError(ex, "关闭MQ连接时发生错误");
+                Log.Error(ex, "关闭MQ连接时发生错误");
             }
         }
 

@@ -1,5 +1,7 @@
 using AutoPatrol.Services;
 using AutoPatrol.Utility;
+using Serilog;
+using Serilog.Events;
 
 namespace AutoPatrol
 {
@@ -8,23 +10,30 @@ namespace AutoPatrol
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
 
+            // é…ç½®Serilog
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .WriteTo.File(
+                    Path.Combine("Log", $"{DateTime.Now:yyyyMMdd}.log"),
+                    rollingInterval: RollingInterval.Day,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            builder.Host.UseSerilog();
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ITimerService, TimerService>();
 
-            // Ìí¼ÓÈÕÖ¾·şÎñ
-            builder.Services.AddLogging(loggingBuilder => {
-                loggingBuilder.AddConsole();
-                loggingBuilder.AddDebug();
-            });
-
-            // ×¢²á¶¨Ê±ÈÎÎñ·şÎñ
+            // æ³¨å†Œå®šæ—¶ä»»åŠ¡æœåŠ¡
             builder.Services.AddHostedService<FixedTimeScheduler>();
 
-            // °ó¶¨ÅäÖÃÎÄ¼şÖĞµÄ "DeviceTagCfg" ½Úµãµ½ DeviceTagConfig Àà
+            // ç»‘å®šé…ç½®æ–‡ä»¶ä¸­çš„ "DeviceTagCfg" èŠ‚ç‚¹åˆ° DeviceTagConfig ç±»
             builder.Services.Configure<MqConfig>(builder.Configuration.GetSection("DeviceTagCfg"));
 
-            // ×¢²á MQServer 
+            // æ³¨å†Œ MQServer 
             builder.Services.AddSingleton<MQServer>();
 
             var app = builder.Build();
@@ -42,7 +51,19 @@ namespace AutoPatrol
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run();
+            try
+            {
+                Log.Information("åº”ç”¨ç¨‹åºå¯åŠ¨");
+                app.Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "åº”ç”¨ç¨‹åºå¯åŠ¨å¤±è´¥");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
     }
 }
