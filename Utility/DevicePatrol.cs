@@ -174,44 +174,6 @@ namespace AutoPatrol.Utility
                     if (accessSharePath.TryGetValue(device.Path, out connResult) && connResult.Status == ConnectionStatus.Success) {
                         nextRecords.Add(GenerateRecord(device, lastDateStr, "账号密码", "成功", "账号密码正常", "账号密码正常"));
                         nextRecords.Add(GenerateRecord(device, lastDateStr, "共享路径", "成功", "共享路径访问正常", "共享路径访问正常"));
-                        /*var lastRecord = DataManager.GetRecord(device.Line, device.Code, "账号密码");
-                        int duration = 1;   // 默认持续天数为1
-                        // 如果上一份记录存在
-                        if (lastRecord != null) {
-                            duration = CompareRecord("成功", lastRecord.Result, DateTime.Now.ToString("yyyyMMdd"), lastDateStr, lastRecord.Duration);
-                        }
-
-                        nextRecords.Add(new ResultViewModel() {
-                            Line = device.Line,
-                            Num = device.Num,
-                            DeviceType = device.DeviceType,
-                            Code = device.Code,
-                            Ip = device.Ip,
-                            Item = "账号密码",
-                            Result = "成功",
-                            Describe = "账号密码正常",
-                            Message = "账号密码正常",
-                            Duration = duration,
-                        });
-
-                        lastRecord = DataManager.GetRecord(device.Line, device.Code, "账号密码");
-                        duration = 1;
-                        if (lastRecord != null) {
-                            duration = CompareRecord("成功", lastRecord.Result, DateTime.Now.ToString("yyyyMMdd"), lastDateStr, lastRecord.Duration);
-                        }
-
-                        nextRecords.Add(new ResultViewModel() {
-                            Line = device.Line,
-                            Num = device.Num,
-                            DeviceType = device.DeviceType,
-                            Code = device.Code,
-                            Ip = device.Ip,
-                            Item = "共享路径",
-                            Result = "成功",
-                            Describe = "共享路径访问正常",
-                            Message = "共享路径访问正常",
-                            Duration = duration,
-                        });*/
                     }
                     else if (connResult != null) {  // IP地址PING不通不会去执行共享连接，也就不会存进共享连接字典集合，所以connResult为null
                         // 如果巡检项目是共享路径，需要额外添加账号密码的正常记录
@@ -223,28 +185,6 @@ namespace AutoPatrol.Utility
                             nextRecords.Add(GenerateRecord(device, lastDateStr, "账号密码", "失败", connResult.Profile, connResult.Message));
                         }
                     }
-
-                    /*// 当前检查项的上一条记录
-                    var lastRecord = DataManager.GetRecord(device.Line, device.Code, "账号密码");
-                    int duration = 1;   // 默认持续天数为1
-
-                    // 如果上一份记录存在
-                    if (lastRecord != null) {
-                        duration = CompareRecord(result, lastRecord.Result, DateTime.Now.ToString("yyyyMMdd"), lastDateStr, lastRecord.Duration);
-                    }
-
-                    nextRecords.Add(new ResultViewModel() {
-                        Line = device.Line,
-                        Num = device.Num,
-                        DeviceType = device.DeviceType,
-                        Code = device.Code,
-                        Ip = device.Ip,
-                        Item = "账号密码",
-                        Result = result,
-                        Describe = connResult.Profile,
-                        Message = connResult.Message,
-                        Duration = duration,
-                    });*/
                 }
 
                 #endregion
@@ -366,7 +306,7 @@ namespace AutoPatrol.Utility
             var tasks = ipList.Select(async ip => {
                 try {
                     using var ping = new Ping();
-                    var reply = await ping.SendPingAsync(ip, 1000);
+                    var reply = await ping.SendPingAsync(ip, 2000);
                     return new { IP = ip, Success = reply.Status == IPStatus.Success };
                 }
                 catch {
@@ -482,15 +422,6 @@ namespace AutoPatrol.Utility
                             };
                         }
                     }
-                    //else {
-                    //    List<string> message = new List<string>() {
-                    //        PromptMessage.DEVICE_SHUT_DOWN,
-                    //        PromptMessage.ETHERNET_CABLE_PULLED_OUT,
-                    //        PromptMessage.IP_CHANGE,
-                    //    };
-                    //    
-                    //    results[device.Path] = new ConnectionResult { Status = ConnectionStatus.Failure, Profile = PromptMessage.ACCESS_PATH_FAILURE, Message = string.Join('，', message) };
-                    //}
                 }
                 catch (Win32Exception ex) { // 使用device.Path而不是局部变量path，是因为要基于源路径对字典进行搜索，印刷机的path是动态拼接的
                     results[device.Path] = NetOperation.MapWin32ErrorCodeToStatus(ex.NativeErrorCode);

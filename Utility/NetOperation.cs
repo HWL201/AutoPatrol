@@ -17,37 +17,6 @@ namespace AutoPatrol.Utility
         /// <param name="password">用于身份验证的密码</param>
         /// <returns>连接成功返回true，失败返回false</returns>
         public static async Task<bool> ConnectToShareAsync(string sharePath, string username, string password) {
-            // 使用 Task.Run 将同步操作转换为异步执行
-            // return await Task.Run(() => ConnectToShare(sharePath, username, password));
-
-            /*  同步函数异步调用，可能无法取消
-            var cts = new CancellationTokenSource(3000);
-            try {
-                return await Task.Run(() => ConnectToShare(sharePath, username, password), cts.Token);
-            }
-            catch (OperationCanceledException) {
-                WNetCancelConnection2(sharePath, 0, true);
-                return false;
-            }
-            */
-
-            /*var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
-
-            try {
-                // 等待连接任务完成或超时
-                if (await Task.WhenAny(connectTask, Task.Delay(5000)) != connectTask) {
-                    // 如果不是连接任务先完成，说明超时了
-                    DisconnectShare(sharePath, true);
-                    return false;
-                }
-
-                // 连接任务已完成，获取结果
-                return await connectTask;
-            }
-            catch {
-                throw;
-            }*/
-
             try {
                 var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
                 var timeoutTask = Task.Delay(10000);

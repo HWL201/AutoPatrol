@@ -31,16 +31,6 @@ namespace AutoPatrol.Utility
             _logger = logger;
 
             _config = configOptions.Value;
-
-            // 初始化连接
-            // _ = InitializeAsync();
-
-            // 设置定时重试任务
-            //_retryTimer = new Timer(
-            //    async _ => await RetryFailedMessagesAsync(),
-            //    null,
-            //    TimeSpan.FromSeconds(30),  // 首次延迟30秒
-            //    _retryInterval);  // 之后每5分钟重试一次
         }
 
         /// <summary>
