@@ -21,8 +21,6 @@ namespace AutoPatrol
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
 
-            Console.WriteLine(Path.Combine("Log", $"{DateTime.Now:yyyyMMdd}.log"));
-
             builder.Host.UseSerilog();
 
             builder.Services.AddControllersWithViews();
