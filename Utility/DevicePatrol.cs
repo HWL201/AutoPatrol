@@ -3,6 +3,7 @@ using AutoPatrol.Models;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using Serilog;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -82,7 +83,7 @@ namespace AutoPatrol.Utility
                     List<string> message = new List<string>();
 
                     // 网关IP
-                    if (DriverClassify.TypeJudge(device.DriverName) == "机况") {
+                    if (DeviceClassify.TypeJudge(device.DriverName) == "机况") {
                         if (pingResult.TryGetValue(device.Ip, out isPingSuccess) && isPingSuccess) {
                             result = "成功";
                             describe = "网关IP正常";
@@ -380,14 +381,28 @@ namespace AutoPatrol.Utility
                         Stopwatch stopwatch = Stopwatch.StartNew();
                         bool success = await NetOperation.ConnectToShareAsync(path, account, password);
                         stopwatch.Stop();
-                        Log.Information($"连接耗时: {stopwatch.ElapsedMilliseconds} 毫秒");
+                        Log.Information($"{device.Line} {device.Code} {path} 连接耗时: {stopwatch.ElapsedMilliseconds} 毫秒");
 
                         if (success) {
                             try {
                                 // 获取目录中的所有文件
                                 // bool exist = FileOperation.IsFileExists(path, today, postfix, floor);
-                                bool exist = FileOperation.CheckLatestFolderForTodayFiles(path);
+                                // 如果压合机，采用特殊的文件判断逻辑
+                                bool exist = true;
 
+                                Log.Information($"{device.Line} {device.Code} {path} 开始检查文件");
+                                Stopwatch stopwatch2 = Stopwatch.StartNew();
+
+                                if (DeviceClassify.YHJJudge(device.Code)) { // 如果是压合机
+                                    DirectoryInfo dirInfo = new DirectoryInfo(path);
+                                    exist = dirInfo.LastWriteTime.Date == DateTime.Now.Date;
+                                }
+                                else {
+                                    exist = FileOperation.CheckLatestFolderForTodayFiles(path);
+                                }
+
+                                stopwatch2.Stop();
+                                Log.Information($"{device.Line} {device.Code} {path} 检查文件耗时: {stopwatch2.ElapsedMilliseconds} 毫秒");
 
                                 if (exist) {
                                     results[device.Path] = new ConnectionResult {

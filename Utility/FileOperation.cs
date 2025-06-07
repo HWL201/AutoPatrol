@@ -168,7 +168,7 @@ namespace AutoPatrol.Utility
         /// <returns></returns>
         /// <exception cref="DirectoryNotFoundException"></exception>
         public static List<DirectoryInfo> GetDirectorys(string rootPath) {
-            Directory.CreateDirectory(rootPath);
+           Directory.CreateDirectory(rootPath);
             //if (!Directory.Exists(rootPath))
             //    throw new DirectoryNotFoundException($"目录不存在: {rootPath}");
 
@@ -219,8 +219,8 @@ namespace AutoPatrol.Utility
                 bool foundTodayFile = CheckTodayFilesInFolder(latestSubFolder);
 
                 Log.Information(foundTodayFile
-                    ? "存在今天的日志文件！"
-                    : "未找到今天的日志文件。");
+                    ? $"{rootFolderPath}存在今天的日志文件！"
+                    : $"{rootFolderPath}未找到今天的日志文件。");
                 return foundTodayFile;
             }
             catch (Exception ex) {
@@ -261,8 +261,21 @@ namespace AutoPatrol.Utility
             string todayDateString = DateTime.Now.ToString("yyyy-MM-dd");
             DateTime today = DateTime.Today;
 
-            foreach (string file in Directory.GetFiles(folderPath)) {
+            /*foreach (string file in Directory.GetFiles(folderPath)) {
                 // 按文件名匹配（如 log_2023-10-05.txt）
+                if (Path.GetFileName(file).Contains(todayDateString)) {
+                    Log.Information($"匹配到今天的文件（按文件名）: {Path.GetFileName(file)}");
+                    return true;
+                }
+
+                // 按文件修改时间匹配
+                if (File.GetLastWriteTime(file).Date == today) {
+                    Log.Information($"匹配到今天的文件（按修改时间）: {Path.GetFileName(file)}");
+                    return true;
+                }
+            }*/
+
+            foreach (string file in Directory.EnumerateFiles(folderPath)) {
                 if (Path.GetFileName(file).Contains(todayDateString)) {
                     Log.Information($"匹配到今天的文件（按文件名）: {Path.GetFileName(file)}");
                     return true;
@@ -277,71 +290,5 @@ namespace AutoPatrol.Utility
 
             return false;
         }
-
-
-
-        #region 废弃代码
-
-        /// <summary>
-        /// 通用 xlsx 文件读取方法
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns>文件内容</returns>
-        private static List<Dictionary<string, object>> CommonReadExcel(string filePath) {
-            var result = new List<Dictionary<string, object>>();
-
-            // 设置许可证（非商业用途可免费使用）
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-            using (var package = new ExcelPackage(new FileInfo(filePath))) {
-                // 获取第一个工作表
-                var worksheet = package.Workbook.Worksheets[0];
-
-                // 获取最大行数和列数
-                int rowCount = worksheet.Dimension.Rows;
-                int colCount = worksheet.Dimension.Columns;
-
-                // 获取表头（第一行）
-                var headers = new string[colCount];
-                for (int col = 1; col <= colCount; col++) {
-                    headers[col - 1] = worksheet.Cells[1, col].Value?.ToString() ?? $"Column{col}";
-                }
-
-                // 从第二行开始读取数据
-                for (int row = 2; row <= rowCount; row++) {
-                    var rowData = new Dictionary<string, object>();
-                    for (int col = 1; col <= colCount; col++) {
-                        rowData[headers[col - 1]] = worksheet.Cells[row, col].Value;
-                    }
-                    result.Add(rowData);
-                }
-            }
-
-            return result;
-        }
-
-        /* 错误代码
-        * public static void WriteExcel(string filePath, List<Dictionary<string, object>> data) {
-           // 设置许可证（非商业用途可免费使用）
-           ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-           using (var package = new ExcelPackage()) {
-               var worksheet = package.Workbook.Worksheets.Add("Sheet1");
-               // 写入表头
-               var headers = data.First().Keys.ToList();
-               for (int col = 0; col < headers.Count; col++) {
-                   worksheet.Cells[1, col + 1].Value = headers[col];
-               }
-               // 写入数据
-               for (int row = 0; row < data.Count; row++) {
-                   for (int col = 0; col < headers.Count; col++) {
-                       worksheet.Cells[row + 2, col + 1].Value = data[row][headers[col]];
-                   }
-               }
-               // 保存文件
-               package.SaveAs(new FileInfo(filePath));
-           }
-       }*/
-
-        #endregion
     }
 }

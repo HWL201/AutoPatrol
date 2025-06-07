@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OfficeOpenXml;
+using Serilog;
 
 namespace AutoPatrol.Controllers
 {
@@ -33,6 +34,26 @@ namespace AutoPatrol.Controllers
         }
 
         /// <summary>
+        /// 获取进行中的巡检任务
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult GetTaskName() {
+            string taskName = "暂无巡检任务进行中";
+            bool enable = true;
+            if (TaskCache.GetTaskCount() != 0) {
+                foreach (var task in TaskCache.GetAllTasks()) {
+                    if(task.Value == "手动巡检") {
+                        taskName = "当前巡检任务： " + task.Key;
+                        enable = false;
+                        break;
+                    }
+                }
+            }
+
+            return Ok(new { taskName, enable });
+        }
+
+        /// <summary>
         /// 手动巡检，并将结果写入Excel文件
         /// </summary>
         /// <returns></returns>
@@ -49,11 +70,23 @@ namespace AutoPatrol.Controllers
                 string fileName = $"{DateTime.Now.ToString("yyyyMMdd_HHmmss")}手动巡检.xlsx";
                 string filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Record", fileName);
 
-                await DevicePatrol.Patrol(deviceList, filePath);
+                // await DevicePatrol.Patrol(deviceList, filePath);
+                // 启动后台任务，不等待结果
+                _ = Task.Run(async () => {
+                    try {
+                        string taskName = Path.GetFileNameWithoutExtension(filePath);
+                        TaskCache.TryAddTask(taskName, "手动巡检"); // 添加任务到缓存
+                        await DevicePatrol.Patrol(deviceList, filePath);
+                    }
+                    catch (Exception ex) {
+                        Log.Error(ex, "后台巡检任务失败");
+                    }
+                    finally {
+                        TaskCache.RemoveTask(Path.GetFileNameWithoutExtension(filePath)); // 移除任务
+                    }
+                });
 
-                ViewBag.FilePath = filePath;
-
-                return Ok(new { code = 200, message = "批量巡检完成，文件已存入" });
+                return Ok(new { code = 200, message = "巡检任务进行中，请稍后片刻" });
             }
             catch (Exception ex) {
                 return StatusCode(500, new { code = 500, message = $"服务器异常{ex.Message}" });
@@ -123,7 +156,7 @@ namespace AutoPatrol.Controllers
                             eqp_code = result.Code,
                             product_code = "",
                             @params = new List<dynamic>() {
-                                new { 
+                                new {
                                     k = "STATUS_MSG",
                                     v = result.Describe,
                                 }

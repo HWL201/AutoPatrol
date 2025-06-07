@@ -3,7 +3,8 @@ using System.Text.RegularExpressions;
 
 namespace AutoPatrol.Utility
 {
-    public class DriverClassify {
+    public class DeviceClassify
+    {
         // 机况驱动
         private static readonly HashSet<string> conditionDriver = new HashSet<string>(StringComparer.Ordinal) {
             "CQ.IOT.SiemensPLCDriver.dll",
@@ -43,12 +44,44 @@ namespace AutoPatrol.Utility
             "CQ.IOT.HT.PlasmaDriver.dll",
         };
 
+        // 特殊设备
+        private static readonly HashSet<string> specialDevice = new HashSet<string>(StringComparer.Ordinal) {
+            "YHJ1003",
+            "YHJ1011",
+            "YHJ1020",
+            "YHJ1096",
+            "YHJ2009",
+            "YHJ2217",
+            "YHJ2218",
+            "YHJ2219",
+            "YHJ2225",
+            "YHJ2226",
+            "YHJ2227",
+            "YHJ2228",
+            "YHJ2231",
+            "YHJ2232",
+            "YHJ2233",
+            "YHJ2234",
+            "YHJ2235",
+            "YHJ2236",
+            "YHJ2237",
+            "YHJ2247",
+            "YHJ2248",
+            "YHJ2249",
+        };
+
         public static string TypeJudge(string driverName) {
             if (string.IsNullOrEmpty(driverName)) return "";
 
             return conditionDriver.Contains(driverName) ? "机况"
                  : dataDriver.Contains(driverName) ? "数据"
                  : "其他";
+        }
+
+        public static bool YHJJudge(string code) {
+            if (string.IsNullOrEmpty(code)) return false;
+
+            return specialDevice.Contains(code) ? true : false;
         }
     }
 }
