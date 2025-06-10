@@ -168,7 +168,7 @@ namespace AutoPatrol.Utility
         /// <returns></returns>
         /// <exception cref="DirectoryNotFoundException"></exception>
         public static List<DirectoryInfo> GetDirectorys(string rootPath) {
-           Directory.CreateDirectory(rootPath);
+            Directory.CreateDirectory(rootPath);
             //if (!Directory.Exists(rootPath))
             //    throw new DirectoryNotFoundException($"目录不存在: {rootPath}");
 
@@ -289,6 +289,36 @@ namespace AutoPatrol.Utility
             }
 
             return false;
+        }
+
+
+        public static async Task CopyFileAsync(string sourceFile, string targetFile) {
+            if (!File.Exists(sourceFile)) {
+                return;
+            }
+
+            // 确保父目录存在
+            var directory = Path.GetDirectoryName(targetFile);
+            Directory.CreateDirectory(directory);
+
+            using (var sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4 * 1024 * 1024, FileOptions.Asynchronous)) {
+                using (var targetStream = new FileStream(targetFile, FileMode.Create, FileAccess.Write, FileShare.ReadWrite, 4 * 1024 *1024, FileOptions.Asynchronous)) {
+                    // stream.CopyTo(targetStream);
+                    var buffer = new byte[4 * 1024 * 1024];
+                    long totalBytesRead = 0;
+                    long fileLength = sourceStream.Length;
+                    int bytesRead;
+
+                    while((bytesRead = await sourceStream.ReadAsync(buffer, 0, buffer.Length)) > 0) {
+                        await targetStream.WriteAsync(buffer, 0, bytesRead);
+                        totalBytesRead += bytesRead;
+                        // 可以在这里添加进度更新逻辑
+                        Log.Information($"已复制 {totalBytesRead} 字节，进度: {((double)totalBytesRead / fileLength * 100):F2}%");
+                    }
+
+                    await targetStream.FlushAsync(); // 确保所有数据都写入磁盘
+                }
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace AutoPatrol.Utility
         public static async Task<bool> ConnectToShareAsync(string sharePath, string username, string password) {
             try {
                 var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
-                var timeoutTask = Task.Delay(10000);
+                var timeoutTask = Task.Delay(8000);
                 var completedTask = await Task.WhenAny(connectTask, timeoutTask);   // completedTask 指向最先完成的任务
 
                 if (completedTask == timeoutTask) { // 如果超时
@@ -114,12 +114,12 @@ namespace AutoPatrol.Utility
         /// <returns>对应的连接状态</returns>
         public static ConnectionResult MapWin32ErrorCodeToStatus(int errorCode) {
             switch (errorCode) {
-                //case 5:     // 无访问权限
-                //    return new ConnectionResult() {
-                //        Status = ConnectionStatus.PermissionDenied,
-                //        Profile = PromptMessage.ACCESS_PATH_FAILURE,
-                //        Message = PromptMessage.ACCOUNT_NOT_ACCESS_PERMISSIONS,
-                //    };
+                case 5:     // 访问被拒绝
+                    return new ConnectionResult() {
+                        Status = ConnectionStatus.PermissionDenied,
+                        Profile = PromptMessage.ACCESS_PATH_FAILURE,
+                        Message = PromptMessage.ACCOUNT_NOT_ACCESS_PERMISSIONS,
+                    };
                 case 53:
                     return new ConnectionResult() {
                         Status = ConnectionStatus.PathNotFound,
@@ -138,11 +138,11 @@ namespace AutoPatrol.Utility
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
                         Message = PromptMessage.LOG_PATH_CHANGE,
                     };
-                case 86:    // 账号或密码错误
+                case 86:    // 密码错误
                     return new ConnectionResult() {
                         Status = ConnectionStatus.InvalidCredentials,
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
-                        Message = PromptMessage.ACCOUNT_OR_PASSWORD_ERROR,
+                        Message = PromptMessage.PASSWORD_ERROR,
                     };
                 case 1219:  // 多凭据重复登录
                     return new ConnectionResult() {
@@ -158,9 +158,9 @@ namespace AutoPatrol.Utility
                     };
                 case 1327:  // 无访问权限
                     return new ConnectionResult() {
-                        Status = ConnectionStatus.PermissionDenied,
+                        Status = ConnectionStatus.BadUserName,
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
-                        Message = PromptMessage.ACCOUNT_NOT_ACCESS_PERMISSIONS,
+                        Message = PromptMessage.BAD_USERNAME,
                     };
                 
                 //case 1330:
@@ -265,6 +265,7 @@ namespace AutoPatrol.Utility
         NetworkError,           // 网络错误
         PasswordOverdue,        // 密码过期
         NetworkBusy,            // 网络繁忙
+        BadUserName,            // 用户名错误
         UnknownError,            // 未知错误
     }
 }

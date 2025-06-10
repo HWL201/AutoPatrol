@@ -45,6 +45,7 @@ namespace AutoPatrol.Controllers
             }
         }
 
+
         /// <summary>
         /// 更新设备模型配置
         /// </summary>
@@ -130,6 +131,63 @@ namespace AutoPatrol.Controllers
             catch (Exception ex) {
                 return StatusCode(500, new { status = 500, message = $"未知错误：{ex.Message}" });
             }
+        }
+
+
+        public IActionResult Copy() {
+            return View();
+        }
+
+
+        /// <summary>
+        /// 获取文件复制配置
+        /// </summary>
+        /// <param name="timers"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetCopyConfiguration() {
+            try {
+                var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Config", "FileCopyConfig.json");
+
+                if (!System.IO.File.Exists(filePath)) { // 如果文件不存在
+                    var directory = Path.GetDirectoryName(filePath);
+                    Directory.CreateDirectory(directory);   // 如果目录不存在
+                    using (System.IO.File.Create(filePath)) { }
+                }
+
+                var json = await System.IO.File.ReadAllTextAsync(filePath);
+                var timerList = JsonConvert.DeserializeObject<CopyViewModel>(json);
+
+                return Ok(new { code = 200, message = "加载成功", data = timerList });
+            }
+            catch (Exception ex) {
+                return StatusCode(500, new {
+                    code = 500,
+                    message = "获取配置失败",
+                    error = ex.Message
+                });
+            }
+        }
+
+
+        /// <summary>
+        /// 更新文件复制配置
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateCopyConfiguration([FromBody] CopyViewModel data) {
+            if (!ModelState.IsValid) {
+                return BadRequest(new { status = 400, message = "数据模型匹配失败" });
+            }
+
+            var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+
+            var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Config", "FileCopyConfig.json");
+            var directory = Path.GetDirectoryName(filePath);
+            Directory.CreateDirectory(directory);
+            await System.IO.File.WriteAllTextAsync(filePath, json);
+
+            return Ok(new { status = 200, message = "保存成功" });
         }
     }
 }

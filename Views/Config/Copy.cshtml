@@ -1,0 +1,488 @@
+﻿<!-- 通用样式 -->
+<style>
+    .content-container {
+        margin-top: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-radius: 10px;
+        padding-bottom: 25px;
+    }
+
+    .module-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px 25px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .file-input-area {
+        position: relative;
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: 1px dashed #1E9FFF; /* 2px 表示边框宽度，dashed 表示虚线样式，#1E9FFF 是边框颜色 */
+        background-color: transparent;
+        color: #1E9FFF;
+        cursor: pointer;
+    }
+
+    .file-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+
+    #filePath {
+        display: inline-block;
+        color: #1E9FFF;
+    }
+
+    .prompt-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .prompt-modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        width: 22%;
+        height: 620px;
+    }
+
+    .scroll-bar {
+        min-height: 350px;
+        max-height: 725px;
+        overflow-y: scroll;
+        border-radius: 0.375rem;
+        padding: 0 25px;
+        padding-right: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+    }
+
+    .rect {
+        width: 434px;
+        height: 350px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        background-color: #F8F8F8;
+        position: relative;
+        padding: 25px 40px;
+    }
+
+    .delete {
+        position: absolute;
+        color: red;
+        top: 7px;
+        right: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+    .delete:hover {
+        transform: scale(1.2);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .item-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+        .item-group label {
+            width: 80px;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    .file-input {
+        display: none;
+    }
+</style>
+
+<!-- 复制任务设置 -->
+<div class="m-5 content-container">
+    <div class="module-header">
+        <div class="d-flex flex-row">
+            <div class="d-flex align-items-center">
+                <h4 class="text-lg font-bold text-black" style="font-size: 18px">复制任务设置</h4>
+            </div>
+            <div class="d-flex align-items-center ms-5">
+                <label style="font-size: 15px;">执行时间</label>
+            </div>
+            <div class="layui-input-wrap ms-2">
+                <div class="layui-input-prefix">
+                    <i class="iconfont icon-time"></i>
+                </div>
+                <input name="time" type="text" class="layui-input beacon" id="laydate-type-time" placeholder="选择执行时间">
+            </div>
+            <div class="d-flex align-items-center ms-2">
+                <i class="layui-icon layui-icon-tips" style="font-size: 20px; color: #1E9FFF;cursor: pointer;" id="tipIcon"></i>
+            </div>
+        </div>
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm layui-bg-red mb-0" type="button" id="clearTasks">清空任务</button>
+            <button class="layui-btn layui-btn-sm mb-0" type="button" id="addTask">添加任务</button>
+            <button class="layui-btn layui-btn-sm mb-0" type="button" id="saveConfig">保存配置</button>
+        </div>
+    </div>
+    <div class="scroll-bar" id="taskList">
+    </div>
+</div>
+
+<!-- 添加任务模态框 -->
+<div id="addModal" class="prompt-modal">
+    <div class="prompt-modal-content layui-form">
+        <div class="mx-5 mt-3 mb-3">
+            <i class="iconfont icon-calender" style="font-size: 20px;"></i>
+            <label style="font-size: 20px; font-weight: bold">添加复制任务</label>
+        </div>
+        <div class="mx-5 mt-2 mb-1">
+            <label>线体</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-line"></i>
+            </div>
+            <input name="line" type="text" class="layui-input" placeholder="输入设备线体">
+        </div>
+        <div class="mx-5 mt-2 mb-1">
+            <label>编码</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-code"></i>
+            </div>
+            <input name="code" type="text" class="layui-input" placeholder="输入设备编码">
+        </div>
+        <div class="mx-5 mt-2 mb-1">
+            <label>账号</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-account"></i>
+            </div>
+            <input name="account" type="text" class="layui-input" placeholder="输入账号" lay-verify="required">
+        </div>
+        <div class="mx-5 mt-2 mb-1">
+            <label>密码</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-password"></i>
+            </div>
+            <input name="password" type="text" class="layui-input" placeholder="输入密码">
+        </div>
+        <div class="mx-5 mt-2 mb-1">
+            <label>源文件</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-file"></i>
+            </div>
+            <input name="sourceFile" type="text" class="layui-input" placeholder="输入源文件" lay-verify="required" onblur="promptFilePath(this)">
+        </div>
+        <div class="mx-5 mt-2 mb-1">
+            <label>目标文件</label>
+        </div>
+        <div class="layui-input-wrap mx-5">
+            <div class="layui-input-prefix">
+                <i class="iconfont icon-file"></i>
+            </div>
+            <input name="targetFile" type="text" class="layui-input" placeholder="输入目标文件" lay-verify="required" onblur="promptFilePath(this)">
+        </div>
+        <div class="d-flex flex-row justify-content-between mt-4 mx-5">
+            <button class="layui-btn mx-0" style="width: 113px" id="sureBtn" lay-submit lay-filter="submitTask">确定</button>
+            <button class="layui-btn mx-0 layui-btn-primary" style="width: 113px" id="cancelBtn" type="button">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 任务显示模板 -->
+<script type="text/x-handlebars-template" id="displayTaskTemplate">
+    <div class="rect">
+        <i class="iconfont icon-delete delete"></i>
+        <div class="item-group">
+            <label>线体</label>
+            <div class="layui-input-wrap ms-1">
+                <div class="layui-input-prefix">
+                    <i class="iconfont icon-line"></i>
+                </div>
+                <input name="line" type="text" value="{{line}}" class="layui-input" placeholder="输入设备线体">
+            </div>
+        </div>
+        <div class="item-group">
+            <label>编码</label>
+            <div class="layui-input-wrap ms-1">
+                <div class="layui-input-prefix">
+                    <i class="iconfont icon-code"></i>
+                </div>
+                <input name="code" type="text" value="{{code}}" class="layui-input" placeholder="输入设备编码">
+            </div>
+        </div>
+        <div class="item-group">
+            <label>账号</label>
+            <div class="layui-input-wrap ms-1">
+                <div class="layui-input-prefix">
+                    <i class="iconfont icon-account"></i>
+                </div>
+                <input name="account" type="text" value="{{account}}" class="layui-input" placeholder="输入账号">
+            </div>
+        </div>
+        <div class="item-group">
+            <label>密码</label>
+            <div class="layui-input-wrap ms-1">
+                <div class="layui-input-prefix">
+                    <i class="iconfont icon-password"></i>
+                </div>
+                <input name="password" type="text" value="{{password}}" class="layui-input" placeholder="输入密码">
+            </div>
+        </div>
+        <div class="item-group">
+            <label>源文件</label>
+            <div class="layui-input-wrap ms-1">
+                <div class="layui-input-prefix">
+                    <i class="iconfont icon-file"></i>
+                </div>
+                <input name="sourceFile" type="text" value="{{sourceFile}}" class="layui-input source-file" placeholder="选择源文件" onblur="promptFilePath(this)">
+            </div>
+        </div>
+        <div class="item-group">
+            <label>目标文件</label>
+            <div class="layui-input-wrap ms-1">
+                <div class="layui-input-prefix">
+                    <i class="iconfont icon-file"></i>
+                </div>
+                <input name="targetFile" type="text" value="{{targetFile}}" class="layui-input target-file" placeholder="选择目标文件" onblur="promptFilePath(this)">
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+    $(document).ready(function() {
+        layui.use(['laydate', 'form'], function() {
+            var laydate = layui.laydate;
+            var form = layui.form;
+
+            fetch('/Config/GetCopyConfiguration')
+            .then(response => {
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.message || `操作失败 (${response.status})`);
+                    }
+                    return data;
+                });
+            })
+            .then(data => {
+                laydate.render({
+                    elem: '.beacon',
+                    type: 'time',
+                    value: data.data.time,
+                });
+
+                if (data.data.tasks && data.data.tasks.length > 0) {
+                    var html = Handlebars.compile(document.getElementById('displayTaskTemplate').innerHTML);
+                    data.data.tasks.forEach(task => {
+                        $('#taskList').append(html(task));
+                    });
+                } else {
+                    layer.msg('没有找到任何复制任务', {
+                        time: 2000,
+                        icon: 1
+                    });
+                }
+            })
+            .catch(error => {
+                layer.msg(error.message, {
+                    time: 2000,
+                    icon: 2
+                });
+            });
+
+            // 触发表单验证
+            form.on('submit(submitTask)', function() {
+                addCopyTask();
+                initAddModal();
+                return false;
+            });
+
+            laydate.render({
+                elem: '.beacon',
+                type: 'time'
+            });
+
+            form.render();
+        });
+
+        // 保存配置
+        $('#saveConfig').click(function() {
+            var tasks = [];
+            $('#taskList .rect').each(function() {
+                var $this = $(this);
+                var task = {
+                    line: $this.find('input[name="line"]').val(),
+                    code: $this.find('input[name="code"]').val(),
+                    account: $this.find('input[name="account"]').val(),
+                    password: $this.find('input[name="password"]').val(),
+                    sourceFile: $this.find('input[name="sourceFile"]').val(),
+                    targetFile: $this.find('input[name="targetFile"]').val()
+                };
+
+                // 验证必填字段
+                if (!task.account || !task.sourceFile || !task.targetFile) {
+                    return false;
+                }
+
+                tasks.push(task);
+            });
+
+            if (tasks.length === 0) {
+                layer.msg('请确保所有任务的账号、源文件路径、目标文件路径都不为空', {
+                    time: 2000,
+                    icon: 2
+                });
+                return;
+            }
+
+            var time = $('#laydate-type-time').val();
+            var requestData = {
+                time: time,
+                tasks: tasks
+            }
+
+            fetch('/Config/UpdateCopyConfiguration', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => {
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.message || `操作失败 (${response.status})`);
+                    }
+                    return data;
+                });
+            })
+            .then(data => {
+                layer.msg(data.message, {
+                    time: 2000,
+                    icon: 1
+                });
+            })
+            .catch(error => {
+                layer.msg(error.message, {
+                    time: 2000,
+                    icon: 2
+                });
+            });
+        });
+
+        // 删除任务
+        $('#taskList').on('click', '.delete', function() {
+            $(this).closest('.rect').fadeOut(300, function() {
+                $(this).remove();
+            });
+        });
+
+        // 清空任务
+        $('#clearTasks').click(function() {
+            $('#taskList').empty();
+        });
+
+        // 显示添加模态框
+        $('#addTask').click(function() {
+            $('#addModal').css('display', 'flex');
+        });
+
+        // 确认添加任务
+        // $('#sureBtn').click(function() {
+        //     addCopyTask();
+        //     initAddModal();
+        // });
+
+        // 取消添加任务
+        $('#cancelBtn').click(function() {
+            initAddModal();
+        });
+
+        // 提示标签事件
+        $('#tipIcon').on('click', function() {
+            layer.tips('账号、源文件路径或目标文件路径为空的任务默认不保存到配置文件', '#tipIcon', {
+                tips: 3,
+                time: 3000
+            });
+        });
+    });
+
+    // 添加复制任务
+    function addCopyTask() {
+        var $this = $('#addModal');
+        var task = {
+            line: $this.find('input[name="line"]').val(),
+            code: $this.find('input[name="code"]').val(),
+            account: $this.find('input[name="account"]').val(),
+            password: $this.find('input[name="password"]').val(),
+            sourceFile: $this.find('input[name="sourceFile"]').val(),
+            targetFile: $this.find('input[name="targetFile"]').val(),
+            time: $this.find('input[name="time"]').val()
+        };
+
+        var html = Handlebars.compile(document.getElementById('displayTaskTemplate').innerHTML)(task);
+        $('#taskList').append(html);
+
+        layui.laydate.render({
+            elem: '.beacon',
+            type: 'time'
+        });
+    }
+
+    // 初始化添加模态框
+    function initAddModal() {
+        // 隐藏添加模态框
+        $('#addModal').css('display', 'none');
+        // 重置输入
+        $('#addModal input').val('');
+    }
+
+    function promptFilePath(input) {
+        if(!isValidFilePath(input.value)) {
+            layer.msg('请确保源文件和目标文件的有效路径为 目录名 + 文件名 + 扩展名', {
+                time: 2000,
+                icon: 2
+            });
+        }
+    }
+
+    // 文件路径校验（本地路径和网络路径）
+    function isValidFilePath(path) {
+        path = path.trim();
+        if (!path) return false;
+        var regex = /^(?:[a-zA-Z]:[\\\/]|(?:\\\\|\/\/)(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}|(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3})[\\\/][^\\\/]+)(?:[^\\\/:*?"<>|\r\n]+[\\\/])*[^\\\/:*?"<>|\r\n]+\.[^\\\/:*?"<>|\r\n]{1,10}$/;
+
+        return regex.test(path);
+    }
+
+
+</script>

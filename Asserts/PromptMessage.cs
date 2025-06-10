@@ -33,9 +33,9 @@
         public static readonly string ACCESS_PATH_FAILURE = "无法访问共享路径";
 
         /// <summary>
-        /// 账号或密码错误
+        /// 密码错误
         /// </summary>
-        public static readonly string ACCOUNT_OR_PASSWORD_ERROR = "账号或密码错误";
+        public static readonly string PASSWORD_ERROR = "密码错误";
 
         /// <summary>
         /// 密码过期
@@ -96,5 +96,10 @@
         /// 共享名称错误
         /// </summary>
         public static readonly string SHARE_NAME_ERROR = "共享名称错误";
+
+        /// <summary>
+        /// 用户名错误或未知
+        /// </summary>
+        public static readonly string BAD_USERNAME = "用户名错误或未知";
     }
 }

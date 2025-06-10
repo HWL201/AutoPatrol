@@ -122,9 +122,9 @@
         <h4 class="text-lg font-bold text-black" style="margin: 15px 0 0 15px; font-size: 18px">巡检设置</h4>
         @* <i class="iconfont icon-add" style="font-size: 25px;margin:12px 15px 0 0; color: #3498db" id="addTimer"></i> *@
         <div class="layui-btn-container me-2">
-            <button class="layui-btn layui-btn-sm layui-bg-red mb-0" type="button" id="clearTimers">清空定时任务</button>
-            <button class="layui-btn layui-btn-sm mb-0" type="button" id="addTimer">添加定时任务</button>
-            <button class="layui-btn layui-btn-sm mb-0" type="button" id="saveConfig">保存到配置文件</button>
+            <button class="layui-btn layui-btn-sm layui-bg-red mb-0" type="button" id="clearTimers">清空任务</button>
+            <button class="layui-btn layui-btn-sm mb-0" type="button" id="addTimer">添加任务</button>
+            <button class="layui-btn layui-btn-sm mb-0" type="button" id="saveConfig">保存配置</button>
         </div>
     </div>
     <div class="scroll-bar" id="timerList">
@@ -321,11 +321,10 @@
                 })
                 .then(response => {
                     return response.json().then(data => {
-                        // 检查状态码，非 200 则抛出错误
                         if (!response.ok) {
                             throw new Error(data.message || `操作失败 (${response.status})`);
                         }
-                        return data; // 200 状态码，正常返回数据
+                        return data;
                     });
                 })
                 .then(data => {

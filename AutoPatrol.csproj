@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Log\" />
+    <Folder Include="Record\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties config_4deviceinfoconfig_1json__JsonSchema="https://geojson.org/schema/GeoJSON.json" /></VisualStudio></ProjectExtensions>

@@ -259,8 +259,6 @@
                 table.on('tool(deviceOperation)', function(obj) {
                     var rowData = [obj.data];
 
-                    console.log(rowData);
-
                     fetch('/Home/ManualPatrol', {
                         method: 'POST',
                         headers: {

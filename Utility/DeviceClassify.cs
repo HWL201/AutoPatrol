@@ -5,13 +5,13 @@ namespace AutoPatrol.Utility
 {
     public class DeviceClassify
     {
-        // 机况驱动
+        // 机况类型驱动
         private static readonly HashSet<string> conditionDriver = new HashSet<string>(StringComparer.Ordinal) {
             "CQ.IOT.SiemensPLCDriver.dll",
             "CQ.IOT.LightDriver.dll",
         };
 
-        // 数据驱动
+        // 数据类型驱动
         private static readonly HashSet<string> dataDriver = new HashSet<string>(StringComparer.Ordinal) {
             "CQ.IOT.HT.TRIAOIDriver.dll",
             "CQ.IOT.HT.GluingBZDriver.dll",
@@ -68,8 +68,25 @@ namespace AutoPatrol.Utility
             "YHJ2247",
             "YHJ2248",
             "YHJ2249",
+
+            "X-Ray1002",
+            "X-Ray1005",
+            "X-Ray1007",
+
+            "HHL1004",
+            "HHL1005",
+            "HHL1009",
+            "HHL1023",
+
+            "TJJ6010",
+            "TJJ6011",
         };
 
+        /// <summary>
+        /// 判断机况类型
+        /// </summary>
+        /// <param name="driverName"></param>
+        /// <returns></returns>
         public static string TypeJudge(string driverName) {
             if (string.IsNullOrEmpty(driverName)) return "";
 
@@ -78,6 +95,11 @@ namespace AutoPatrol.Utility
                  : "其他";
         }
 
+        /// <summary>
+        /// 判断是否为特殊设备
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public static bool YHJJudge(string code) {
             if (string.IsNullOrEmpty(code)) return false;
 

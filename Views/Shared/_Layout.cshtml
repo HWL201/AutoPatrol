@@ -37,11 +37,18 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">主页</a>
                     <dl class="layui-nav-child">
-                        <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></dd>
-                        <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Result">Result</a></dd>
+                        <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">设备集成</a></dd>
+                        <dd><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Result">巡检结果</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a class="nav-link" asp-area="" asp-controller="Config" asp-action="Configuration">配置</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">配置</a>
+                    <dl class="layui-nav-child">
+                        <dd><a class="nav-link" asp-area="" asp-controller="Config" asp-action="Configuration">设备巡检</a></dd>
+                        <dd><a class="nav-link" asp-area="" asp-controller="Config" asp-action="Copy">文件复制</a></dd>
+                    </dl>
+                </li>
+                @* <li class="layui-nav-item"><a class="nav-link" asp-area="" asp-controller="Config" asp-action="Configuration">配置</a></li> *@
             </ul>
         </div>
 
