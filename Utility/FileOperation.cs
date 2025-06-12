@@ -259,6 +259,7 @@ namespace AutoPatrol.Utility
         /// </summary>
         static bool CheckTodayFilesInFolder(string folderPath) {
             string todayDateString = DateTime.Now.ToString("yyyy-MM-dd");
+            string todayDateString2 = DateTime.Now.ToString("yyyyMMdd");
             DateTime today = DateTime.Today;
 
             /*foreach (string file in Directory.GetFiles(folderPath)) {
@@ -281,6 +282,11 @@ namespace AutoPatrol.Utility
                     return true;
                 }
 
+                if (Path.GetFileName(file).Contains(todayDateString2)) {
+                    Log.Information($"匹配到今天的文件（按文件名）: {Path.GetFileName(file)}");
+                    return true;
+                }
+
                 // 按文件修改时间匹配
                 if (File.GetLastWriteTime(file).Date == today) {
                     Log.Information($"匹配到今天的文件（按修改时间）: {Path.GetFileName(file)}");
@@ -292,6 +298,12 @@ namespace AutoPatrol.Utility
         }
 
 
+        /// <summary>
+        /// 异步文件拷贝
+        /// </summary>
+        /// <param name="sourceFile"></param>
+        /// <param name="targetFile"></param>
+        /// <returns></returns>
         public static async Task CopyFileAsync(string sourceFile, string targetFile) {
             if (!File.Exists(sourceFile)) {
                 return;

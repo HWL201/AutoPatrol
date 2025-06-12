@@ -1,6 +1,7 @@
 ﻿using AutoPatrol.Asserts;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace AutoPatrol.Utility
 {
@@ -19,7 +20,7 @@ namespace AutoPatrol.Utility
         public static async Task<bool> ConnectToShareAsync(string sharePath, string username, string password) {
             try {
                 var connectTask = Task.Run(() => ConnectToShare(sharePath, username, password));
-                var timeoutTask = Task.Delay(8000);
+                var timeoutTask = Task.Delay(10000);
                 var completedTask = await Task.WhenAny(connectTask, timeoutTask);   // completedTask 指向最先完成的任务
 
                 if (completedTask == timeoutTask) { // 如果超时
@@ -42,7 +43,10 @@ namespace AutoPatrol.Utility
         /// <param name="username">用于身份验证的用户名</param>
         /// <param name="password">用于身份验证的密码</param>
         /// <returns>连接成功返回true，失败返回false</returns>
-        public static bool ConnectToShare(string sharePath, string username, string password) {
+        public static async Task<bool> ConnectToShare(string sharePath, string username, string password) {
+            //DisconnectShare(sharePath, true);
+            //await Task.Delay(500);
+
             // 参数验证
             if (string.IsNullOrEmpty(sharePath))
                 throw new ArgumentNullException(nameof(sharePath));
@@ -65,7 +69,7 @@ namespace AutoPatrol.Utility
 
             // return result == 0;
             // 如果连接失败，抛出 Win32Exception
-            if (result != 0)
+            if (result != 0 && result != 1219)
                 throw new Win32Exception(result);
 
             return true;
@@ -144,6 +148,12 @@ namespace AutoPatrol.Utility
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
                         Message = PromptMessage.PASSWORD_ERROR,
                     };
+                case 1208:  // 发生扩展错误
+                    return new ConnectionResult() {
+                        Status = ConnectionStatus.InvalidCredentials,
+                        Profile = PromptMessage.ACCESS_PATH_FAILURE,
+                        Message = PromptMessage.EXTEND_ERROR,
+                    };
                 case 1219:  // 多凭据重复登录
                     return new ConnectionResult() {
                         Status = ConnectionStatus.NetworkError,
@@ -173,7 +183,7 @@ namespace AutoPatrol.Utility
                     return new ConnectionResult() {
                         Status = ConnectionStatus.UnknownError,
                         Profile = PromptMessage.ACCESS_PATH_FAILURE,
-                        Message = $"未知错误（代码：{errorCode}）：请上网排查。",
+                        Message = $"非常见错误（代码：{errorCode}）：参考网址 https://learn.microsoft.com/zh-cn/windows/win32/debug/system-error-codes。",
                     };
             }
         }

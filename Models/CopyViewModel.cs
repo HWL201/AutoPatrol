@@ -5,7 +5,12 @@
         /// <summary>
         /// 执行时间
         /// </summary>
-        public string Time { get; set; }
+        // public string Time { get; set; }
+
+        /// <summary>
+        /// 执行周期
+        /// </summary>
+        public int Cycle { get; set; } = 60;
 
         /// <summary>
         /// 执行任务集

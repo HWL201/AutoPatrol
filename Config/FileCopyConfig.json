@@ -1,13 +1,21 @@
 {
-  "Time": "",
+  "Cycle": 15,
   "Tasks": [
     {
-      "Line": "",
-      "Code": "",
-      "Account": "1",
-      "Password": "1",
-      "SourceFile": "1",
-      "TargetFile": "1"
+      "Line": "C18",
+      "Code": "HHL1040",
+      "Account": "HHL1040",
+      "Password": "",
+      "SourceFile": "\\\\10.2.226.145\\Databases\\SP_DAY.DB",
+      "TargetFile": "\\\\10.2.226.145\\reflow_databases_bak\\sp\\SP_DAY.DB"
+    },
+    {
+      "Line": "C19",
+      "Code": "HHL1041",
+      "Account": "HHL1041",
+      "Password": "",
+      "SourceFile": "\\\\10.2.226.143\\Databases\\SP_DAY.DB",
+      "TargetFile": "\\\\10.2.226.143\\reflow_databases_baksp\\sp\\SP_DAY.DB"
     }
   ]
 }

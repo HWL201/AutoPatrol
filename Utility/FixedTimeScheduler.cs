@@ -11,7 +11,8 @@ public class FixedTimeScheduler : BackgroundService
     private readonly TimeSpan _debounceTime = TimeSpan.FromSeconds(1); // 防抖动时间间隔，1秒
 
     private List<TimeSpan> _patrolExecutionTimes;   // 定时巡检执行时间集合
-    private TimeSpan _copyExecutionTime;            // 定时复制执行时间
+    private DateTime _copyExecutionTime;            // 定时复制执行时间
+    private int _cycle;                             // 定时复制执行周期
 
     private readonly IServiceProvider _serviceProvider;
     private readonly IWebHostEnvironment _env;
@@ -30,7 +31,7 @@ public class FixedTimeScheduler : BackgroundService
 
         // 初始化执行时间
         _patrolExecutionTimes = LoadPatrolExecutionTimes();
-        _copyExecutionTime = LoadCopyExecutionTime();
+        (_copyExecutionTime, _cycle) = LoadCopyExecutionTime();
 
         // 初始化文件监听
         var configPath = Path.Combine(_env.ContentRootPath, "Config", "TimerConfig.json");
@@ -165,9 +166,8 @@ public class FixedTimeScheduler : BackgroundService
             // 等待文件写入完成
             await Task.Delay(500);
 
-            var newTime = LoadCopyExecutionTime();
-            _copyExecutionTime = newTime;
-            Log.Information($"检测到复制任务配置文件变更，已重新加载复制任务配置配置，新配置执行时间\n      {_copyExecutionTime:hh\\:mm\\:ss}");
+            (_copyExecutionTime, _cycle) = LoadCopyExecutionTime();
+            Log.Information($"检测到复制任务配置文件变更，已重新加载复制任务配置配置，新的配置执行时间\n      {_copyExecutionTime:hh\\:mm\\:ss}");
             // 取消当前延迟，触发重新计算
             _delayCancellationTokenSource.Cancel();
         }
@@ -184,21 +184,21 @@ public class FixedTimeScheduler : BackgroundService
     /// 初始加载文件复制时间配置
     /// </summary>
     /// <returns></returns>
-    private TimeSpan LoadCopyExecutionTime() {
+    private (DateTime, int) LoadCopyExecutionTime() {
         try {
             var configPath = Path.Combine(_env.ContentRootPath, "Config", "FileCopyConfig.json");
             if (!File.Exists(configPath)) {
                 Log.Warning("文件复制任务配置文件不存在，使用默认执行时间");
-                return TimeSpan.Zero;
+                return (DateTime.Now.AddMilliseconds(100), 60);
             }
 
             var json = File.ReadAllText(configPath);
             var config = JsonConvert.DeserializeObject<CopyViewModel>(json);
-            return TimeSpan.ParseExact(config.Time, "hh\\:mm\\:ss", CultureInfo.InvariantCulture);
+            return (DateTime.Now.AddMilliseconds(100), config.Cycle);
         }
         catch (Exception ex) {
             Log.Error(ex, "解析复制任务配置文件失败，使用默认执行时间，请检查是否已配置执行时间");
-            return TimeSpan.Zero;
+            return (DateTime.Now.AddMilliseconds(100), 60);
         }
     }
 
@@ -223,14 +223,14 @@ public class FixedTimeScheduler : BackgroundService
                     stoppingToken
                 );
 
-                var now = DateTime.Now.TimeOfDay;
+                var now = DateTime.Now;
 
-                // 下一次巡检任务执行时间
-                var nextPatrolExecution = GetNextExecutionTime(now);
-                var nextCopyExecution = _copyExecutionTime;
+                // 下一次任务执行时间
+                var nextPatrolExecution = GetNextPatrolExecutionTime(now.TimeOfDay);
+                var nextCopyExecution = GetNextCopyExecutionTime(now, _cycle);
 
                 // 休眠时间差
-                var delayPatrol = nextPatrolExecution - now;
+                var delayPatrol = nextPatrolExecution - now.TimeOfDay;
                 var delayCopy = nextCopyExecution - now;
 
                 // 时间差为负数，表示今天的时间已经过去，需要计算明天的时间
@@ -242,54 +242,7 @@ public class FixedTimeScheduler : BackgroundService
                     Log.Information($"下一次巡检任务执行时间: {nextPatrolExecution}");
                 }
 
-                if (delayCopy < TimeSpan.Zero) {
-                    delayCopy += TimeSpan.FromDays(1);
-                    Log.Information($"当天无可执行复制任务，进入休眠过程，下一次复制任务执行时间: {DateTime.Today.AddDays(1).ToShortDateString()} {nextCopyExecution}");
-                }
-                else {
-                    Log.Information($"下一次复制任务执行时间: {nextCopyExecution}");
-                }
-
-                /* 废弃代码
-                // 休眠至下一次巡检任务执行时间
-                await Task.Delay(delayPatrol, linkedCancellationTokenSource.Token);
-
-                // 执行巡检任务
-                using (var scope = _serviceProvider.CreateScope()) {
-                    var service = scope.ServiceProvider.GetRequiredService<ITimerService>();
-                    await service.ExecuteScheduledTaskAsync();
-                }
-                
-                await Task.Delay(delayCopy, linkedCancellationTokenSource.Token);
-
-                // 执行复制任务
-                using (var scope = _serviceProvider.CreateScope()) {
-                    var service = scope.ServiceProvider.GetRequiredService<ITimerService>();
-                    await service.ExecuteFileCopyTaskAsync();
-                }
-                */
-
-                /* 废弃代码
-                var patrolTask = Task.Delay(delayPatrol, linkedCancellationTokenSource.Token)
-                   .ContinueWith(async _ => {
-                       using (var scope = _serviceProvider.CreateScope()) {
-                           var service = scope.ServiceProvider.GetRequiredService<ITimerService>();
-                           await service.ExecuteScheduledTaskAsync();
-                       }
-                   }, stoppingToken);
-
-                var copyTask = Task.Delay(delayCopy, linkedCancellationTokenSource.Token)
-                    .ContinueWith(async _ => {
-                        try {
-                            using (var scope = _serviceProvider.CreateScope()) {
-                                var service = scope.ServiceProvider.GetRequiredService<ITimerService>();
-                                await service.ExecuteFileCopyTaskAsync();
-                            }
-                        }
-                        catch (OperationCanceledException ex) {
-                            Console.WriteLine("任务被取消");
-                        }
-                    }, stoppingToken);*/
+                Log.Information($"下一次复制任务执行时间: {nextCopyExecution}");
 
                 // 巡检任务和复制任务的延迟执行
                 var patrolTask = Task.Run(async () => {
@@ -341,13 +294,27 @@ public class FixedTimeScheduler : BackgroundService
     /// </summary>
     /// <param name="currentTime"></param>
     /// <returns></returns>
-    private TimeSpan GetNextExecutionTime(TimeSpan currentTime) {
+    private TimeSpan GetNextPatrolExecutionTime(TimeSpan currentTime) {
         var nextTime = _patrolExecutionTimes
             .Where(t => t > currentTime)
             .OrderBy(t => t)
             .FirstOrDefault();
 
         return nextTime == TimeSpan.Zero ? _patrolExecutionTimes.Min() : nextTime;
+    }
+
+
+    /// <summary>
+    /// 获取复制任务下一次执行时间
+    /// </summary>
+    /// <param name="cycle">执行周期</param>
+    /// <returns></returns>
+    private DateTime GetNextCopyExecutionTime(DateTime now, int cycle) {
+        _copyExecutionTime = _copyExecutionTime > now   
+            ? _copyExecutionTime 
+            : _copyExecutionTime.AddMinutes(cycle);
+
+        return _copyExecutionTime ;
     }
 
 

@@ -126,14 +126,26 @@
             <div class="d-flex align-items-center">
                 <h4 class="text-lg font-bold text-black" style="font-size: 18px">复制任务设置</h4>
             </div>
+            @* <div class="d-flex align-items-center ms-5"> *@
+            @*     <label style="font-size: 15px;">初始执行时间</label> *@
+            @* </div> *@
+            @* <div class="layui-input-wrap ms-2"> *@
+            @*     <div class="layui-input-prefix"> *@
+            @*         <i class="iconfont icon-time"></i> *@
+            @*     </div> *@
+            @*     <input name="time" type="text" class="layui-input beacon" id="laydate-type-time" placeholder="选择执行时间"> *@
+            @* </div> *@
             <div class="d-flex align-items-center ms-5">
-                <label style="font-size: 15px;">执行时间</label>
+                <label style="font-size: 15px;">执行周期</label>
             </div>
             <div class="layui-input-wrap ms-2">
                 <div class="layui-input-prefix">
-                    <i class="iconfont icon-time"></i>
+                    <i class="iconfont icon-cycle"></i>
                 </div>
-                <input name="time" type="text" class="layui-input beacon" id="laydate-type-time" placeholder="选择执行时间">
+                <input name="cycle" id="cycle" type="number" class="layui-input">
+                <div class="layui-input-split layui-input-suffix" style="width: 60px !important;">
+                    <label >分钟</label>
+                </div>
             </div>
             <div class="d-flex align-items-center ms-2">
                 <i class="layui-icon layui-icon-tips" style="font-size: 20px; color: #1E9FFF;cursor: pointer;" id="tipIcon"></i>
@@ -294,13 +306,15 @@
                 });
             })
             .then(data => {
-                laydate.render({
-                    elem: '.beacon',
-                    type: 'time',
-                    value: data.data.time,
-                });
+                // laydate.render({
+                //     elem: '.beacon',
+                //     type: 'time',
+                //     value: data.data.time || new Date(),
+                // });
 
-                if (data.data.tasks && data.data.tasks.length > 0) {
+                $('#cycle').val(data.data?.cycle || 60);
+
+                if (data.data?.tasks && data.data?.tasks.length > 0) {
                     var html = Handlebars.compile(document.getElementById('displayTaskTemplate').innerHTML);
                     data.data.tasks.forEach(task => {
                         $('#taskList').append(html(task));
@@ -313,11 +327,14 @@
                 }
             })
             .catch(error => {
+                $('#cycle').val(60);
+
                 layer.msg(error.message, {
                     time: 2000,
                     icon: 2
                 });
             });
+           
 
             // 触发表单验证
             form.on('submit(submitTask)', function() {
@@ -326,10 +343,10 @@
                 return false;
             });
 
-            laydate.render({
-                elem: '.beacon',
-                type: 'time'
-            });
+            // laydate.render({
+            //     elem: '.beacon',
+            //     type: 'time'
+            // });
 
             form.render();
         });
@@ -364,10 +381,12 @@
                 return;
             }
 
-            var time = $('#laydate-type-time').val();
+            // var time = $('#laydate-type-time').val();
+            var cycle = $('#cycle').val();
             var requestData = {
-                time: time,
-                tasks: tasks
+                // time: time,
+                cycle: cycle,
+                tasks: tasks,
             }
 
             fetch('/Config/UpdateCopyConfiguration', {
@@ -452,10 +471,10 @@
         var html = Handlebars.compile(document.getElementById('displayTaskTemplate').innerHTML)(task);
         $('#taskList').append(html);
 
-        layui.laydate.render({
-            elem: '.beacon',
-            type: 'time'
-        });
+        // layui.laydate.render({
+        //     elem: '.beacon',
+        //     type: 'time'
+        // });
     }
 
     // 初始化添加模态框

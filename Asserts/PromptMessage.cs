@@ -101,5 +101,10 @@
         /// 用户名错误或未知
         /// </summary>
         public static readonly string BAD_USERNAME = "用户名错误或未知";
+
+        /// <summary>
+        /// 发生扩展错误
+        /// </summary>
+        public static readonly string EXTEND_ERROR = "发生扩展错误";
     }
 }
